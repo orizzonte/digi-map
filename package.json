@@ -1,0 +1,59 @@
+{
+  "name": "digi-map",
+  "version": "0.0.1",
+  "description": "DigiPolis Map Component",
+  "main": "index.js",
+  "scripts": {
+    "prepublish": "gulp clean && tsc && node make.js && gulp bundle-css", 
+    "tsc": "tsc",
+    "tsc:w": "tsc -w",
+    "lite": "lite-server",
+    "start": "concurrent \"npm run tsc:w\" \"npm run lite\" ",
+    "postinstall": "typings install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Orizzonte/digi-map.git"
+  },
+  "keywords": [
+    "empty package",   
+    "angular 2"   
+  ],
+  "author": "Yves Buyle",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Orizzonte/digi-map/issues"
+  },
+  "homepage": "https://github.com/Orizzonte/digi-map#readme",
+  "devDependencies": {    
+    "angular2": "2.0.0-beta.15",
+    "systemjs": "0.19.26",
+    "es6-shim": "^0.35.0",
+    "reflect-metadata": "0.1.2",
+    "rxjs": "5.0.0-beta.2",
+    "zone.js": "0.6.10",
+	"esri-system-js": "0.0.2",
+    "concurrently": "^2.0.0",
+    "lite-server": "^2.1.0",
+    "typescript": "^1.8.9",
+    "typings": "^0.7.4",
+    "tslint": "~3.3",
+    "gulp": "3.9.0",
+    "gulp-rimraf": "~0.2",
+    "gulp-eslint": "1.1.1",
+    "gulp-size": "2.0.0",
+    "gulp-tslint": "4.3.1",
+    "gulp-cssnano": "2.1.0",
+    "gulp-rename": "1.2.2",
+    "require-dir": "0.3.0",
+    "ts-loader": "~0.8",
+    "css-loader": "~0.23",
+    "style-loader": "~0.13",
+    "async": "1.5.2",
+    "del": "2.2.0",
+    "systemjs-builder": "0.15.6",
+    "webpack": "~1.12.12",
+    "webpack-dev-server": "~1.14.1"
+  },
+  "dependencies": {}
+}
