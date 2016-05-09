@@ -1,33 +1,31 @@
-import { Component, ElementRef, Output, EventEmitter } from 'angular2/core';
-import { MapService } from './map.service';
+import { Component, ElementRef, Output, EventEmitter, Input } from 'angular2/core';
 import { map, ArcGISTiledMapServiceLayer } from 'esri';
+import {Layer, LayerType} from './layer';
 
 @Component({
   selector: 'esri-map',
-  template: '<div id="map"><ng-content></ng-content></div>',
-  providers: [MapService],
-  inputs: ['options', 'itemId']
+  template: '<div id="map"><ng-content></ng-content></div>'
 })
 export class MapComponent {
-
-  @Output() mapLoaded = new EventEmitter();
+  @Input() layers: Layer[];
+  // @Output() mapLoaded = new EventEmitter();
 
   response: any;
   options: Object;
   itemId: string;
 
-  constructor(private elRef: ElementRef, private _mapService: MapService) { }
+  constructor(private elRef: ElementRef) { }
 
   ngOnInit() {
     // create the map
-    let m = new map('map', {
-      basemap: 'streets',  // For full list of pre-defined basemaps, navigate to http://arcg.is/1JVo6Wd
-      center: [3.701191, 51.063198], // longitude, latitude
-      zoom: 14
-    });
+    let m = new map('map');
+    
+    this.layers.forEach(layer => {
 
-    var layer = new ArcGISTiledMapServiceLayer("http://extragis.gent.be/ExtraGIS/rest/services/G_Algemeen/stadsplan_wgs84_anno/MapServer?token=apPg8G0HUnqA5JparHNqbpHJ3rctjEX2jraKzkwEVvM.");
-    m.addLayer(layer);
+      if (layer.type === LayerType.ArcGisTiledLayer) {
+         m.addLayer(new ArcGISTiledMapServiceLayer(layer.url));
+      }
+    });
 
     // // Create a MapView instance (for 2D viewing)
     // var view = new MapView({
