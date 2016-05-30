@@ -1,9 +1,3 @@
-System.registerDynamic("empty", [], false, function(__require, __exports, __module) {
-  var _retrieveGlobal = System.get("@@global-helpers").prepareGlobal(__module.id, null, null);
-  (function() {})();
-  return _retrieveGlobal();
-});
-
 System.register("digi-map/src/map.component", ["angular2/core", "esri", "./layer"], function(exports_1, context_1) {
   "use strict";
   var __moduleName = context_1 && context_1.id;
@@ -46,9 +40,24 @@ System.register("digi-map/src/map.component", ["angular2/core", "esri", "./layer
             if (layer.type === layer_1.LayerType.ArcGisTiledLayer) {
               m.addLayer(new esri_1.ArcGISTiledMapServiceLayer(layer.url));
             }
+            if (layer.type === layer_1.LayerType.ArcGISDynamicLayer) {
+              m.addLayer(new esri_1.ArcGISDynamicMapServiceLayer(layer.url));
+            }
+            if (layer.type === layer_1.LayerType.FeatureLayer) {
+              m.addLayer(new esri_1.FeatureLayer(layer.url));
+            }
+          });
+          m.on('load', function(ev) {
+            console.log('map loaded');
+          });
+          m.on('extent-change', function(ev) {
+            console.log('extent changes');
+            console.log(JSON.stringify(ev.extent));
           });
         };
+        ;
         __decorate([core_1.Input(), __metadata('design:type', Array)], MapComponent.prototype, "layers", void 0);
+        __decorate([core_1.Input(), __metadata('design:type', Object)], MapComponent.prototype, "extent", void 0);
         MapComponent = __decorate([core_1.Component({
           selector: 'esri-map',
           template: '<div id="map"><ng-content></ng-content></div>'
@@ -75,13 +84,21 @@ System.register("digi-map/src/layer", [], function(exports_1, context_1) {
       exports_1("Layer", Layer);
       (function(LayerType) {
         LayerType[LayerType["ArcGisTiledLayer"] = 0] = "ArcGisTiledLayer";
+        LayerType[LayerType["ArcGISDynamicLayer"] = 1] = "ArcGISDynamicLayer";
+        LayerType[LayerType["FeatureLayer"] = 2] = "FeatureLayer";
       })(LayerType || (LayerType = {}));
       exports_1("LayerType", LayerType);
     }
   };
 });
 
-System.register("digi-map/digi-map", ["./src/map.component", "./src/layer"], function(exports_1, context_1) {
+System.registerDynamic("empty", [], false, function(__require, __exports, __module) {
+  var _retrieveGlobal = System.get("@@global-helpers").prepareGlobal(__module.id, null, null);
+  (function() {})();
+  return _retrieveGlobal();
+});
+
+System.register("digi-map/digi-map", ["./src/map.component", "./src/layer", "esri"], function(exports_1, context_1) {
   "use strict";
   var __moduleName = context_1 && context_1.id;
   function exportStar_1(m) {
@@ -97,6 +114,8 @@ System.register("digi-map/digi-map", ["./src/map.component", "./src/layer"], fun
       exportStar_1(map_component_1_1);
     }, function(layer_1_1) {
       exportStar_1(layer_1_1);
+    }, function(esri_1_1) {
+      exportStar_1(esri_1_1);
     }],
     execute: function() {}
   };

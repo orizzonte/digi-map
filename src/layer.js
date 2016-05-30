@@ -13,6 +13,8 @@ System.register([], function(exports_1, context_1) {
             exports_1("Layer", Layer);
             (function (LayerType) {
                 LayerType[LayerType["ArcGisTiledLayer"] = 0] = "ArcGisTiledLayer";
+                LayerType[LayerType["ArcGISDynamicLayer"] = 1] = "ArcGISDynamicLayer";
+                LayerType[LayerType["FeatureLayer"] = 2] = "FeatureLayer";
             })(LayerType || (LayerType = {}));
             exports_1("LayerType", LayerType);
         }

@@ -4,5 +4,7 @@ export class Layer {
 }
 
 export enum LayerType {
-    ArcGisTiledLayer
+    ArcGisTiledLayer,
+    ArcGISDynamicLayer,
+    FeatureLayer
 }

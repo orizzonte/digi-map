@@ -1,6 +1,8 @@
 import { Component, ElementRef, Output, EventEmitter, Input } from 'angular2/core';
-import { map, ArcGISTiledMapServiceLayer } from 'esri';
+import { map, ArcGISTiledMapServiceLayer, ArcGISDynamicMapServiceLayer, FeatureLayer, Extent } from 'esri';
 import {Layer, LayerType} from './layer';
+
+//declare var esri: any;
 
 @Component({
   selector: 'esri-map',
@@ -8,6 +10,7 @@ import {Layer, LayerType} from './layer';
 })
 export class MapComponent {
   @Input() layers: Layer[];
+  @Input() extent: any;
   // @Output() mapLoaded = new EventEmitter();
 
   response: any;
@@ -19,13 +22,26 @@ export class MapComponent {
   ngOnInit() {
     // create the map
     let m = new map('map');
-    
+
     this.layers.forEach(layer => {
 
       if (layer.type === LayerType.ArcGisTiledLayer) {
          m.addLayer(new ArcGISTiledMapServiceLayer(layer.url));
       }
+
+      if (layer.type === LayerType.ArcGISDynamicLayer) {
+        m.addLayer(new ArcGISDynamicMapServiceLayer(layer.url));
+      }
+      
+      if (layer.type === LayerType.FeatureLayer) {
+        m.addLayer(new FeatureLayer(layer.url));
+      }
+
     });
+
+       m.on('load', function(ev) { console.log('map loaded'); });
+       m.on('extent-change', function(ev) { console.log('extent changes'); console.log(JSON.stringify(ev.extent)); });
+  };
 
     // // Create a MapView instance (for 2D viewing)
     // var view = new MapView({
@@ -41,5 +57,5 @@ export class MapComponent {
     // this.response = response;
     //   this.mapLoaded.next(response);
     // });
-  }
+  
 }

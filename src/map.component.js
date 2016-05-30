@@ -24,6 +24,7 @@ System.register(['angular2/core', 'esri', './layer'], function(exports_1, contex
                 layer_1 = layer_1_1;
             }],
         execute: function() {
+            //declare var esri: any;
             MapComponent = (function () {
                 function MapComponent(elRef) {
                     this.elRef = elRef;
@@ -35,23 +36,25 @@ System.register(['angular2/core', 'esri', './layer'], function(exports_1, contex
                         if (layer.type === layer_1.LayerType.ArcGisTiledLayer) {
                             m.addLayer(new esri_1.ArcGISTiledMapServiceLayer(layer.url));
                         }
+                        if (layer.type === layer_1.LayerType.ArcGISDynamicLayer) {
+                            m.addLayer(new esri_1.ArcGISDynamicMapServiceLayer(layer.url));
+                        }
+                        if (layer.type === layer_1.LayerType.FeatureLayer) {
+                            m.addLayer(new esri_1.FeatureLayer(layer.url));
+                        }
                     });
-                    // // Create a MapView instance (for 2D viewing)
-                    // var view = new MapView({
-                    //   map: m,  // References a Map instance
-                    //   container: this.elRef.nativeElement.firstChild  // References the ID of a DOM element
-                    // });
-                    // view.then((response) => {
-                    //   // make response available to app
-                    //   // and emit map loaded event
-                    // this.response = response;
-                    //   this.mapLoaded.next(response);
-                    // });
+                    m.on('load', function (ev) { console.log('map loaded'); });
+                    m.on('extent-change', function (ev) { console.log('extent changes'); console.log(JSON.stringify(ev.extent)); });
                 };
+                ;
                 __decorate([
                     core_1.Input(), 
                     __metadata('design:type', Array)
                 ], MapComponent.prototype, "layers", void 0);
+                __decorate([
+                    core_1.Input(), 
+                    __metadata('design:type', Object)
+                ], MapComponent.prototype, "extent", void 0);
                 MapComponent = __decorate([
                     core_1.Component({
                         selector: 'esri-map',

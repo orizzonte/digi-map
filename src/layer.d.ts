@@ -4,4 +4,6 @@ export declare class Layer {
 }
 export declare enum LayerType {
     ArcGisTiledLayer = 0,
+    ArcGISDynamicLayer = 1,
+    FeatureLayer = 2,
 }
