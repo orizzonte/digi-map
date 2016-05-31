@@ -33,12 +33,29 @@ System.register("digi-map/src/map.component", ["angular2/core", "esri-mods"], fu
           this.mapLoaded = new core_1.EventEmitter();
         }
         MapComponent.prototype.ngOnInit = function() {
-          var _this = this;
+          var self = this;
           this.currentMap = new esri_mods_1.map('map');
-          this.layers.forEach(function(layer) {
-            console.log(layer.url);
-            _this.currentMap.addLayer(layer);
+          console.log('registering event: ');
+          this.currentMap.on('layers-add-result', function(evt) {
+            var allLayerInfos = [];
+            evt.layers.forEach(function(layer, index) {
+              var layerInfos = layer.layer.layerInfos;
+              if (layerInfos && layerInfos.length > 0) {
+                allLayerInfos.push({
+                  layer: layer.layer,
+                  title: layer.layer.name
+                });
+              }
+              ;
+            });
+            var legendDijit = new esri_mods_1.Legend({
+              map: self.currentMap,
+              respectCurrentMapScale: true,
+              layerInfos: allLayerInfos
+            }, 'legend');
+            legendDijit.startup();
           });
+          this.currentMap.addLayers(this.layers);
           this.currentMap.setExtent(this.extent);
           this.initialExtent = this.extent;
           this.currentMap.on('load', function(ev) {

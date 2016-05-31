@@ -7,7 +7,8 @@ var digiMapConfig = (function () {
             'esri/layers/ArcGISTiledMapServiceLayer',
             'esri/layers/FeatureLayer',
             'esri/geometry/Extent',
-			'esri/SpatialReference'
+			'esri/SpatialReference',
+            'esri/dijit/Legend'
         ],          
 			outModuleName: 'esri-mods'
         };

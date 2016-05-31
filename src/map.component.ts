@@ -1,5 +1,5 @@
 import { Component, ElementRef, Output, EventEmitter, Input } from 'angular2/core';
-import { map, Extent, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer, FeatureLayer, Layer} from 'esri-mods';
+import { map, Extent, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer, FeatureLayer, Layer, Legend} from 'esri-mods';
 
 
 @Component({
@@ -20,14 +20,34 @@ export class MapComponent {
   constructor(private elRef: ElementRef) { }
 
   ngOnInit() {
-    
+
+    let self = this;
+
     this.currentMap = new map('map');
-    
-    this.layers.forEach(layer => {
-      console.log(layer.url);
-      this.currentMap.addLayer(layer);
+
+    this.currentMap.on('layers-add-result', function (evt) {
+
+      let allLayerInfos = [];
+
+      evt.layers.forEach((layer, index) => {
+        let layerInfos = layer.layer.layerInfos;
+
+        if (layerInfos && layerInfos.length > 0) {
+          allLayerInfos.push({ layer: layer.layer, title: layer.layer.name });
+        };
+      });
+
+      var legendDijit = new Legend({
+        map: self.currentMap,
+        respectCurrentMapScale: true,
+        layerInfos: allLayerInfos
+      }, 'legend');
+
+      legendDijit.startup();
+
     });
 
+    this.currentMap.addLayers(this.layers);
     this.currentMap.setExtent(this.extent);
     this.initialExtent = this.extent;
 

@@ -10,7 +10,8 @@ declare module "esri-mods" {
   export import Layer = require("esri/layers/layer");
   export import SpatialReference = require("esri/SpatialReference");
   export import Extent = require("esri/geometry/Extent");
-  export import ArcGISTiledMapServiceLayer =  require("esri/layers/ArcGISTiledMapServiceLayer")
+  export import ArcGISTiledMapServiceLayer =  require("esri/layers/ArcGISTiledMapServiceLayer");
+  export import Legend = require("esri/dijit/Legend");
 }
 
 declare module "esri" {
