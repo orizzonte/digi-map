@@ -1,13 +1,13 @@
 var digiMapConfig = (function () {       
         return {            
             modules: [
-            'esri/Map',
-            'esri/views/MapView',
-            'esri/layers/MapImageLayer',
-            'esri/layers/TileLayer',
+            'esri/map',           
+            'esri/layers/layer',
+            'esri/layers/ArcGISDynamicMapServiceLayer',
+            'esri/layers/ArcGISTiledMapServiceLayer',
             'esri/layers/FeatureLayer',
             'esri/geometry/Extent',
-			'esri/geometry/SpatialReference'
+			'esri/SpatialReference'
         ],          
 			outModuleName: 'esri-mods'
         };
