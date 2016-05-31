@@ -16,16 +16,19 @@ const Builder = require('systemjs-builder');
 const pkg = require('./package.json');
 const name = pkg.name;
 const targetFolder = 'bundles';
+const configFolder = 'config';
 
 async.waterfall([
   cleanBundlesFolder,
   getSystemJsBundleConfig,
   buildSystemJs({}),
   getSystemJsBundleConfig,
-  buildSystemJs({minify: true, sourceMaps: true}),
-  gzipSystemJsBundle
+  buildSystemJs({ minify: true, sourceMaps: true }),
+  gzipSystemJsBundle,
+  copyEsriConfig
 ], function (err) {
   if (err) {
+    s
     throw err;
   }
 });
@@ -41,7 +44,7 @@ function getSystemJsBundleConfig(cb) {
       typescript: path.resolve('node_modules/typescript/lib/typescript.js'),
       angular2: path.resolve('node_modules/angular2'),
       rxjs: path.resolve('node_modules/rxjs'),
-      esri: 'empty'
+      "esri-mods": 'empty'
     },
     paths: {
       '*': '*.js'
@@ -49,18 +52,18 @@ function getSystemJsBundleConfig(cb) {
   };
 
   config.meta = ['angular2', 'rxjs'].reduce((memo, currentValue) => {
-      memo[`${name}/node_modules/${currentValue}/*`] = {build: false};
-  return memo;
-}, {});
+    memo[`${name}/node_modules/${currentValue}/*`] = { build: false };
+    return memo;
+  }, {});
   return cb(null, config);
 }
 
 function cleanBundlesFolder(cb) {
   return del(targetFolder)
-      .then((paths) => {
+    .then((paths) => {
       console.log('Deleted files and folders:\n', paths.join('\n'));
-  cb();
-});
+      cb();
+    });
 }
 
 function buildSystemJs(options) {
@@ -72,25 +75,32 @@ function buildSystemJs(options) {
     let builder = new Builder();
     builder.config(config);
     return builder
-        .bundle([name, name].join('/'), dest, options)
-        .then(()=>cb()).catch(cb);
+      .bundle([name, name].join('/'), dest, options)
+      .then(() => cb()).catch(cb);
   };
 }
 
 function gzipSystemJsBundle(cb) {
   var files = fs.readdirSync(path.resolve(targetFolder))
-      .map(file => path.resolve(targetFolder, file))
-.filter(file => fs.statSync(file).isFile())
-.filter(file => path.extname(file) !== 'gz');
-  return async.eachLimit(files, 1, (file, gzipcb)=> {
-      process.nextTick(()=> {
+    .map(file => path.resolve(targetFolder, file))
+    .filter(file => fs.statSync(file).isFile())
+    .filter(file => path.extname(file) !== 'gz');
+  return async.eachLimit(files, 1, (file, gzipcb) => {
+    process.nextTick(() => {
       console.log('Gzipping ', file);
-  const gzip = zlib.createGzip({level: 9});
-  let inp = fs.createReadStream(file);
-  let out = fs.createWriteStream(file + '.gz');
-  inp.on('end', ()=>gzipcb());
-  inp.on('error', err => gzipcb(err));
-  return inp.pipe(gzip).pipe(out);
-});
-}, cb);
+      const gzip = zlib.createGzip({ level: 9 });
+      let inp = fs.createReadStream(file);
+      let out = fs.createWriteStream(file + '.gz');
+      inp.on('end', () => gzipcb());
+      inp.on('error', err => gzipcb(err));
+      return inp.pipe(gzip);
+    });
+  }, cb);
+}
+
+function copyEsriConfig(cb) {
+  let configFile = 'digi-map.config.js';
+  console.log('copying: ' + configFolder + '/' + configFile);
+  let inp = fs.createReadStream(configFolder + '/' + configFile);
+  return inp.pipe(fs.createWriteStream(targetFolder + '/' + configFile));
 }

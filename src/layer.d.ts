@@ -1,8 +1,8 @@
-export declare class Layer {
+export declare class MapLayer {
     url: string;
-    type: LayerType;
+    type: MapLayerType;
 }
-export declare enum LayerType {
+export declare enum MapLayerType {
     ArcGisTiledLayer = 0,
     ArcGISDynamicLayer = 1,
     FeatureLayer = 2,

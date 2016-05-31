@@ -1,22 +1,22 @@
 System.register([], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var Layer, LayerType;
+    var MapLayer, MapLayerType;
     return {
         setters:[],
         execute: function() {
-            Layer = (function () {
-                function Layer() {
+            MapLayer = (function () {
+                function MapLayer() {
                 }
-                return Layer;
+                return MapLayer;
             }());
-            exports_1("Layer", Layer);
-            (function (LayerType) {
-                LayerType[LayerType["ArcGisTiledLayer"] = 0] = "ArcGisTiledLayer";
-                LayerType[LayerType["ArcGISDynamicLayer"] = 1] = "ArcGISDynamicLayer";
-                LayerType[LayerType["FeatureLayer"] = 2] = "FeatureLayer";
-            })(LayerType || (LayerType = {}));
-            exports_1("LayerType", LayerType);
+            exports_1("MapLayer", MapLayer);
+            (function (MapLayerType) {
+                MapLayerType[MapLayerType["ArcGisTiledLayer"] = 0] = "ArcGisTiledLayer";
+                MapLayerType[MapLayerType["ArcGISDynamicLayer"] = 1] = "ArcGISDynamicLayer";
+                MapLayerType[MapLayerType["FeatureLayer"] = 2] = "FeatureLayer";
+            })(MapLayerType || (MapLayerType = {}));
+            exports_1("MapLayerType", MapLayerType);
         }
     }
 });

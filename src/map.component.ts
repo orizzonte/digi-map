@@ -1,6 +1,6 @@
 import { Component, ElementRef, Output, EventEmitter, Input } from 'angular2/core';
-import { map, ArcGISTiledMapServiceLayer, ArcGISDynamicMapServiceLayer, FeatureLayer, Extent } from 'esri';
-import {Layer, LayerType} from './layer';
+import { Map, TileLayer, Extent, MapView, MapImageLayer} from 'esri-mods';
+import {MapLayer, MapLayerType} from './layer';
 
 //declare var esri: any;
 
@@ -9,8 +9,8 @@ import {Layer, LayerType} from './layer';
   template: '<div id="map"><ng-content></ng-content></div>'
 })
 export class MapComponent {
-  @Input() layers: Layer[];
-  @Input() extent: any;
+  @Input() layers: MapLayer[];
+  @Input() extent: Extent;
   // @Output() mapLoaded = new EventEmitter();
 
   response: any;
@@ -21,41 +21,52 @@ export class MapComponent {
 
   ngOnInit() {
     // create the map
-    let m = new map('map');
+    let m = new Map();
+    let baseLayer : TileLayer;
 
     this.layers.forEach(layer => {
 
-      if (layer.type === LayerType.ArcGisTiledLayer) {
-         m.addLayer(new ArcGISTiledMapServiceLayer(layer.url));
+      if (layer.type === MapLayerType.ArcGisTiledLayer) {
+        baseLayer = new TileLayer(layer.url);
+
+        baseLayer.then(function() {});
+        m.add(baseLayer);
       }
 
-      if (layer.type === LayerType.ArcGISDynamicLayer) {
-        m.addLayer(new ArcGISDynamicMapServiceLayer(layer.url));
+      if (layer.type === MapLayerType.ArcGISDynamicLayer) {
+        m.add(new MapImageLayer(layer.url));
       }
-      
-      if (layer.type === LayerType.FeatureLayer) {
-        m.addLayer(new FeatureLayer(layer.url));
-      }
+
+      // if (layer.type === MapLayerType.FeatureLayer) {
+      //   m.add(new FeatureLayer(layer.url));
+      // }
 
     });
 
-       m.on('load', function(ev) { console.log('map loaded'); });
-       m.on('extent-change', function(ev) { console.log('extent changes'); console.log(JSON.stringify(ev.extent)); });
+    let view = new MapView({
+      container: 'map',  // Reference to the scene div created in step 5
+      map: m, extent : this.extent
+    }).then(function (result) {
+      console.log('mapview loaded');
+    });
+
+    //  m.on('load', function(ev) { console.log('map loaded'); });
+    //  m.on('extent-change', function(ev) { console.log('extent changes'); console.log(JSON.stringify(ev.extent)); });
   };
 
-    // // Create a MapView instance (for 2D viewing)
-    // var view = new MapView({
-    //   map: m,  // References a Map instance
-    //   container: this.elRef.nativeElement.firstChild  // References the ID of a DOM element
-    // });
+  // // Create a MapView instance (for 2D viewing)
+  // var view = new MapView({
+  //   map: m,  // References a Map instance
+  //   container: this.elRef.nativeElement.firstChild  // References the ID of a DOM element
+  // });
 
 
 
-    // view.then((response) => {
-    //   // make response available to app
-    //   // and emit map loaded event
-    // this.response = response;
-    //   this.mapLoaded.next(response);
-    // });
-  
+  // view.then((response) => {
+  //   // make response available to app
+  //   // and emit map loaded event
+  // this.response = response;
+  //   this.mapLoaded.next(response);
+  // });
+
 }

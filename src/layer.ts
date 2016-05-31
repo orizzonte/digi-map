@@ -1,9 +1,9 @@
-export class Layer {
+export class MapLayer {
     url: string;
-    type: LayerType;
+    type: MapLayerType;
 }
 
-export enum LayerType {
+export enum MapLayerType {
     ArcGisTiledLayer,
     ArcGISDynamicLayer,
     FeatureLayer
