@@ -12,6 +12,7 @@ declare module "esri-mods" {
   export import Extent = require("esri/geometry/Extent");
   export import ArcGISTiledMapServiceLayer =  require("esri/layers/ArcGISTiledMapServiceLayer");
   export import Legend = require("esri/dijit/Legend");
+  export import draw = require("esri/toolbars/draw");
 }
 
 declare module "esri" {
