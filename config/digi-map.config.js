@@ -10,6 +10,7 @@ var digiMapConfig = (function () {
 			'esri/SpatialReference',
             'esri/dijit/Legend',
             'esri/toolbars/draw',
+            'esri/toolbars/edit',
             'esri/symbols/SimpleMarkerSymbol',
             'esri/symbols/SimpleLineSymbol',
             'esri/symbols/SimpleFillSymbol',
