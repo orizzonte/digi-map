@@ -9,7 +9,9 @@ var digiMapConfig = (function () {
             'esri/geometry/Extent',
 			'esri/SpatialReference',
             'esri/dijit/Legend',
-            'esri/toolbars/draw'
+            'esri/toolbars/draw',
+            'esri/symbols/SimpleMarkerSymbol',
+            'esri/graphic'
         ],          
 			outModuleName: 'esri-mods'
         };

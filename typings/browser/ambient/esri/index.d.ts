@@ -13,6 +13,8 @@ declare module "esri-mods" {
   export import ArcGISTiledMapServiceLayer =  require("esri/layers/ArcGISTiledMapServiceLayer");
   export import Legend = require("esri/dijit/Legend");
   export import draw = require("esri/toolbars/draw");
+  export import SimpleMarkerSymbol = require("esri/symbols/SimpleMarkerSymbol");
+  export import graphic = require("esri/graphic");
 }
 
 declare module "esri" {
