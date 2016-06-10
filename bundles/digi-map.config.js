@@ -11,6 +11,8 @@ var digiMapConfig = (function () {
             'esri/dijit/Legend',
             'esri/toolbars/draw',
             'esri/symbols/SimpleMarkerSymbol',
+            'esri/symbols/SimpleLineSymbol',
+            'esri/symbols/SimpleFillSymbol',
             'esri/graphic'
         ],          
 			outModuleName: 'esri-mods'

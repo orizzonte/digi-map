@@ -14,6 +14,8 @@ declare module "esri-mods" {
   export import Legend = require("esri/dijit/Legend");
   export import draw = require("esri/toolbars/draw");
   export import SimpleMarkerSymbol = require("esri/symbols/SimpleMarkerSymbol");
+  export import SimpleLineSymbol = require("esri/symbols/SimpleLineSymbol");
+  export import SimpleFillSymbol = require("esri/symbols/SimpleFillSymbol");
   export import graphic = require("esri/graphic");
 }
 
