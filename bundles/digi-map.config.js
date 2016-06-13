@@ -14,7 +14,8 @@ var digiMapConfig = (function () {
             'esri/symbols/SimpleMarkerSymbol',
             'esri/symbols/SimpleLineSymbol',
             'esri/symbols/SimpleFillSymbol',
-            'esri/graphic'
+            'esri/graphic',
+            'esri/Color'
         ],          
 			outModuleName: 'esri-mods'
         };

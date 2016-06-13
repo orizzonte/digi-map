@@ -18,6 +18,7 @@ declare module "esri-mods" {
   export import SimpleLineSymbol = require("esri/symbols/SimpleLineSymbol");
   export import SimpleFillSymbol = require("esri/symbols/SimpleFillSymbol");
   export import graphic = require("esri/graphic");
+  export import Color = require("esri/Color");
 }
 
 declare module "esri" {
