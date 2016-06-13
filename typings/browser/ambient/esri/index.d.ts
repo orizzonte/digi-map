@@ -12,6 +12,12 @@ declare module "esri-mods" {
   export import Extent = require("esri/geometry/Extent");
   export import ArcGISTiledMapServiceLayer =  require("esri/layers/ArcGISTiledMapServiceLayer");
   export import Legend = require("esri/dijit/Legend");
+  export import draw = require("esri/toolbars/draw");
+  export import edit = require("esri/toolbars/edit");  
+  export import SimpleMarkerSymbol = require("esri/symbols/SimpleMarkerSymbol");
+  export import SimpleLineSymbol = require("esri/symbols/SimpleLineSymbol");
+  export import SimpleFillSymbol = require("esri/symbols/SimpleFillSymbol");
+  export import graphic = require("esri/graphic");
 }
 
 declare module "esri" {
