@@ -35,7 +35,6 @@ System.register("digi-map/src/map.component", ["angular2/core", "esri-mods"], fu
         MapComponent.prototype.ngOnInit = function() {
           var self = this;
           this.currentMap = new esri_mods_1.map('map');
-          console.log('registering event: ');
           this.currentMap.on('layers-add-result', function(evt) {
             var allLayerInfos = [];
             evt.layers.forEach(function(layer, index) {
@@ -50,7 +49,7 @@ System.register("digi-map/src/map.component", ["angular2/core", "esri-mods"], fu
             });
             var legendDijit = new esri_mods_1.Legend({
               map: self.currentMap,
-              respectCurrentMapScale: true,
+              respectCurrentMapScale: false,
               layerInfos: allLayerInfos
             }, 'legend');
             legendDijit.startup();

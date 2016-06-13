@@ -1,5 +1,5 @@
 import { ElementRef, EventEmitter } from 'angular2/core';
-import { Extent, Layer } from 'esri-mods';
+import { map, Extent, Layer } from 'esri-mods';
 export declare class MapComponent {
     private elRef;
     layers: Layer[];
@@ -9,7 +9,7 @@ export declare class MapComponent {
     options: Object;
     itemId: string;
     private initialExtent;
-    private currentMap;
+    currentMap: map;
     constructor(elRef: ElementRef);
     ngOnInit(): void;
     toInitialExtent(): void;

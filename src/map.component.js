@@ -29,7 +29,6 @@ System.register(['angular2/core', 'esri-mods'], function(exports_1, context_1) {
                 MapComponent.prototype.ngOnInit = function () {
                     var self = this;
                     this.currentMap = new esri_mods_1.map('map');
-                    console.log('registering event: ');
                     this.currentMap.on('layers-add-result', function (evt) {
                         var allLayerInfos = [];
                         evt.layers.forEach(function (layer, index) {
@@ -41,7 +40,7 @@ System.register(['angular2/core', 'esri-mods'], function(exports_1, context_1) {
                         });
                         var legendDijit = new esri_mods_1.Legend({
                             map: self.currentMap,
-                            respectCurrentMapScale: true,
+                            respectCurrentMapScale: false,
                             layerInfos: allLayerInfos
                         }, 'legend');
                         legendDijit.startup();

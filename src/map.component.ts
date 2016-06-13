@@ -15,7 +15,7 @@ export class MapComponent {
   options: Object;
   itemId: string;
   private initialExtent: Extent;
-  private currentMap;
+  currentMap : map;
 
   constructor(private elRef: ElementRef) { }
 
@@ -39,7 +39,7 @@ export class MapComponent {
 
       var legendDijit = new Legend({
         map: self.currentMap,
-        respectCurrentMapScale: true,
+        respectCurrentMapScale: false,
         layerInfos: allLayerInfos
       }, 'legend');
 
