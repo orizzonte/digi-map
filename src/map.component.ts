@@ -1,4 +1,4 @@
-import { Component, ElementRef, Output, EventEmitter, Input } from 'angular2/core';
+import { Component, ElementRef, Output, EventEmitter, Input } from '@angular/core';
 import { map, Extent, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer, FeatureLayer, Layer, Legend} from 'esri-mods';
 
 

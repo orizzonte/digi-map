@@ -1,4 +1,4 @@
-import { ElementRef, EventEmitter } from 'angular2/core';
+import { ElementRef, EventEmitter } from '@angular/core';
 import { map, Extent, Layer } from 'esri-mods';
 export declare class MapComponent {
     private elRef;
