@@ -28,7 +28,6 @@ async.waterfall([
   copyEsriConfig
 ], function (err) {
   if (err) {
-    s
     throw err;
   }
 });

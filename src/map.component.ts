@@ -1,62 +1,81 @@
 import { Component, ElementRef, Output, EventEmitter, Input } from '@angular/core';
-import { map, Extent, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer, FeatureLayer, Layer, Legend} from 'esri-mods';
-
+import { map, Extent, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer, FeatureLayer, Layer, Legend, SpatialReference } from 'esri-mods';
 
 @Component({
-  selector: 'esri-map',
-  template: '<div id="map"><ng-content></ng-content></div>'
+    selector: 'esri-map',
+    template: '<div id="map"><ng-content></ng-content></div>'
 })
+
 export class MapComponent {
-  @Input() layers: Layer[];
-  @Input() extent: Extent;
-  @Output() mapLoaded = new EventEmitter();
+    @Input() settings: any;
+    @Output() mapLoaded = new EventEmitter();
 
-  response: any;
-  options: Object;
-  itemId: string;
-  private initialExtent: Extent;
-  currentMap : map;
+    currentMap: map;
+    layers: Layer[] = [];
 
-  constructor(private elRef: ElementRef) { }
+    private initialExtent: Extent;
 
-  ngOnInit() {
+    constructor(private elRef: ElementRef) {}
 
-    let self = this;
+    ngOnInit() {
 
-    this.currentMap = new map('map');
+        let self = this;
 
-    this.currentMap.on('layers-add-result', function (evt) {
+        this.currentMap = new map('map');
 
-      let allLayerInfos = [];
+        this.currentMap.on('layers-add-result', function(evt) {
 
-      evt.layers.forEach((layer, index) => {
-        let layerInfos = layer.layer.layerInfos;
+            let allLayerInfos = [];
 
-        if (layerInfos && layerInfos.length > 0) {
-          allLayerInfos.push({ layer: layer.layer, title: layer.layer.name });
-        };
-      });
+            evt.layers.forEach((layer, index) => {
+                let layerInfos = layer.layer.layerInfos;
 
-      var legendDijit = new Legend({
-        map: self.currentMap,
-        respectCurrentMapScale: false,
-        layerInfos: allLayerInfos
-      }, 'legend');
+                if (layerInfos && layerInfos.length > 0) {
+                    allLayerInfos.push({ layer: layer.layer, title: layer.layer.name });
+                };
+            });
 
-      legendDijit.startup();
+            var legendDijit = new Legend({
+                map: self.currentMap,
+                respectCurrentMapScale: false,
+                layerInfos: allLayerInfos
+            }, 'legend');
 
-    });
+            legendDijit.startup();
 
-    this.currentMap.addLayers(this.layers);
-    this.currentMap.setExtent(this.extent);
-    this.initialExtent = this.extent;
+        });
 
-    this.currentMap.on('load', function (ev) { console.log('map loaded'); });
-    this.currentMap.on('extent-change', function (ev) { console.log('extent changes'); console.log(JSON.stringify(ev.extent)); });
-  };
+        // Check if layers is defined
+        if (this.settings.layers !== undefined) {
+            this.settings.layers.forEach((layer) => {
+              if(layer.type === 'dynamic') {
+                this.layers.push(new ArcGISDynamicMapServiceLayer(layer.url));
+              } else {
+                this.layers.push(new ArcGISTiledMapServiceLayer(layer.url)); 
+              }
+            });
 
-  toInitialExtent() {
-    this.currentMap.setExtent(this.initialExtent);
-  }
+            this.currentMap.addLayers(this.layers);
+        }
+
+        // Check if extent is defined
+        if (this.settings.extent !== undefined) {
+            this.initialExtent = new Extent({
+                xmin: this.settings.extent[0],
+                ymin: this.settings.extent[1],
+                xmax: this.settings.extent[2],
+                ymax: this.settings.extent[3],
+                spatialReference: new SpatialReference({ wkid: 31370 })
+            });
+
+            this.currentMap.setExtent(this.initialExtent);
+        }
+
+        this.currentMap.on('load', function(ev) { console.log('map loaded'); });
+    };
+
+    toInitialExtent() {
+        this.currentMap.setExtent(this.initialExtent);
+    }
 
 }
