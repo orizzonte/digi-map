@@ -90,8 +90,9 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
         __decorate([core_1.Input(), __metadata('design:type', Object)], MapComponent.prototype, "settings", void 0);
         __decorate([core_1.Output(), __metadata('design:type', Object)], MapComponent.prototype, "mapLoaded", void 0);
         MapComponent = __decorate([core_1.Component({
+          moduleId: __moduleName,
           selector: 'esri-map',
-          template: 'src/map.component.tmpl.html',
+          template: 'map.component.tmpl.html',
           directives: [map_identify_component_1.MapIdentityComponent]
         }), __metadata('design:paramtypes', [core_1.ElementRef])], MapComponent);
         return MapComponent;
