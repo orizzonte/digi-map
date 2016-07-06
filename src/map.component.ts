@@ -1,9 +1,11 @@
 import { Component, ElementRef, Output, EventEmitter, Input } from '@angular/core';
 import { map, Extent, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer, FeatureLayer, Layer, Legend, SpatialReference } from 'esri-mods';
+import { MapIdentityComponent } from './identify/map.identify.component';
 
 @Component({
     selector: 'esri-map',
-    template: '<div id="map"><ng-content></ng-content></div>'
+    template: '<div id="map"><map-identify></map-identify><ng-content></ng-content></div>',
+    directives: [MapIdentityComponent]
 })
 
 export class MapComponent {

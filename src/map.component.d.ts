@@ -1,15 +1,12 @@
 import { ElementRef, EventEmitter } from '@angular/core';
-import { map, Extent, Layer } from 'esri-mods';
+import { map, Layer } from 'esri-mods';
 export declare class MapComponent {
     private elRef;
-    layers: Layer[];
-    extent: Extent;
+    settings: any;
     mapLoaded: EventEmitter<{}>;
-    response: any;
-    options: Object;
-    itemId: string;
-    private initialExtent;
     currentMap: map;
+    layers: Layer[];
+    private initialExtent;
     constructor(elRef: ElementRef);
     ngOnInit(): void;
     toInitialExtent(): void;
