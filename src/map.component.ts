@@ -3,9 +3,11 @@ import { map, Extent, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer, 
 import { MapIdentityComponent } from './identify/map.identify.component';
 
 @Component({
-    moduleId: __moduleName,
     selector: 'esri-map',
-    template: 'map.component.tmpl.html',
+    template:  `<div id="map">
+                   <map-identify></map-identify>
+                    <ng-content></ng-content>
+                </div>`,
     directives: [MapIdentityComponent]
 })
 
