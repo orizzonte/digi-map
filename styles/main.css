@@ -10,3 +10,7 @@ esri-map .map {
 .map-col {
   padding: 0;
 }
+
+.map-identify button {
+	z-index: 9999999999;
+}

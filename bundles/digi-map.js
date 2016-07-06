@@ -91,7 +91,7 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
         __decorate([core_1.Output(), __metadata('design:type', Object)], MapComponent.prototype, "mapLoaded", void 0);
         MapComponent = __decorate([core_1.Component({
           selector: 'esri-map',
-          template: '<div id="map"><map-identify></map-identify><ng-content></ng-content></div>',
+          template: 'map.component.tmpl.html',
           directives: [map_identify_component_1.MapIdentityComponent]
         }), __metadata('design:paramtypes', [core_1.ElementRef])], MapComponent);
         return MapComponent;
@@ -134,7 +134,7 @@ System.register("digi-map/src/identify/map.identify.component", ["@angular/core"
         };
         MapIdentityComponent = __decorate([core_1.Component({
           selector: 'map-identify',
-          template: '<div><button (click)="onClick()">Detailgegevens</button></div>'
+          template: '<div class="map-identify"><button (click)="onClick()">Detailgegevens</button></div>'
         }), __metadata('design:paramtypes', [])], MapIdentityComponent);
         return MapIdentityComponent;
       }());
