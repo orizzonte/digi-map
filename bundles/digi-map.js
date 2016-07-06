@@ -91,7 +91,7 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
         __decorate([core_1.Output(), __metadata('design:type', Object)], MapComponent.prototype, "mapLoaded", void 0);
         MapComponent = __decorate([core_1.Component({
           selector: 'esri-map',
-          template: "<div id=\"map\">\n                    <map-identify></map-identify>\n                    <ng-content></ng-content>\n                </div>",
+          template: " <div id=\"map\">\n                    <map-identify [mapInstance]=\"currentMap\"></map-identify>\n                    <ng-content></ng-content>\n                </div>",
           directives: [map_identify_component_1.MapIdentityComponent]
         }), __metadata('design:paramtypes', [core_1.ElementRef])], MapComponent);
         return MapComponent;
@@ -101,7 +101,7 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
   };
 });
 
-System.register("digi-map/src/identify/map.identify.component", ["@angular/core"], function(exports_1, context_1) {
+System.register("digi-map/src/identify/map.identify.component", ["@angular/core", "esri-mods"], function(exports_1, context_1) {
   "use strict";
   var __moduleName = context_1 && context_1.id;
   var __decorate = (this && this.__decorate) || function(decorators, target, key, desc) {
@@ -120,21 +120,34 @@ System.register("digi-map/src/identify/map.identify.component", ["@angular/core"
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
       return Reflect.metadata(k, v);
   };
-  var core_1;
+  var core_1,
+      esri_mods_1;
   var MapIdentityComponent;
   return {
     setters: [function(core_1_1) {
       core_1 = core_1_1;
+    }, function(esri_mods_1_1) {
+      esri_mods_1 = esri_mods_1_1;
     }],
     execute: function() {
       MapIdentityComponent = (function() {
-        function MapIdentityComponent() {}
-        MapIdentityComponent.prototype.onClick = function() {
-          console.log('Clicked map-identify');
+        function MapIdentityComponent() {
+          this.active = false;
+        }
+        MapIdentityComponent.prototype.ngOnInit = function() {
+          this.mapInstance.on('click', function(ev) {
+            console.log('clicked on map');
+            console.log(ev);
+          });
         };
+        MapIdentityComponent.prototype.onClick = function() {
+          console.log('Toggle map-identify');
+          this.active = !this.active;
+        };
+        __decorate([core_1.Input(), __metadata('design:type', esri_mods_1.map)], MapIdentityComponent.prototype, "mapInstance", void 0);
         MapIdentityComponent = __decorate([core_1.Component({
           selector: 'map-identify',
-          template: '<div class="map-identify"><button (click)="onClick()">Detailgegevens</button></div>',
+          template: "\t<div class=\"map-identify\">\n\t\t\t\t\t<button (click)=\"onClick()\">Detailgegevens</button>\n\t\t\t\t\t<span>Actief: {{active}}</span>\n\t\t\t  \t</div>",
           styles: ['.map-identify button { z-index: 99999999999; }']
         }), __metadata('design:paramtypes', [])], MapIdentityComponent);
         return MapIdentityComponent;

@@ -4,8 +4,8 @@ import { MapIdentityComponent } from './identify/map.identify.component';
 
 @Component({
     selector: 'esri-map',
-    template:  `<div id="map">
-                    <map-identify></map-identify>
+    template: ` <div id="map">
+                    <map-identify [mapInstance]="currentMap"></map-identify>
                     <ng-content></ng-content>
                 </div>`,
     directives: [MapIdentityComponent]

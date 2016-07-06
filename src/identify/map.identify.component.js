@@ -1,4 +1,4 @@
-System.register(['@angular/core'], function(exports_1, context_1) {
+System.register(['@angular/core', 'esri-mods'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,24 +10,39 @@ System.register(['@angular/core'], function(exports_1, context_1) {
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1;
+    var core_1, esri_mods_1;
     var MapIdentityComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (esri_mods_1_1) {
+                esri_mods_1 = esri_mods_1_1;
             }],
         execute: function() {
             MapIdentityComponent = (function () {
                 function MapIdentityComponent() {
+                    this.active = false;
                 }
-                MapIdentityComponent.prototype.onClick = function () {
-                    console.log('Clicked map-identify');
+                MapIdentityComponent.prototype.ngOnInit = function () {
+                    this.mapInstance.on('click', function (ev) {
+                        console.log('clicked on map');
+                        console.log(ev);
+                    });
                 };
+                MapIdentityComponent.prototype.onClick = function () {
+                    console.log('Toggle map-identify');
+                    this.active = !this.active;
+                };
+                __decorate([
+                    core_1.Input(), 
+                    __metadata('design:type', esri_mods_1.map)
+                ], MapIdentityComponent.prototype, "mapInstance", void 0);
                 MapIdentityComponent = __decorate([
                     core_1.Component({
                         selector: 'map-identify',
-                        template: '<div class="map-identify"><button (click)="onClick()">Detailgegevens</button></div>',
+                        template: "\t<div class=\"map-identify\">\n\t\t\t\t\t<button (click)=\"onClick()\">Detailgegevens</button>\n\t\t\t\t\t<span>Actief: {{active}}</span>\n\t\t\t  \t</div>",
                         styles: ['.map-identify button { z-index: 99999999999; }']
                     }), 
                     __metadata('design:paramtypes', [])
