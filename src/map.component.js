@@ -90,7 +90,7 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                 MapComponent = __decorate([
                     core_1.Component({
                         selector: 'esri-map',
-                        template: "<div id=\"map\">\n                   <map-identify></map-identify>\n                    <ng-content></ng-content>\n                </div>",
+                        template: "<div id=\"map\">\n                    <map-identify></map-identify>\n                    <ng-content></ng-content>\n                </div>",
                         directives: [map_identify_component_1.MapIdentityComponent]
                     }), 
                     __metadata('design:paramtypes', [core_1.ElementRef])

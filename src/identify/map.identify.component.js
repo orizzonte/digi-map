@@ -27,7 +27,8 @@ System.register(['@angular/core'], function(exports_1, context_1) {
                 MapIdentityComponent = __decorate([
                     core_1.Component({
                         selector: 'map-identify',
-                        template: '<div class="map-identify"><button (click)="onClick()">Detailgegevens</button></div>'
+                        template: '<div class="map-identify"><button (click)="onClick()">Detailgegevens</button></div>',
+                        styles: ['.map-identify button { z-index: 99999999999; }']
                     }), 
                     __metadata('design:paramtypes', [])
                 ], MapIdentityComponent);
