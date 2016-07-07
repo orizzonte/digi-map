@@ -43,7 +43,7 @@ System.register(['@angular/core', 'esri-mods'], function(exports_1, context_1) {
                     core_1.Component({
                         selector: 'map-identify',
                         template: "\t<div class=\"map-identify\">\n\t\t\t\t\t<button (click)=\"onClick()\">Detailgegevens</button>\n\t\t\t\t\t<span>Actief: {{active}}</span>\n\t\t\t  \t</div>",
-                        styles: ['.map-identify button { z-index: 99999999999; }']
+                        styles: ['.map-identify butto { z-index: 99999999999; }']
                     }), 
                     __metadata('design:paramtypes', [])
                 ], MapIdentityComponent);

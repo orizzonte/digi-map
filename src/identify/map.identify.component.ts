@@ -7,7 +7,7 @@ import { map } from 'esri-mods';
 					<button (click)="onClick()">Detailgegevens</button>
 					<span>Actief: {{active}}</span>
 			  	</div>`,
-	styles: ['.map-identify button { z-index: 99999999999; }']
+	styles: ['.map-identify butto { z-index: 99999999999; }']
 })
 
 export class MapIdentityComponent implements OnInit {
@@ -20,7 +20,7 @@ export class MapIdentityComponent implements OnInit {
 			console.log(ev);
 		});
 	}
-	
+
 	onClick() {
 		console.log('Toggle map-identify');
 		this.active = !this.active;
