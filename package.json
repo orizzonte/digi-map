@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prepublish": "gulp clean && tsc && node make.js && gulp bundle-css",
+    "build": "tsc && node make.js",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "lite": "lite-server",

@@ -23,17 +23,26 @@ System.register(['@angular/core', 'esri-mods'], function(exports_1, context_1) {
         execute: function() {
             MapIdentityComponent = (function () {
                 function MapIdentityComponent() {
-                    this.active = false;
+                    this.isActive = false;
                 }
                 MapIdentityComponent.prototype.ngOnInit = function () {
+                    var _this = this;
+                    this.infoWindow = new esri_mods_1.InfoWindowLite(null, 'popup');
+                    this.infoWindow.startup();
+                    this.mapInstance.infoWindow = this.infoWindow;
                     this.mapInstance.on('click', function (ev) {
-                        console.log('clicked on map');
-                        console.log(ev);
+                        if (_this.isActive) {
+                            // Set content of InfoWindowLite
+                            _this.infoWindow.setTitle('Titel');
+                            _this.infoWindow.setContent('<span>' + ev.mapPoint.x + ', ' + ev.mapPoint.y + '</span>');
+                            // Show InfoWindowLite
+                            _this.infoWindow.show(ev.mapPoint, esri_mods_1.InfoWindow.ANCHOR_UPPERRIGHT);
+                        }
                     });
                 };
                 MapIdentityComponent.prototype.onClick = function () {
-                    console.log('Toggle map-identify');
-                    this.active = !this.active;
+                    this.isActive = !this.isActive;
+                    this.infoWindow.hide();
                 };
                 __decorate([
                     core_1.Input(), 
@@ -42,8 +51,9 @@ System.register(['@angular/core', 'esri-mods'], function(exports_1, context_1) {
                 MapIdentityComponent = __decorate([
                     core_1.Component({
                         selector: 'map-identify',
-                        template: "\t<div class=\"map-identify\">\n\t\t\t\t\t<button (click)=\"onClick()\">Detailgegevens</button>\n\t\t\t\t\t<span>Actief: {{active}}</span>\n\t\t\t  \t</div>",
-                        styles: ['.map-identify button { z-index: 99999999999; }']
+                        template: "\t<div class=\"map-identify\">\n\t\t\t\t\t<button (click)=\"onClick()\" [class.active]=\"isActive\">Detailgegevens</button>\n\t\t\t  \t</div>\n\t\t\t  \t<div id=\"popup\"></div>",
+                        styles: ['.map-identify button { z-index: 99999999999; }',
+                            '.active { background-color: green; color: white; }']
                     }), 
                     __metadata('design:paramtypes', [])
                 ], MapIdentityComponent);

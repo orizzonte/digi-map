@@ -1,28 +1,42 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { map } from 'esri-mods';
+import { map, InfoWindowLite, InfoWindow } from 'esri-mods';
 
 @Component({
 	selector: 'map-identify',
 	template: `	<div class="map-identify">
-					<button (click)="onClick()">Detailgegevens</button>
-					<span>Actief: {{active}}</span>
-			  	</div>`,
-	styles: ['.map-identify button { z-index: 99999999999; }']
+					<button (click)="onClick()" [class.active]="isActive">Detailgegevens</button>
+			  	</div>
+			  	<div id="popup"></div>`,
+	styles: ['.map-identify button { z-index: 99999999999; }', 
+			 '.active { background-color: green; color: white; }']
 })
 
 export class MapIdentityComponent implements OnInit {
 	@Input() mapInstance: map;
-	active: boolean = false;
+	isActive: boolean = false;
+
+	private infoWindow: InfoWindowLite;
 
 	ngOnInit() {
+		this.infoWindow = new InfoWindowLite(null, 'popup');
+		
+		this.infoWindow.startup();
+        this.mapInstance.infoWindow = this.infoWindow;
+
 		this.mapInstance.on('click', (ev) => {
-			console.log('clicked on map');
-			console.log(ev);
+			if(this.isActive) {
+				// Set content of InfoWindowLite
+				this.infoWindow.setTitle('Titel');
+				this.infoWindow.setContent('<span>' + ev.mapPoint.x + ', ' + ev.mapPoint.y + '</span>');
+
+				// Show InfoWindowLite
+				this.infoWindow.show(ev.mapPoint, InfoWindow.ANCHOR_UPPERRIGHT);
+			}
 		});
 	}
 	
 	onClick() {
-		console.log('Toggle map-identify');
-		this.active = !this.active;
+		this.isActive = !this.isActive;
+		this.infoWindow.hide();
 	}
 }
