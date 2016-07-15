@@ -56,8 +56,8 @@ System.register(['@angular/core', 'esri-mods', 'rxjs/Rx'], function(exports_1, c
                         }
                         var shape = new esri_mods_1.graphic(ev.geometry, symbol);
                         _this.mapInstance.graphics.add(shape);
-                        _this.drawCompleteSubject.next(ev);
                         _this.deactivate();
+                        _this.drawCompleteSubject.next(ev);
                     });
                 };
                 MapDrawComponent.prototype.activate = function (geometryType) {

@@ -38,7 +38,6 @@ System.register(['@angular/core', 'esri-mods', 'rxjs/Rx'], function(exports_1, c
                 };
                 MapEditComponent.prototype.activate = function () {
                     var graphicToEdit = this.mapInstance.graphics[0];
-                    console.log(graphicToEdit);
                     this.editToolbar.activate(esri_mods_1.edit.EDIT_VERTICES, graphicToEdit);
                     this.mapInstance.hideZoomSlider();
                     this.activateSubject.next(null);

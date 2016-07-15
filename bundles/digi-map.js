@@ -248,8 +248,8 @@ System.register("digi-map/src/draw/map.draw.component", ["@angular/core", "esri-
             }
             var shape = new esri_mods_1.graphic(ev.geometry, symbol);
             _this.mapInstance.graphics.add(shape);
-            _this.drawCompleteSubject.next(ev);
             _this.deactivate();
+            _this.drawCompleteSubject.next(ev);
           });
         };
         MapDrawComponent.prototype.activate = function(geometryType) {
@@ -327,7 +327,6 @@ System.register("digi-map/src/edit/map.edit.component", ["@angular/core", "esri-
         };
         MapEditComponent.prototype.activate = function() {
           var graphicToEdit = this.mapInstance.graphics[0];
-          console.log(graphicToEdit);
           this.editToolbar.activate(esri_mods_1.edit.EDIT_VERTICES, graphicToEdit);
           this.mapInstance.hideZoomSlider();
           this.activateSubject.next(null);
