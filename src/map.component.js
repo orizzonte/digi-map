@@ -1,4 +1,4 @@
-System.register(['@angular/core', 'esri-mods', './identify/map.identify.component'], function(exports_1, context_1) {
+System.register(['@angular/core', 'esri-mods', './identify/map.identify.component', './draw/map.draw.component', './edit/map.edit.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,8 +10,8 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, esri_mods_1, map_identify_component_1;
-    var MapComponent;
+    var core_1, esri_mods_1, map_identify_component_1, map_draw_component_1, map_edit_component_1;
+    var MapControl, MapComponent;
     return {
         setters:[
             function (core_1_1) {
@@ -22,14 +22,33 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
             },
             function (map_identify_component_1_1) {
                 map_identify_component_1 = map_identify_component_1_1;
+            },
+            function (map_draw_component_1_1) {
+                map_draw_component_1 = map_draw_component_1_1;
+            },
+            function (map_edit_component_1_1) {
+                map_edit_component_1 = map_edit_component_1_1;
             }],
         execute: function() {
+            MapControl = (function () {
+                function MapControl(name, control) {
+                    this.name = name;
+                    this.control = control;
+                }
+                return MapControl;
+            }());
+            exports_1("MapControl", MapControl);
             MapComponent = (function () {
                 function MapComponent(elRef) {
                     this.elRef = elRef;
                     this.mapLoaded = new core_1.EventEmitter();
                     this.layers = [];
+                    this.controls = [];
                 }
+                MapComponent.prototype.ngAfterViewInit = function () {
+                    this.controls.push(new MapControl('draw', this.draw));
+                    this.controls.push(new MapControl('edit', this.edit));
+                };
                 MapComponent.prototype.ngOnInit = function () {
                     var _this = this;
                     var self = this;
@@ -87,11 +106,19 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                     core_1.Output(), 
                     __metadata('design:type', Object)
                 ], MapComponent.prototype, "mapLoaded", void 0);
+                __decorate([
+                    core_1.ViewChild(map_draw_component_1.MapDrawComponent), 
+                    __metadata('design:type', map_draw_component_1.MapDrawComponent)
+                ], MapComponent.prototype, "draw", void 0);
+                __decorate([
+                    core_1.ViewChild(map_edit_component_1.MapEditComponent), 
+                    __metadata('design:type', map_edit_component_1.MapEditComponent)
+                ], MapComponent.prototype, "edit", void 0);
                 MapComponent = __decorate([
                     core_1.Component({
                         selector: 'esri-map',
-                        template: " <div id=\"map\">\n                    <map-identify [mapInstance]=\"currentMap\"></map-identify>\n                    <ng-content></ng-content>\n                </div>",
-                        directives: [map_identify_component_1.MapIdentityComponent]
+                        template: " <div id=\"map\">\n                    <map-identify [mapInstance]=\"currentMap\"></map-identify>\n                    <map-draw [mapInstance]=\"currentMap\"></map-draw>\n                    <map-edit [mapInstance]=\"currentMap\"></map-edit>\n                    <ng-content></ng-content>\n                </div>",
+                        directives: [map_identify_component_1.MapIdentityComponent, map_draw_component_1.MapDrawComponent, map_edit_component_1.MapEditComponent]
                     }), 
                     __metadata('design:paramtypes', [core_1.ElementRef])
                 ], MapComponent);
