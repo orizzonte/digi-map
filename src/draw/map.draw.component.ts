@@ -50,8 +50,8 @@ export class MapDrawComponent implements OnInit {
             let shape = new graphic(ev.geometry, symbol);
             this.mapInstance.graphics.add(shape);
         	
-        	this.drawCompleteSubject.next(ev);
         	this.deactivate();
+        	this.drawCompleteSubject.next(ev);
         });
 	}
 

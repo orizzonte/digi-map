@@ -21,6 +21,7 @@
     export import Color = require("esri/Color");
     export import InfoWindow = require('esri/dijit/InfoWindow');
     export import InfoWindowLite = require("esri/dijit/InfoWindowLite");
+    export import Polygon = require("esri/geometry/Polygon");    
   }
 
   declare module "esri" {
