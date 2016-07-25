@@ -253,7 +253,6 @@ System.register("digi-map/src/draw/map.draw.component", ["@angular/core", "esri-
           });
         };
         MapDrawComponent.prototype.activate = function(geometryType) {
-          this.mapInstance.disableMapNavigation();
           switch (geometryType) {
             case GeometryType.Multiline:
               this.drawToolbar.activate(esri_mods_1.draw.POLYLINE);
@@ -265,7 +264,6 @@ System.register("digi-map/src/draw/map.draw.component", ["@angular/core", "esri-
         };
         MapDrawComponent.prototype.deactivate = function() {
           this.drawToolbar.deactivate();
-          this.mapInstance.enableMapNavigation();
           this.deactivateSubject.next(null);
         };
         MapDrawComponent.prototype.finishDrawing = function() {
@@ -326,15 +324,12 @@ System.register("digi-map/src/edit/map.edit.component", ["@angular/core", "esri-
           this.editToolbar = new esri_mods_1.edit(this.mapInstance);
         };
         MapEditComponent.prototype.activate = function() {
-          this.mapInstance.disableMapNavigation();
           var graphicToEdit = this.mapInstance.graphics.graphics[0];
-          console.log(graphicToEdit);
           this.editToolbar.activate(esri_mods_1.edit.EDIT_VERTICES, graphicToEdit);
           this.activateSubject.next(null);
         };
         MapEditComponent.prototype.deactivate = function() {
           this.editToolbar.deactivate();
-          this.mapInstance.enableMapNavigation();
           this.deactivateSubject.next(null);
         };
         __decorate([core_1.Input(), __metadata('design:type', esri_mods_1.map)], MapEditComponent.prototype, "mapInstance", void 0);

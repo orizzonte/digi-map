@@ -56,7 +56,7 @@ export class MapDrawComponent implements OnInit {
 	}
 
 	activate(geometryType: GeometryType) {
-		this.mapInstance.disableMapNavigation();
+		//this.mapInstance.disableMapNavigation();
 
 		switch(geometryType) {
 			case GeometryType.Multiline:
@@ -71,7 +71,7 @@ export class MapDrawComponent implements OnInit {
 
 	deactivate() {
 		this.drawToolbar.deactivate();
-		this.mapInstance.enableMapNavigation();
+		//this.mapInstance.enableMapNavigation();
 		this.deactivateSubject.next(null);
 	}
 

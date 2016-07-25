@@ -61,7 +61,7 @@ System.register(['@angular/core', 'esri-mods', 'rxjs/Rx'], function(exports_1, c
                     });
                 };
                 MapDrawComponent.prototype.activate = function (geometryType) {
-                    this.mapInstance.disableMapNavigation();
+                    //this.mapInstance.disableMapNavigation();
                     switch (geometryType) {
                         case GeometryType.Multiline:
                             this.drawToolbar.activate(esri_mods_1.draw.POLYLINE);
@@ -73,7 +73,7 @@ System.register(['@angular/core', 'esri-mods', 'rxjs/Rx'], function(exports_1, c
                 };
                 MapDrawComponent.prototype.deactivate = function () {
                     this.drawToolbar.deactivate();
-                    this.mapInstance.enableMapNavigation();
+                    //this.mapInstance.enableMapNavigation();
                     this.deactivateSubject.next(null);
                 };
                 MapDrawComponent.prototype.finishDrawing = function () {
