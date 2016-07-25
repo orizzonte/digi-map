@@ -1,5 +1,5 @@
 import { OnInit } from '@angular/core';
-import { map, graphic } from 'esri-mods';
+import { map } from 'esri-mods';
 import { Observable } from 'rxjs/Rx';
 export declare class MapEditComponent implements OnInit {
     mapInstance: map;
@@ -10,6 +10,6 @@ export declare class MapEditComponent implements OnInit {
     private editToolbar;
     constructor();
     ngOnInit(): void;
-    activate(graphicToEdit: graphic): void;
+    activate(): void;
     deactivate(): void;
 }
