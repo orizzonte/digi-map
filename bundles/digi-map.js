@@ -327,6 +327,8 @@ System.register("digi-map/src/edit/map.edit.component", ["@angular/core", "esri-
         };
         MapEditComponent.prototype.activate = function(graphicToEdit) {
           this.mapInstance.disableMapNavigation();
+          console.log(graphicToEdit);
+          console.log(this.mapInstance.graphics);
           this.editToolbar.activate(esri_mods_1.edit.EDIT_VERTICES, graphicToEdit);
           this.activateSubject.next(null);
         };

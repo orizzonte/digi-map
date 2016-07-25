@@ -30,6 +30,8 @@ export class MapEditComponent implements OnInit {
 
 	activate(graphicToEdit: graphic) {
 		this.mapInstance.disableMapNavigation();
+		console.log(graphicToEdit);
+		console.log(this.mapInstance.graphics);
 		this.editToolbar.activate(edit.EDIT_VERTICES, graphicToEdit);
 		this.activateSubject.next(null);
 	}
