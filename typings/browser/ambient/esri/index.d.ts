@@ -21,9 +21,10 @@
     export import Color = require("esri/Color");
     export import InfoWindow = require('esri/dijit/InfoWindow');
     export import InfoWindowLite = require("esri/dijit/InfoWindowLite");
-    export import Polygon = require("esri/geometry/Polygon");    
+    export import Polygon = require("esri/geometry/Polygon");  
+    export import jsonUtils = require('esri/geometry/jsonUtils');
   }
-
+  
   declare module "esri" {
     import Graphic = require("esri/graphic");
     import Point = require("esri/geometry/Point");

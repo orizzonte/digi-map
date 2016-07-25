@@ -18,7 +18,8 @@ var digiMapConfig = (function () {
             'esri/Color',
             'esri/dijit/InfoWindow',
             'esri/dijit/InfoWindowLite',
-            'esri/geometry/Polygon'
+            'esri/geometry/Polygon',
+            'esri/geometry/jsonUtils'
         ],          
 			outModuleName: 'esri-mods'
         };
