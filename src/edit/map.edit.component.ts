@@ -27,17 +27,17 @@ export class MapEditComponent implements OnInit {
 		// Create edit toolbar and add to map
 		this.editToolbar = new edit(this.mapInstance);
 	}
-	
+
 	activate() {
+		this.mapInstance.disableMapNavigation();
 		let graphicToEdit = this.mapInstance.graphics[0];
 		this.editToolbar.activate(edit.EDIT_VERTICES, graphicToEdit);
-		this.mapInstance.hideZoomSlider();
 		this.activateSubject.next(null);
 	}
 
 	deactivate() {
 		this.editToolbar.deactivate();
-		this.mapInstance.showZoomSlider();
+		this.mapInstance.enableMapNavigation();
 		this.deactivateSubject.next(null);
 	}
 }

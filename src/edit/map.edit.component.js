@@ -37,14 +37,14 @@ System.register(['@angular/core', 'esri-mods', 'rxjs/Rx'], function(exports_1, c
                     this.editToolbar = new esri_mods_1.edit(this.mapInstance);
                 };
                 MapEditComponent.prototype.activate = function () {
+                    this.mapInstance.disableMapNavigation();
                     var graphicToEdit = this.mapInstance.graphics[0];
                     this.editToolbar.activate(esri_mods_1.edit.EDIT_VERTICES, graphicToEdit);
-                    this.mapInstance.hideZoomSlider();
                     this.activateSubject.next(null);
                 };
                 MapEditComponent.prototype.deactivate = function () {
                     this.editToolbar.deactivate();
-                    this.mapInstance.showZoomSlider();
+                    this.mapInstance.enableMapNavigation();
                     this.deactivateSubject.next(null);
                 };
                 __decorate([

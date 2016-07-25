@@ -56,6 +56,8 @@ export class MapDrawComponent implements OnInit {
 	}
 
 	activate(geometryType: GeometryType) {
+		this.mapInstance.disableMapNavigation();
+
 		switch(geometryType) {
 			case GeometryType.Multiline:
 				this.drawToolbar.activate(draw.POLYLINE);
@@ -64,13 +66,12 @@ export class MapDrawComponent implements OnInit {
 				break;
 		}
 
-		this.mapInstance.hideZoomSlider();
 		this.activateSubject.next(null);
 	}
 
 	deactivate() {
 		this.drawToolbar.deactivate();
-		this.mapInstance.showZoomSlider();
+		this.mapInstance.enableMapNavigation();
 		this.deactivateSubject.next(null);
 	}
 
