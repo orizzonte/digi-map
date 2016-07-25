@@ -325,9 +325,8 @@ System.register("digi-map/src/edit/map.edit.component", ["@angular/core", "esri-
         MapEditComponent.prototype.ngOnInit = function() {
           this.editToolbar = new esri_mods_1.edit(this.mapInstance);
         };
-        MapEditComponent.prototype.activate = function() {
+        MapEditComponent.prototype.activate = function(graphicToEdit) {
           this.mapInstance.disableMapNavigation();
-          var graphicToEdit = this.mapInstance.graphics[0];
           this.editToolbar.activate(esri_mods_1.edit.EDIT_VERTICES, graphicToEdit);
           this.activateSubject.next(null);
         };
