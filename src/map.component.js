@@ -47,15 +47,6 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                     this.useIdentifyControl = false;
                     this.useDrawControl = false;
                     this.useEditControl = false;
-                    if (this.settings.controls.indexOf('identify') !== -1) {
-                        this.useIdentifyControl = true;
-                    }
-                    if (this.settings.controls.indexOf('draw') !== -1) {
-                        this.useDrawControl = true;
-                    }
-                    if (this.settings.controls.indexOf('edit') !== -1) {
-                        this.useEditControl = true;
-                    }
                 }
                 MapComponent.prototype.ngAfterViewInit = function () {
                     if (this.useIdentifyControl) {
@@ -72,6 +63,16 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                     var _this = this;
                     var self = this;
                     this.currentMap = new esri_mods_1.map('map');
+                    // Apply map controls
+                    if (this.settings.controls.indexOf('identify') !== -1) {
+                        this.useIdentifyControl = true;
+                    }
+                    if (this.settings.controls.indexOf('draw') !== -1) {
+                        this.useDrawControl = true;
+                    }
+                    if (this.settings.controls.indexOf('edit') !== -1) {
+                        this.useEditControl = true;
+                    }
                     this.currentMap.on('layers-add-result', function (evt) {
                         var allLayerInfos = [];
                         evt.layers.forEach(function (layer, index) {

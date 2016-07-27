@@ -41,17 +41,7 @@ export class MapComponent {
     private useDrawControl = false;
     private useEditControl = false;
 
-    constructor(private elRef: ElementRef) {
-        if (this.settings.controls.indexOf('identify') !== -1) {
-            this.useIdentifyControl = true;
-        }
-        if (this.settings.controls.indexOf('draw') !== -1) {
-            this.useDrawControl = true;
-        }
-        if (this.settings.controls.indexOf('edit') !== -1) {
-            this.useEditControl = true;
-        }
-    }
+    constructor(private elRef: ElementRef) {}
 
     ngAfterViewInit() {
         if (this.useIdentifyControl) {
@@ -66,10 +56,20 @@ export class MapComponent {
     }
 
     ngOnInit() {
-
         let self = this;
 
         this.currentMap = new map('map');
+
+        // Apply map controls
+        if (this.settings.controls.indexOf('identify') !== -1) {
+            this.useIdentifyControl = true;
+        }
+        if (this.settings.controls.indexOf('draw') !== -1) {
+            this.useDrawControl = true;
+        }
+        if (this.settings.controls.indexOf('edit') !== -1) {
+            this.useEditControl = true;
+        }
 
         this.currentMap.on('layers-add-result', function(evt) {
 

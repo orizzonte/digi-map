@@ -54,15 +54,6 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
           this.useIdentifyControl = false;
           this.useDrawControl = false;
           this.useEditControl = false;
-          if (this.settings.controls.indexOf('identify') !== -1) {
-            this.useIdentifyControl = true;
-          }
-          if (this.settings.controls.indexOf('draw') !== -1) {
-            this.useDrawControl = true;
-          }
-          if (this.settings.controls.indexOf('edit') !== -1) {
-            this.useEditControl = true;
-          }
         }
         MapComponent.prototype.ngAfterViewInit = function() {
           if (this.useIdentifyControl) {
@@ -79,6 +70,15 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
           var _this = this;
           var self = this;
           this.currentMap = new esri_mods_1.map('map');
+          if (this.settings.controls.indexOf('identify') !== -1) {
+            this.useIdentifyControl = true;
+          }
+          if (this.settings.controls.indexOf('draw') !== -1) {
+            this.useDrawControl = true;
+          }
+          if (this.settings.controls.indexOf('edit') !== -1) {
+            this.useEditControl = true;
+          }
           this.currentMap.on('layers-add-result', function(evt) {
             var allLayerInfos = [];
             evt.layers.forEach(function(layer, index) {
