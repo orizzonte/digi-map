@@ -49,12 +49,31 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
         function MapComponent(elRef) {
           this.elRef = elRef;
           this.mapLoaded = new core_1.EventEmitter();
-          this.layers = [];
+          this.themes = [];
           this.controls = [];
+          this.useIdentifyControl = false;
+          this.useDrawControl = false;
+          this.useEditControl = false;
+          if (this.settings.controls.indexOf('identify') !== -1) {
+            this.useIdentifyControl = true;
+          }
+          if (this.settings.controls.indexOf('draw') !== -1) {
+            this.useDrawControl = true;
+          }
+          if (this.settings.controls.indexOf('edit') !== -1) {
+            this.useEditControl = true;
+          }
         }
         MapComponent.prototype.ngAfterViewInit = function() {
-          this.controls.push(new MapControl('draw', this.draw));
-          this.controls.push(new MapControl('edit', this.edit));
+          if (this.useIdentifyControl) {
+            this.controls.push(new MapControl('identify', this.identify));
+          }
+          if (this.useDrawControl) {
+            this.controls.push(new MapControl('draw', this.draw));
+          }
+          if (this.useEditControl) {
+            this.controls.push(new MapControl('edit', this.edit));
+          }
         };
         MapComponent.prototype.ngOnInit = function() {
           var _this = this;
@@ -79,15 +98,15 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
             }, 'legend');
             legendDijit.startup();
           });
-          if (this.settings.layers !== undefined) {
-            this.settings.layers.forEach(function(layer) {
-              if (layer.type === 'dynamic') {
-                _this.layers.push(new esri_mods_1.ArcGISDynamicMapServiceLayer(layer.url));
+          if (this.settings.themes !== undefined) {
+            this.settings.themes.forEach(function(theme) {
+              if (theme.type === 'dynamic') {
+                _this.themes.push(new esri_mods_1.ArcGISDynamicMapServiceLayer(theme.url));
               } else {
-                _this.layers.push(new esri_mods_1.ArcGISTiledMapServiceLayer(layer.url));
+                _this.themes.push(new esri_mods_1.ArcGISTiledMapServiceLayer(theme.url));
               }
             });
-            this.currentMap.addLayers(this.layers);
+            this.currentMap.addLayers(this.themes);
           }
           if (this.settings.extent !== undefined) {
             this.initialExtent = new esri_mods_1.Extent({
@@ -109,11 +128,12 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
         };
         __decorate([core_1.Input(), __metadata('design:type', Object)], MapComponent.prototype, "settings", void 0);
         __decorate([core_1.Output(), __metadata('design:type', Object)], MapComponent.prototype, "mapLoaded", void 0);
+        __decorate([core_1.ViewChild(map_identify_component_1.MapIdentityComponent), __metadata('design:type', map_identify_component_1.MapIdentityComponent)], MapComponent.prototype, "identify", void 0);
         __decorate([core_1.ViewChild(map_draw_component_1.MapDrawComponent), __metadata('design:type', map_draw_component_1.MapDrawComponent)], MapComponent.prototype, "draw", void 0);
         __decorate([core_1.ViewChild(map_edit_component_1.MapEditComponent), __metadata('design:type', map_edit_component_1.MapEditComponent)], MapComponent.prototype, "edit", void 0);
         MapComponent = __decorate([core_1.Component({
           selector: 'esri-map',
-          template: " <div id=\"map\">\n                    <map-identify [mapInstance]=\"currentMap\"></map-identify>\n                    <map-draw [mapInstance]=\"currentMap\"></map-draw>\n                    <map-edit [mapInstance]=\"currentMap\"></map-edit>\n                    <ng-content></ng-content>\n                </div>",
+          template: " <div id=\"map\">\n                    <map-identify *ngIf=\"useIdentifyControl\" [mapInstance]=\"currentMap\"></map-identify>\n                    <map-draw *ngIf=\"useDrawControl\" [mapInstance]=\"currentMap\"></map-draw>\n                    <map-edit *ngIf=\"useEditControl\" [mapInstance]=\"currentMap\"></map-edit>\n                    <ng-content></ng-content>\n                </div>",
           directives: [map_identify_component_1.MapIdentityComponent, map_draw_component_1.MapDrawComponent, map_edit_component_1.MapEditComponent]
         }), __metadata('design:paramtypes', [core_1.ElementRef])], MapComponent);
         return MapComponent;

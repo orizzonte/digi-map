@@ -43,13 +43,14 @@ function getSystemJsBundleConfig(cb) {
       typescript: path.resolve('node_modules/typescript/lib/typescript.js'),
       '@angular': path.resolve('node_modules/@angular'),
       rxjs: path.resolve('node_modules/rxjs'),
+      lodash: path.resolve('node_modules/lodash/lodash.min.js'),
       "esri-mods": 'empty'
     },
     paths: {
       '*': '*.js'
     }
   };
-
+  
   config.meta = ['@angular', 'rxjs'].reduce((memo, currentValue) => {
     memo[`${name}/node_modules/${currentValue}/*`] = { build: false };
     return memo;

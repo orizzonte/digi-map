@@ -29,7 +29,6 @@ export class MapEditComponent implements OnInit {
 	}
 
 	activate() {
-		//this.mapInstance.disableMapNavigation();
 		let graphicToEdit = this.mapInstance.graphics.graphics[0];
 		this.editToolbar.activate(edit.EDIT_VERTICES, graphicToEdit);
 		this.activateSubject.next(null);
@@ -37,7 +36,6 @@ export class MapEditComponent implements OnInit {
 
 	deactivate() {
 		this.editToolbar.deactivate();
-		//this.mapInstance.enableMapNavigation();
 		this.deactivateSubject.next(null);
 	}
 }

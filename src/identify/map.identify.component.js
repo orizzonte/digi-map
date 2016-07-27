@@ -45,6 +45,7 @@ System.register(['@angular/core', 'esri-mods'], function(exports_1, context_1) {
                     this.infoWindow.hide();
                 };
                 __decorate([
+                    // TODO : rename naar "MapIdentifyComponent"
                     core_1.Input(), 
                     __metadata('design:type', esri_mods_1.map)
                 ], MapIdentityComponent.prototype, "mapInstance", void 0);

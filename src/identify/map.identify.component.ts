@@ -11,7 +11,7 @@ import { map, InfoWindowLite, InfoWindow } from 'esri-mods';
 			 '.active { background-color: green; color: white; }']
 })
 
-export class MapIdentityComponent implements OnInit {
+export class MapIdentityComponent implements OnInit { // TODO : rename naar "MapIdentifyComponent"
 	@Input() mapInstance: map;
 	isActive: boolean = false;
 

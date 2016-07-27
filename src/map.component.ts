@@ -17,9 +17,9 @@ export class MapControl {
 @Component({
     selector: 'esri-map',
     template: ` <div id="map">
-                    <map-identify [mapInstance]="currentMap"></map-identify>
-                    <map-draw [mapInstance]="currentMap"></map-draw>
-                    <map-edit [mapInstance]="currentMap"></map-edit>
+                    <map-identify *ngIf="useIdentifyControl" [mapInstance]="currentMap"></map-identify>
+                    <map-draw *ngIf="useDrawControl" [mapInstance]="currentMap"></map-draw>
+                    <map-edit *ngIf="useEditControl" [mapInstance]="currentMap"></map-edit>
                     <ng-content></ng-content>
                 </div>`,
     directives: [MapIdentityComponent, MapDrawComponent, MapEditComponent]
@@ -28,20 +28,41 @@ export class MapComponent {
     @Input() settings: any;
     @Output() mapLoaded = new EventEmitter();
 
+    @ViewChild(MapIdentityComponent) identify: MapIdentityComponent;
     @ViewChild(MapDrawComponent) draw: MapDrawComponent;
     @ViewChild(MapEditComponent) edit: MapEditComponent;
 
     currentMap: map;
-    layers: Layer[] = [];
+    themes: Layer[] = [];
     controls: MapControl[] = [];
 
     private initialExtent: Extent;
+    private useIdentifyControl = false;
+    private useDrawControl = false;
+    private useEditControl = false;
 
-    constructor(private elRef: ElementRef) {}
+    constructor(private elRef: ElementRef) {
+        if (this.settings.controls.indexOf('identify') !== -1) {
+            this.useIdentifyControl = true;
+        }
+        if (this.settings.controls.indexOf('draw') !== -1) {
+            this.useDrawControl = true;
+        }
+        if (this.settings.controls.indexOf('edit') !== -1) {
+            this.useEditControl = true;
+        }
+    }
 
     ngAfterViewInit() {
-        this.controls.push(new MapControl('draw', this.draw));
-        this.controls.push(new MapControl('edit', this.edit));
+        if (this.useIdentifyControl) {
+            this.controls.push(new MapControl('identify', this.identify));
+        }
+        if (this.useDrawControl) {
+            this.controls.push(new MapControl('draw', this.draw));
+        }
+        if (this.useEditControl) {
+            this.controls.push(new MapControl('edit', this.edit));
+        }
     }
 
     ngOnInit() {
@@ -72,17 +93,17 @@ export class MapComponent {
 
         });
 
-        // Check if layers is defined
-        if (this.settings.layers !== undefined) {
-            this.settings.layers.forEach((layer) => {
-              if(layer.type === 'dynamic') {
-                this.layers.push(new ArcGISDynamicMapServiceLayer(layer.url));
+        // Check if themes is defined
+        if (this.settings.themes !== undefined) {
+            this.settings.themes.forEach((theme) => {
+              if(theme.type === 'dynamic') {
+                this.themes.push(new ArcGISDynamicMapServiceLayer(theme.url));
               } else {
-                this.layers.push(new ArcGISTiledMapServiceLayer(layer.url)); 
+                this.themes.push(new ArcGISTiledMapServiceLayer(theme.url)); 
               }
             });
 
-            this.currentMap.addLayers(this.layers);
+            this.currentMap.addLayers(this.themes);
         }
 
         // Check if extent is defined
