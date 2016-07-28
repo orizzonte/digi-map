@@ -127,8 +127,8 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                     __metadata('design:type', Object)
                 ], MapComponent.prototype, "mapLoaded", void 0);
                 __decorate([
-                    core_1.ViewChild(map_identify_component_1.MapIdentityComponent), 
-                    __metadata('design:type', map_identify_component_1.MapIdentityComponent)
+                    core_1.ViewChild(map_identify_component_1.MapIdentifyComponent), 
+                    __metadata('design:type', map_identify_component_1.MapIdentifyComponent)
                 ], MapComponent.prototype, "identify", void 0);
                 __decorate([
                     core_1.ViewChild(map_draw_component_1.MapDrawComponent), 
@@ -142,7 +142,7 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                     core_1.Component({
                         selector: 'esri-map',
                         template: " <div id=\"map\">\n                    <map-identify *ngIf=\"useIdentifyControl\" [mapInstance]=\"currentMap\"></map-identify>\n                    <map-draw *ngIf=\"useDrawControl\" [mapInstance]=\"currentMap\"></map-draw>\n                    <map-edit *ngIf=\"useEditControl\" [mapInstance]=\"currentMap\"></map-edit>\n                    <ng-content></ng-content>\n                </div>",
-                        directives: [map_identify_component_1.MapIdentityComponent, map_draw_component_1.MapDrawComponent, map_edit_component_1.MapEditComponent]
+                        directives: [map_identify_component_1.MapIdentifyComponent, map_draw_component_1.MapDrawComponent, map_edit_component_1.MapEditComponent]
                     }), 
                     __metadata('design:paramtypes', [core_1.ElementRef])
                 ], MapComponent);

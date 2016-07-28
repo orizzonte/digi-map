@@ -1,6 +1,6 @@
 import { Component, ElementRef, Output, EventEmitter, Input, ViewChild } from '@angular/core';
 import { map, Extent, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer, FeatureLayer, Layer, Legend, SpatialReference } from 'esri-mods';
-import { MapIdentityComponent } from './identify/map.identify.component';
+import { MapIdentifyComponent } from './identify/map.identify.component';
 import { MapDrawComponent } from './draw/map.draw.component';
 import { MapEditComponent } from './edit/map.edit.component';
 
@@ -22,13 +22,13 @@ export class MapControl {
                     <map-edit *ngIf="useEditControl" [mapInstance]="currentMap"></map-edit>
                     <ng-content></ng-content>
                 </div>`,
-    directives: [MapIdentityComponent, MapDrawComponent, MapEditComponent]
+    directives: [MapIdentifyComponent, MapDrawComponent, MapEditComponent]
 })
 export class MapComponent {
     @Input() settings: any;
     @Output() mapLoaded = new EventEmitter();
 
-    @ViewChild(MapIdentityComponent) identify: MapIdentityComponent;
+    @ViewChild(MapIdentifyComponent) identify: MapIdentifyComponent;
     @ViewChild(MapDrawComponent) draw: MapDrawComponent;
     @ViewChild(MapEditComponent) edit: MapEditComponent;
 

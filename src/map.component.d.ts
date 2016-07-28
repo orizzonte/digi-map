@@ -1,6 +1,6 @@
 import { ElementRef, EventEmitter } from '@angular/core';
 import { map, Layer } from 'esri-mods';
-import { MapIdentityComponent } from './identify/map.identify.component';
+import { MapIdentifyComponent } from './identify/map.identify.component';
 import { MapDrawComponent } from './draw/map.draw.component';
 import { MapEditComponent } from './edit/map.edit.component';
 export declare class MapControl {
@@ -12,7 +12,7 @@ export declare class MapComponent {
     private elRef;
     settings: any;
     mapLoaded: EventEmitter<{}>;
-    identify: MapIdentityComponent;
+    identify: MapIdentifyComponent;
     draw: MapDrawComponent;
     edit: MapEditComponent;
     currentMap: map;

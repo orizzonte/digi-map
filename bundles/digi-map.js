@@ -128,13 +128,13 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
         };
         __decorate([core_1.Input(), __metadata('design:type', Object)], MapComponent.prototype, "settings", void 0);
         __decorate([core_1.Output(), __metadata('design:type', Object)], MapComponent.prototype, "mapLoaded", void 0);
-        __decorate([core_1.ViewChild(map_identify_component_1.MapIdentityComponent), __metadata('design:type', map_identify_component_1.MapIdentityComponent)], MapComponent.prototype, "identify", void 0);
+        __decorate([core_1.ViewChild(map_identify_component_1.MapIdentifyComponent), __metadata('design:type', map_identify_component_1.MapIdentifyComponent)], MapComponent.prototype, "identify", void 0);
         __decorate([core_1.ViewChild(map_draw_component_1.MapDrawComponent), __metadata('design:type', map_draw_component_1.MapDrawComponent)], MapComponent.prototype, "draw", void 0);
         __decorate([core_1.ViewChild(map_edit_component_1.MapEditComponent), __metadata('design:type', map_edit_component_1.MapEditComponent)], MapComponent.prototype, "edit", void 0);
         MapComponent = __decorate([core_1.Component({
           selector: 'esri-map',
           template: " <div id=\"map\">\n                    <map-identify *ngIf=\"useIdentifyControl\" [mapInstance]=\"currentMap\"></map-identify>\n                    <map-draw *ngIf=\"useDrawControl\" [mapInstance]=\"currentMap\"></map-draw>\n                    <map-edit *ngIf=\"useEditControl\" [mapInstance]=\"currentMap\"></map-edit>\n                    <ng-content></ng-content>\n                </div>",
-          directives: [map_identify_component_1.MapIdentityComponent, map_draw_component_1.MapDrawComponent, map_edit_component_1.MapEditComponent]
+          directives: [map_identify_component_1.MapIdentifyComponent, map_draw_component_1.MapDrawComponent, map_edit_component_1.MapEditComponent]
         }), __metadata('design:paramtypes', [core_1.ElementRef])], MapComponent);
         return MapComponent;
       }());
@@ -164,7 +164,7 @@ System.register("digi-map/src/identify/map.identify.component", ["@angular/core"
   };
   var core_1,
       esri_mods_1;
-  var MapIdentityComponent;
+  var MapIdentifyComponent;
   return {
     setters: [function(core_1_1) {
       core_1 = core_1_1;
@@ -172,11 +172,11 @@ System.register("digi-map/src/identify/map.identify.component", ["@angular/core"
       esri_mods_1 = esri_mods_1_1;
     }],
     execute: function() {
-      MapIdentityComponent = (function() {
-        function MapIdentityComponent() {
+      MapIdentifyComponent = (function() {
+        function MapIdentifyComponent() {
           this.isActive = false;
         }
-        MapIdentityComponent.prototype.ngOnInit = function() {
+        MapIdentifyComponent.prototype.ngOnInit = function() {
           var _this = this;
           this.infoWindow = new esri_mods_1.InfoWindowLite(null, 'popup');
           this.infoWindow.startup();
@@ -189,19 +189,19 @@ System.register("digi-map/src/identify/map.identify.component", ["@angular/core"
             }
           });
         };
-        MapIdentityComponent.prototype.onClick = function() {
+        MapIdentifyComponent.prototype.onClick = function() {
           this.isActive = !this.isActive;
           this.infoWindow.hide();
         };
-        __decorate([core_1.Input(), __metadata('design:type', esri_mods_1.map)], MapIdentityComponent.prototype, "mapInstance", void 0);
-        MapIdentityComponent = __decorate([core_1.Component({
+        __decorate([core_1.Input(), __metadata('design:type', esri_mods_1.map)], MapIdentifyComponent.prototype, "mapInstance", void 0);
+        MapIdentifyComponent = __decorate([core_1.Component({
           selector: 'map-identify',
           template: "\t<div class=\"map-identify\">\n\t\t\t\t\t<button (click)=\"onClick()\" [class.active]=\"isActive\">Detailgegevens</button>\n\t\t\t  \t</div>\n\t\t\t  \t<div id=\"popup\"></div>",
           styles: ['.map-identify button { z-index: 99999999999; }', '.active { background-color: green; color: white; }']
-        }), __metadata('design:paramtypes', [])], MapIdentityComponent);
-        return MapIdentityComponent;
+        }), __metadata('design:paramtypes', [])], MapIdentifyComponent);
+        return MapIdentifyComponent;
       }());
-      exports_1("MapIdentityComponent", MapIdentityComponent);
+      exports_1("MapIdentifyComponent", MapIdentifyComponent);
     }
   };
 });

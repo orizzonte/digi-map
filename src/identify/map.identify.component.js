@@ -11,7 +11,7 @@ System.register(['@angular/core', 'esri-mods'], function(exports_1, context_1) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1, esri_mods_1;
-    var MapIdentityComponent;
+    var MapIdentifyComponent;
     return {
         setters:[
             function (core_1_1) {
@@ -21,11 +21,11 @@ System.register(['@angular/core', 'esri-mods'], function(exports_1, context_1) {
                 esri_mods_1 = esri_mods_1_1;
             }],
         execute: function() {
-            MapIdentityComponent = (function () {
-                function MapIdentityComponent() {
+            MapIdentifyComponent = (function () {
+                function MapIdentifyComponent() {
                     this.isActive = false;
                 }
-                MapIdentityComponent.prototype.ngOnInit = function () {
+                MapIdentifyComponent.prototype.ngOnInit = function () {
                     var _this = this;
                     this.infoWindow = new esri_mods_1.InfoWindowLite(null, 'popup');
                     this.infoWindow.startup();
@@ -40,16 +40,15 @@ System.register(['@angular/core', 'esri-mods'], function(exports_1, context_1) {
                         }
                     });
                 };
-                MapIdentityComponent.prototype.onClick = function () {
+                MapIdentifyComponent.prototype.onClick = function () {
                     this.isActive = !this.isActive;
                     this.infoWindow.hide();
                 };
                 __decorate([
-                    // TODO : rename naar "MapIdentifyComponent"
                     core_1.Input(), 
                     __metadata('design:type', esri_mods_1.map)
-                ], MapIdentityComponent.prototype, "mapInstance", void 0);
-                MapIdentityComponent = __decorate([
+                ], MapIdentifyComponent.prototype, "mapInstance", void 0);
+                MapIdentifyComponent = __decorate([
                     core_1.Component({
                         selector: 'map-identify',
                         template: "\t<div class=\"map-identify\">\n\t\t\t\t\t<button (click)=\"onClick()\" [class.active]=\"isActive\">Detailgegevens</button>\n\t\t\t  \t</div>\n\t\t\t  \t<div id=\"popup\"></div>",
@@ -57,10 +56,10 @@ System.register(['@angular/core', 'esri-mods'], function(exports_1, context_1) {
                             '.active { background-color: green; color: white; }']
                     }), 
                     __metadata('design:paramtypes', [])
-                ], MapIdentityComponent);
-                return MapIdentityComponent;
+                ], MapIdentifyComponent);
+                return MapIdentifyComponent;
             }());
-            exports_1("MapIdentityComponent", MapIdentityComponent);
+            exports_1("MapIdentifyComponent", MapIdentifyComponent);
         }
     }
 });
