@@ -1,5 +1,5 @@
 import { ElementRef, EventEmitter } from '@angular/core';
-import { map, Layer } from 'esri-mods';
+import { map, Extent, Layer } from 'esri-mods';
 import { MapIdentifyComponent } from './identify/map.identify.component';
 import { MapDrawComponent } from './draw/map.draw.component';
 import { MapEditComponent } from './edit/map.edit.component';
@@ -26,4 +26,5 @@ export declare class MapComponent {
     ngAfterViewInit(): void;
     ngOnInit(): void;
     toInitialExtent(): void;
+    zoomToExtent(extent: Extent): void;
 }

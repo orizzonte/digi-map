@@ -118,6 +118,9 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                 MapComponent.prototype.toInitialExtent = function () {
                     this.currentMap.setExtent(this.initialExtent);
                 };
+                MapComponent.prototype.zoomToExtent = function (extent) {
+                    this.currentMap.setExtent(extent);
+                };
                 __decorate([
                     core_1.Input(), 
                     __metadata('design:type', Object)

@@ -126,4 +126,7 @@ export class MapComponent {
         this.currentMap.setExtent(this.initialExtent);
     }
 
+    zoomToExtent(extent: Extent) {
+        this.currentMap.setExtent(extent);
+    }
 }
