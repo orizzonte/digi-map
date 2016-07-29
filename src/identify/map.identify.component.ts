@@ -144,9 +144,7 @@ export class MapIdentifyComponent implements OnInit {
 
 					identifyTask
 						.execute(identifyParams)
-						.addCallback(function (response) {
-							console.log('reposnse: ' + JSON.stringify(response));						
-
+						.addCallback(function (response) {		
 							response.forEach(element => {
 								res.push(element);
 							});	
