@@ -23,6 +23,8 @@
     export import InfoWindowLite = require("esri/dijit/InfoWindowLite");
     export import Polygon = require("esri/geometry/Polygon");  
     export import jsonUtils = require('esri/geometry/jsonUtils');
+    export import IdentifyTask = require('esri/tasks/IdentifyTask');
+    export import IdentifyParameters = require('esri/tasks/IdentifyParameters');
   }
   
   declare module "esri" {

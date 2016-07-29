@@ -141,7 +141,7 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                 MapComponent = __decorate([
                     core_1.Component({
                         selector: 'esri-map',
-                        template: " <div id=\"map\">\n                    <map-identify *ngIf=\"useIdentifyControl\" [mapInstance]=\"currentMap\"></map-identify>\n                    <map-draw *ngIf=\"useDrawControl\" [mapInstance]=\"currentMap\"></map-draw>\n                    <map-edit *ngIf=\"useEditControl\" [mapInstance]=\"currentMap\"></map-edit>\n                    <ng-content></ng-content>\n                </div>",
+                        template: " <div id=\"map\">\n                    <map-identify *ngIf=\"useIdentifyControl\" [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-identify>\n                    <map-draw *ngIf=\"useDrawControl\" [mapInstance]=\"currentMap\"></map-draw>\n                    <map-edit *ngIf=\"useEditControl\" [mapInstance]=\"currentMap\"></map-edit>\n                    <ng-content></ng-content>\n                </div>",
                         directives: [map_identify_component_1.MapIdentifyComponent, map_draw_component_1.MapDrawComponent, map_edit_component_1.MapEditComponent]
                     }), 
                     __metadata('design:paramtypes', [core_1.ElementRef])

@@ -19,7 +19,9 @@ var digiMapConfig = (function () {
             'esri/dijit/InfoWindow',
             'esri/dijit/InfoWindowLite',
             'esri/geometry/Polygon',
-            'esri/geometry/jsonUtils'
+            'esri/geometry/jsonUtils',
+            'esri/tasks/IdentifyTask',
+            'esri/tasks/IdentifyParameters'
         ],          
 			outModuleName: 'esri-mods'
         };

@@ -17,7 +17,7 @@ export class MapControl {
 @Component({
     selector: 'esri-map',
     template: ` <div id="map">
-                    <map-identify *ngIf="useIdentifyControl" [mapInstance]="currentMap"></map-identify>
+                    <map-identify *ngIf="useIdentifyControl" [mapInstance]="currentMap" [settings]="settings"></map-identify>
                     <map-draw *ngIf="useDrawControl" [mapInstance]="currentMap"></map-draw>
                     <map-edit *ngIf="useEditControl" [mapInstance]="currentMap"></map-edit>
                     <ng-content></ng-content>
