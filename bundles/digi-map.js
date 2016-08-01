@@ -126,6 +126,9 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
         MapComponent.prototype.toInitialExtent = function() {
           this.currentMap.setExtent(this.initialExtent);
         };
+        MapComponent.prototype.zoomToExtent = function(extent) {
+          this.currentMap.setExtent(extent);
+        };
         __decorate([core_1.Input(), __metadata('design:type', Object)], MapComponent.prototype, "settings", void 0);
         __decorate([core_1.Output(), __metadata('design:type', Object)], MapComponent.prototype, "mapLoaded", void 0);
         __decorate([core_1.ViewChild(map_identify_component_1.MapIdentifyComponent), __metadata('design:type', map_identify_component_1.MapIdentifyComponent)], MapComponent.prototype, "identify", void 0);
