@@ -26,7 +26,7 @@ export class MapControl {
 })
 export class MapComponent {
     @Input() settings: any;
-    @Output() mapLoaded = new EventEmitter();
+    @Output() mapLoaded = new EventEmitter();    
 
     @ViewChild(MapIdentifyComponent) identify: MapIdentifyComponent;
     @ViewChild(MapDrawComponent) draw: MapDrawComponent;
@@ -45,7 +45,7 @@ export class MapComponent {
 
     ngAfterViewInit() {
         if (this.useIdentifyControl) {
-            this.controls.push(new MapControl('identify', this.identify));
+            this.controls.push(new MapControl('identify', this.identify));          
         }
         if (this.useDrawControl) {
             this.controls.push(new MapControl('draw', this.draw));

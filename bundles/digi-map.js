@@ -306,9 +306,6 @@ System.register("digi-map/src/identify/map.identify.results.component", ["@angul
       IdentifyResultsComponent = (function() {
         function IdentifyResultsComponent() {}
         IdentifyResultsComponent.prototype.ngOnInit = function() {
-          if (this.results && this.results.length > 0) {
-            this.currentResult = this.results[0];
-          }
           if (this.settings && this.settings.template && this.settings.template !== '') {
             this.detailTemplate = this.settings.template;
           } else {
@@ -316,7 +313,6 @@ System.register("digi-map/src/identify/map.identify.results.component", ["@angul
           }
         };
         IdentifyResultsComponent.prototype.ngOnChanges = function() {
-          this.currentResult = undefined;
           if (this.results && this.results.length > 0) {
             this.currentResult = this.results[0];
           }
@@ -332,7 +328,7 @@ System.register("digi-map/src/identify/map.identify.results.component", ["@angul
         __decorate([core_1.Input(), __metadata('design:type', String)], IdentifyResultsComponent.prototype, "detailTemplate", void 0);
         IdentifyResultsComponent = __decorate([core_1.Component({
           selector: 'digi-identify-results',
-          template: " <div style=\"display:none\">\n                    <div id=\"popup-content\">\n                        <div *ngIf=\"results && results.length>0\">\n                            <select (change)=\"selectResult($event.target.value)\" *ngIf=\"results.length>1\">\n                                <option *ngFor=\"let result of results; let i=index\" [value]=\"i\">{{resultName(result)}}</option>                           \n                            </select>                     \n\n                            <div>\n                                <dynamic-holder [entity]=\"currentResult\" [title]=\"'Details details'\" [template]=\"detailTemplate\" *ngIf=\"currentResult\"></dynamic-holder>                            \n                            </div> \n                        </div> \n                        <div *ngIf=\"results && results.length==0\">Geen gegevens gevonden</div>                   \n                    </div>\n                </div>",
+          template: " <div style=\"display:none\">\n                    <div id=\"popup-content\">  \n                        <div *ngIf=\"results && results.length>0\">\n                            <select (change)=\"selectResult($event.target.value)\" *ngIf=\"results.length>1\">\n                                <option *ngFor=\"let result of results; let i=index\" [value]=\"i\">{{resultName(result)}}</option>                           \n                            </select>                     \n\n                            <div>\n                                <dynamic-holder [entity]=\"currentResult\" [title]=\"'Details'\" [template]=\"detailTemplate\" *ngIf=\"currentResult\"></dynamic-holder>                            \n                            </div> \n                        </div> \n                          <div *ngIf=\"!results || results.length==0\">Geen resultaten gevonden</div>                                      \n                    </div>\n                </div>",
           directives: [dynamic_component_holder_1.DynamicHolder]
         }), __metadata('design:paramtypes', [])], IdentifyResultsComponent);
         return IdentifyResultsComponent;
@@ -379,11 +375,14 @@ System.register("digi-map/src/identify/map.identify.component", ["@angular/core"
     execute: function() {
       MapIdentifyComponent = (function() {
         function MapIdentifyComponent() {
+          this.onIdentify = new core_1.EventEmitter();
           this.isActive = false;
-          this.results = [];
         }
         MapIdentifyComponent.prototype.ngOnInit = function() {
           var _this = this;
+          this.onIdentify.subscribe(function(x) {
+            _this.results = x;
+          });
           if (!this.settings || !this.settings.identify) {
             this.isActive = false;
           }
@@ -391,6 +390,8 @@ System.register("digi-map/src/identify/map.identify.component", ["@angular/core"
           this.infoWindow.startup();
           this.mapInstance.infoWindow = this.infoWindow;
           this.infoWindow.resize(this.settings.identify.width || 310, this.settings.identify.height || 350);
+          this.infoWindow.setTitle(this.settings.identify.title || 'Details 2');
+          this.infoWindow.setContent(document.getElementById('popup-content'));
           this.mapInstance.on('click', function(ev) {
             if (_this.isActive) {
               var res_1 = [];
@@ -404,15 +405,12 @@ System.register("digi-map/src/identify/map.identify.component", ["@angular/core"
                 identifyParams.geometry = ev.mapPoint;
                 identifyParams.mapExtent = self_1.mapInstance.extent;
                 identifyTask.execute(identifyParams).addCallback(function(response) {
-                  console.log('reposnse: ' + JSON.stringify(response));
                   response.forEach(function(element) {
                     res_1.push(element);
                   });
-                  self_1.results = res_1;
+                  self_1.onIdentify.emit(res_1);
                 });
               });
-              _this.infoWindow.setTitle(_this.settings.identify.title || 'Details');
-              _this.infoWindow.setContent(document.getElementById('popup-content'));
               _this.infoWindow.show(ev.mapPoint);
             }
           });
@@ -423,9 +421,10 @@ System.register("digi-map/src/identify/map.identify.component", ["@angular/core"
         };
         __decorate([core_1.Input(), __metadata('design:type', esri_mods_1.map)], MapIdentifyComponent.prototype, "mapInstance", void 0);
         __decorate([core_1.Input(), __metadata('design:type', Object)], MapIdentifyComponent.prototype, "settings", void 0);
+        __decorate([core_1.Output(), __metadata('design:type', Object)], MapIdentifyComponent.prototype, "onIdentify", void 0);
         MapIdentifyComponent = __decorate([core_1.Component({
           selector: 'map-identify',
-          template: "\t<div class='map-identify'>\n\t\t\t\t\t<button (click)='onClick()' [class.active]='isActive'>Detailgegevens</button>\n\t\t\t  \t</div>\n\t\t\t  \t<div id='popup'></div>\n\t\t\t\t<digi-identify-results [results]='results' *ngIf=\"results\" [settings]=\"settings.identify\"></digi-identify-results>",
+          template: "\t<div class='map-identify'>\n\t\t\t\t\t<button (click)='onClick()' [class.active]='isActive'>Detailgegevens</button>\n\t\t\t  \t</div>\n\t\t\t  \t<div id='popup'></div>\n\t\t\t\t<digi-identify-results [results]='results' [settings]=\"settings.identify\"></digi-identify-results>",
           styles: ['.map-identify button { z-index: 99999999999; }', '.active { background-color: green; color: white; }'],
           directives: [dynamic_component_holder_1.DynamicHolder, map_identify_results_component_1.IdentifyResultsComponent]
         }), __metadata('design:paramtypes', [])], MapIdentifyComponent);

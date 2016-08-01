@@ -29,11 +29,15 @@ System.register(['@angular/core', 'esri-mods', '../componentbuilder/dynamic.comp
         execute: function() {
             MapIdentifyComponent = (function () {
                 function MapIdentifyComponent() {
+                    this.onIdentify = new core_1.EventEmitter();
                     this.isActive = false;
-                    this.results = [];
                 }
                 MapIdentifyComponent.prototype.ngOnInit = function () {
                     var _this = this;
+                    this.onIdentify
+                        .subscribe(function (x) {
+                        _this.results = x;
+                    });
                     if (!this.settings || !this.settings.identify) {
                         this.isActive = false;
                     }
@@ -41,6 +45,9 @@ System.register(['@angular/core', 'esri-mods', '../componentbuilder/dynamic.comp
                     this.infoWindow.startup();
                     this.mapInstance.infoWindow = this.infoWindow;
                     this.infoWindow.resize(this.settings.identify.width || 310, this.settings.identify.height || 350);
+                    // Set content of InfoWindowLite
+                    this.infoWindow.setTitle(this.settings.identify.title || 'Details 2');
+                    this.infoWindow.setContent(document.getElementById('popup-content'));
                     this.mapInstance.on('click', function (ev) {
                         if (_this.isActive) {
                             var res_1 = [];
@@ -57,17 +64,12 @@ System.register(['@angular/core', 'esri-mods', '../componentbuilder/dynamic.comp
                                 identifyTask
                                     .execute(identifyParams)
                                     .addCallback(function (response) {
-                                    console.log('reposnse: ' + JSON.stringify(response));
                                     response.forEach(function (element) {
                                         res_1.push(element);
                                     });
-                                    self_1.results = res_1;
+                                    self_1.onIdentify.emit(res_1);
                                 });
                             });
-                            // Set content of InfoWindowLite
-                            _this.infoWindow.setTitle(_this.settings.identify.title || 'Details');
-                            _this.infoWindow.setContent(document.getElementById('popup-content'));
-                            // Show InfoWindowLite
                             _this.infoWindow.show(ev.mapPoint);
                         }
                     });
@@ -84,10 +86,14 @@ System.register(['@angular/core', 'esri-mods', '../componentbuilder/dynamic.comp
                     core_1.Input(), 
                     __metadata('design:type', Object)
                 ], MapIdentifyComponent.prototype, "settings", void 0);
+                __decorate([
+                    core_1.Output(), 
+                    __metadata('design:type', Object)
+                ], MapIdentifyComponent.prototype, "onIdentify", void 0);
                 MapIdentifyComponent = __decorate([
                     core_1.Component({
                         selector: 'map-identify',
-                        template: "\t<div class='map-identify'>\n\t\t\t\t\t<button (click)='onClick()' [class.active]='isActive'>Detailgegevens</button>\n\t\t\t  \t</div>\n\t\t\t  \t<div id='popup'></div>\n\t\t\t\t<digi-identify-results [results]='results' *ngIf=\"results\" [settings]=\"settings.identify\"></digi-identify-results>",
+                        template: "\t<div class='map-identify'>\n\t\t\t\t\t<button (click)='onClick()' [class.active]='isActive'>Detailgegevens</button>\n\t\t\t  \t</div>\n\t\t\t  \t<div id='popup'></div>\n\t\t\t\t<digi-identify-results [results]='results' [settings]=\"settings.identify\"></digi-identify-results>",
                         styles: ['.map-identify button { z-index: 99999999999; }',
                             '.active { background-color: green; color: white; }'],
                         directives: [dynamic_component_holder_1.DynamicHolder, map_identify_results_component_1.IdentifyResultsComponent]

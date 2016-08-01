@@ -4,7 +4,6 @@ export declare class IdentifyResultsComponent implements OnInit, OnChanges {
     results: any;
     detailTemplate: string;
     currentResult: any;
-    constructor();
     ngOnInit(): void;
     ngOnChanges(): void;
     resultName(result: any): string;

@@ -25,9 +25,6 @@ System.register(['@angular/core', '../componentbuilder/dynamic.component.holder'
                 function IdentifyResultsComponent() {
                 }
                 IdentifyResultsComponent.prototype.ngOnInit = function () {
-                    if (this.results && this.results.length > 0) {
-                        this.currentResult = this.results[0];
-                    }
                     if (this.settings && this.settings.template && this.settings.template !== '') {
                         this.detailTemplate = this.settings.template;
                     }
@@ -36,7 +33,6 @@ System.register(['@angular/core', '../componentbuilder/dynamic.component.holder'
                     }
                 };
                 IdentifyResultsComponent.prototype.ngOnChanges = function () {
-                    this.currentResult = undefined;
                     if (this.results && this.results.length > 0) {
                         this.currentResult = this.results[0];
                     }
@@ -62,7 +58,7 @@ System.register(['@angular/core', '../componentbuilder/dynamic.component.holder'
                 IdentifyResultsComponent = __decorate([
                     core_1.Component({
                         selector: 'digi-identify-results',
-                        template: " <div style=\"display:none\">\n                    <div id=\"popup-content\">\n                        <div *ngIf=\"results && results.length>0\">\n                            <select (change)=\"selectResult($event.target.value)\" *ngIf=\"results.length>1\">\n                                <option *ngFor=\"let result of results; let i=index\" [value]=\"i\">{{resultName(result)}}</option>                           \n                            </select>                     \n\n                            <div>\n                                <dynamic-holder [entity]=\"currentResult\" [title]=\"'Details details'\" [template]=\"detailTemplate\" *ngIf=\"currentResult\"></dynamic-holder>                            \n                            </div> \n                        </div> \n                        <div *ngIf=\"results && results.length==0\">Geen gegevens gevonden</div>                   \n                    </div>\n                </div>",
+                        template: " <div style=\"display:none\">\n                    <div id=\"popup-content\">  \n                        <div *ngIf=\"results && results.length>0\">\n                            <select (change)=\"selectResult($event.target.value)\" *ngIf=\"results.length>1\">\n                                <option *ngFor=\"let result of results; let i=index\" [value]=\"i\">{{resultName(result)}}</option>                           \n                            </select>                     \n\n                            <div>\n                                <dynamic-holder [entity]=\"currentResult\" [title]=\"'Details'\" [template]=\"detailTemplate\" *ngIf=\"currentResult\"></dynamic-holder>                            \n                            </div> \n                        </div> \n                          <div *ngIf=\"!results || results.length==0\">Geen resultaten gevonden</div>                                      \n                    </div>\n                </div>",
                         directives: [dynamic_component_holder_1.DynamicHolder]
                     }), 
                     __metadata('design:paramtypes', [])
