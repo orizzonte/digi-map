@@ -9,5 +9,5 @@ export declare class MapIdentifyComponent implements OnInit {
     private infoWindow;
     private clickedPoint;
     ngOnInit(): void;
-    onClick(): void;
+    toggle(): void;
 }

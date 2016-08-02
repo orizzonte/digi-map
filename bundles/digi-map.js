@@ -1,4 +1,177 @@
-System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./identify/map.identify.component", "./draw/map.draw.component", "./edit/map.edit.component"], function(exports_1, context_1) {
+System.register("digi-map/src/ui/toggler/toggler", ["@angular/core", "ng2-bootstrap/ng2-bootstrap"], function(exports_1, context_1) {
+  "use strict";
+  var __moduleName = context_1 && context_1.id;
+  var __decorate = (this && this.__decorate) || function(decorators, target, key, desc) {
+    var c = arguments.length,
+        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+        d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function")
+      r = Reflect.decorate(decorators, target, key, desc);
+    else
+      for (var i = decorators.length - 1; i >= 0; i--)
+        if (d = decorators[i])
+          r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+  };
+  var __metadata = (this && this.__metadata) || function(k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
+      return Reflect.metadata(k, v);
+  };
+  var core_1,
+      ng2_bootstrap_1;
+  var TogglerComponent;
+  return {
+    setters: [function(core_1_1) {
+      core_1 = core_1_1;
+    }, function(ng2_bootstrap_1_1) {
+      ng2_bootstrap_1 = ng2_bootstrap_1_1;
+    }],
+    execute: function() {
+      TogglerComponent = (function() {
+        function TogglerComponent() {
+          this.isHidden = true;
+        }
+        TogglerComponent.prototype.toggle = function() {
+          this.isHidden = !this.isHidden;
+        };
+        __decorate([core_1.Input(), __metadata('design:type', String)], TogglerComponent.prototype, "icon", void 0);
+        TogglerComponent = __decorate([core_1.Component({
+          selector: 'digi-toggler',
+          template: " <button class=\" btn-toggle \" (click)=\"toggle()\">\n                        <i class=\"material-icons \">{{icon}}</i>\n                        <i class=\"material-icons \" *ngIf=\"isHidden \">keyboard_arrow_right</i>\n                        <i class=\"material-icons \" *ngIf=\"!isHidden \">keyboard_arrow_left</i>\n                </button>\n                <div [style.display]=\"isHidden ? 'none' : 'block'\">\n                    <ng-content></ng-content>\n                </div>",
+          directives: [ng2_bootstrap_1.TOOLTIP_DIRECTIVES]
+        }), __metadata('design:paramtypes', [])], TogglerComponent);
+        return TogglerComponent;
+      }());
+      exports_1("TogglerComponent", TogglerComponent);
+    }
+  };
+});
+
+System.register("digi-map/src/menu/map.menu.component", ["@angular/core", "ng2-bootstrap/ng2-bootstrap", "../ui/toggler/toggler"], function(exports_1, context_1) {
+  "use strict";
+  var __moduleName = context_1 && context_1.id;
+  var __decorate = (this && this.__decorate) || function(decorators, target, key, desc) {
+    var c = arguments.length,
+        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+        d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function")
+      r = Reflect.decorate(decorators, target, key, desc);
+    else
+      for (var i = decorators.length - 1; i >= 0; i--)
+        if (d = decorators[i])
+          r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+  };
+  var __metadata = (this && this.__metadata) || function(k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
+      return Reflect.metadata(k, v);
+  };
+  var core_1,
+      ng2_bootstrap_1,
+      toggler_1;
+  var MapMenuComponent;
+  return {
+    setters: [function(core_1_1) {
+      core_1 = core_1_1;
+    }, function(ng2_bootstrap_1_1) {
+      ng2_bootstrap_1 = ng2_bootstrap_1_1;
+    }, function(toggler_1_1) {
+      toggler_1 = toggler_1_1;
+    }],
+    execute: function() {
+      MapMenuComponent = (function() {
+        function MapMenuComponent() {
+          var _this = this;
+          this.toInitialExtent = new core_1.EventEmitter();
+          this.toggleIdentify = new core_1.EventEmitter();
+          this.oneAtATime = true;
+          this.identifyActive = false;
+          this.status = {
+            isFirstOpen: true,
+            isFirstDisabled: false
+          };
+          this.toggleIdentify.subscribe(function(x) {
+            return _this.identifyActive = !_this.identifyActive;
+          });
+        }
+        __decorate([core_1.Input(), __metadata('design:type', Object)], MapMenuComponent.prototype, "settings", void 0);
+        __decorate([core_1.Output(), __metadata('design:type', Object)], MapMenuComponent.prototype, "toInitialExtent", void 0);
+        __decorate([core_1.Output(), __metadata('design:type', Object)], MapMenuComponent.prototype, "toggleIdentify", void 0);
+        MapMenuComponent = __decorate([core_1.Component({
+          selector: 'map-menu',
+          template: "<digi-toggler icon='build'>\n                    <div class=\"tabs\">\n                        <tabset class=\"tabs-kaart-knoppen\">\n                            <tab heading=\"Werkbalk\">\n                                <accordion [closeOthers]=\"oneAtATime\">\n                                    <accordion-group #group [isOpen]=\"status.open\">\n                                        <div accordion-heading>\n                                            Navigatie\n                                            <i class=\"material-icons\" *ngIf=\"!group?.isOpen\">keyboard_arrow_down</i>\n                                        </div>\n                                        <ul class=\"knoppen\">\n                                            <!--<li><button class=\"btn-kaart\" tooltipPlacement=\"bottom\" tooltip=\"Meet afstand\"><i class=\"material-icons\">straighten</i></button></li>\n                                            <li><button class=\"btn-kaart\" tooltipPlacement=\"bottom\" tooltip=\"Meet opp.\"><i class=\"material-icons\">photo_size_select_small</i></button></li>\n                                            <li><button class=\"btn-kaart\" tooltipPlacement=\"bottom\" tooltip=\"Slepen\"><i class=\"material-icons\">pan_tool</i></button></li>-->\n                                            <li><button class=\"btn-kaart\" tooltipPlacement=\"bottom\" tooltip=\"Begin positie kaart\" (click)=\"toInitialExtent.emit($event)\"><i class=\"material-icons\">pin_drop</i></button></li>\n                                            <!--<li><button class=\"btn-kaart\" tooltipPlacement=\"bottom\" tooltip=\"Vorige positie kaart\"><i class=\"material-icons\">settings_backup_restore</i></button></li>\n                                            <li><button class=\"btn-kaart\" tooltipPlacement=\"bottom\" tooltip=\"Handleiding\"><i class=\"material-icons\">description</i></button></li>-->\n                                            <li><button class=\"btn-kaart\" [class]=\"identifyActive ? 'btn-kaart active' : 'btn-kaart'\" tooltipPlacement=\"bottom\" tooltip=\"Detailgegevens\" (click)=\"toggleIdentify.emit($event)\"><i class=\"material-icons\">info</i></button></li>\n                                            <!--<li><button class=\"btn-kaart\" tooltipPlacement=\"bottom\" tooltip=\"Afdrukken\"><i class=\"material-icons\">print</i></button></li>-->\n                                        </ul>\n                                    </accordion-group>\n                                    <!--<accordion-group #group [isOpen]=\"status.open\">\n                                        <div accordion-heading>\n                                            Tekenen\n                                            <i class=\"material-icons\" *ngIf=\"!group?.isOpen\">keyboard_arrow_down</i>\n                                        </div>\n                                        <ul class=\"knoppen\">\n                                            <li><button class=\"btn-kaart\" tooltipPlacement=\"bottom\" tooltip=\"Punt\"><i class=\"material-icons\">border_clear</i></button></li>\n                                            <li><button class=\"btn-kaart\" tooltipPlacement=\"bottom\" tooltip=\"Lijn\"><i class=\"material-icons\">border_top</i></button></li>\n                                            <li><button class=\"btn-kaart\" tooltipPlacement=\"bottom\" tooltip=\"Vlak\"><i class=\"material-icons\">border_outer</i></button></li>\n                                            <li><button class=\"btn-kaart\" tooltipPlacement=\"bottom\" tooltip=\"Vrij tekenen\"><i class=\"material-icons\">&#xE6E1;</i></button></li>\n                                            <li><button class=\"btn-kaart\" tooltipPlacement=\"bottom\" tooltip=\"Rechthoeken\"><i class=\"material-icons\">check_box_outline_blank</i></button></li>\n                                            <li><button class=\"btn-kaart\" tooltipPlacement=\"bottom\" tooltip=\"Cirkels\"><i class=\"material-icons\">radio_button_unchecked</i></button></li>\n                                            <li><button class=\"btn-kaart\" tooltipPlacement=\"bottom\" tooltip=\"Ellips\"><i class=\"material-icons ovaal\">radio_button_unchecked</i></button></li>\n                                            <li><button class=\"btn-kaart\" tooltipPlacement=\"bottom\" tooltip=\"Pijl\"><i class=\"material-icons\">arrow_forward</i></button></li>\n                                            <li><button class=\"btn-kaart\" tooltipPlacement=\"bottom\" tooltip=\"Wijzig\"><i class=\"material-icons\">mode_edit</i></button></li>\n                                            <li><button class=\"btn-kaart\" tooltipPlacement=\"bottom\" tooltip=\"Verwijder\"><i class=\"material-icons\">delete_forever</i></button></li>\n                                        </ul>\n                                    </accordion-group>-->\n                                </accordion>\n                            </tab>\n                            <tab heading=\"Kaartlagen\">\n                                <div id=\"legend\"></div>\n                            </tab>\n                        </tabset>\t\t\n                    </div>\n                </digi-toggler>",
+          directives: [ng2_bootstrap_1.TOOLTIP_DIRECTIVES, ng2_bootstrap_1.TAB_DIRECTIVES, toggler_1.TogglerComponent, ng2_bootstrap_1.ACCORDION_DIRECTIVES]
+        }), __metadata('design:paramtypes', [])], MapMenuComponent);
+        return MapMenuComponent;
+      }());
+      exports_1("MapMenuComponent", MapMenuComponent);
+    }
+  };
+});
+
+System.register("digi-map/src/navigation/map.navigation.component", ["@angular/core", "esri-mods"], function(exports_1, context_1) {
+  "use strict";
+  var __moduleName = context_1 && context_1.id;
+  var __decorate = (this && this.__decorate) || function(decorators, target, key, desc) {
+    var c = arguments.length,
+        r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+        d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function")
+      r = Reflect.decorate(decorators, target, key, desc);
+    else
+      for (var i = decorators.length - 1; i >= 0; i--)
+        if (d = decorators[i])
+          r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+  };
+  var __metadata = (this && this.__metadata) || function(k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function")
+      return Reflect.metadata(k, v);
+  };
+  var core_1,
+      esri_mods_1;
+  var MapNavigationComponent;
+  return {
+    setters: [function(core_1_1) {
+      core_1 = core_1_1;
+    }, function(esri_mods_1_1) {
+      esri_mods_1 = esri_mods_1_1;
+    }],
+    execute: function() {
+      MapNavigationComponent = (function() {
+        function MapNavigationComponent() {}
+        MapNavigationComponent.prototype.toInitialExtent = function() {
+          this.zoomToExtent(this.initialExtent);
+        };
+        MapNavigationComponent.prototype.zoomToExtent = function(extent) {
+          this.mapInstance.setExtent(extent);
+        };
+        MapNavigationComponent.prototype.ngOnInit = function() {
+          if (this.settings.extent !== undefined) {
+            this.initialExtent = new esri_mods_1.Extent({
+              xmin: this.settings.extent[0],
+              ymin: this.settings.extent[1],
+              xmax: this.settings.extent[2],
+              ymax: this.settings.extent[3],
+              spatialReference: new esri_mods_1.SpatialReference({wkid: 31370})
+            });
+            this.zoomToExtent(this.initialExtent);
+          }
+        };
+        __decorate([core_1.Input(), __metadata('design:type', esri_mods_1.map)], MapNavigationComponent.prototype, "mapInstance", void 0);
+        __decorate([core_1.Input(), __metadata('design:type', Object)], MapNavigationComponent.prototype, "settings", void 0);
+        MapNavigationComponent = __decorate([core_1.Component({
+          selector: 'map-navigation',
+          template: ''
+        }), __metadata('design:paramtypes', [])], MapNavigationComponent);
+        return MapNavigationComponent;
+      }());
+      exports_1("MapNavigationComponent", MapNavigationComponent);
+    }
+  };
+});
+
+System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./identify/map.identify.component", "./draw/map.draw.component", "./edit/map.edit.component", "./menu/map.menu.component", "./navigation/map.navigation.component"], function(exports_1, context_1) {
   "use strict";
   var __moduleName = context_1 && context_1.id;
   var __decorate = (this && this.__decorate) || function(decorators, target, key, desc) {
@@ -21,7 +194,9 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
       esri_mods_1,
       map_identify_component_1,
       map_draw_component_1,
-      map_edit_component_1;
+      map_edit_component_1,
+      map_menu_component_1,
+      map_navigation_component_1;
   var MapControl,
       MapComponent;
   return {
@@ -35,6 +210,10 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
       map_draw_component_1 = map_draw_component_1_1;
     }, function(map_edit_component_1_1) {
       map_edit_component_1 = map_edit_component_1_1;
+    }, function(map_menu_component_1_1) {
+      map_menu_component_1 = map_menu_component_1_1;
+    }, function(map_navigation_component_1_1) {
+      map_navigation_component_1 = map_navigation_component_1_1;
     }],
     execute: function() {
       MapControl = (function() {
@@ -56,6 +235,7 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
           this.useEditControl = false;
         }
         MapComponent.prototype.ngAfterViewInit = function() {
+          this.controls.push(new MapControl('navigation', this.navigation));
           if (this.useIdentifyControl) {
             this.controls.push(new MapControl('identify', this.identify));
           }
@@ -93,7 +273,7 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
             });
             var legendDijit = new esri_mods_1.Legend({
               map: self.currentMap,
-              respectCurrentMapScale: false,
+              respectCurrentMapScale: true,
               layerInfos: allLayerInfos
             }, 'legend');
             legendDijit.startup();
@@ -108,36 +288,21 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
             });
             this.currentMap.addLayers(this.themes);
           }
-          if (this.settings.extent !== undefined) {
-            this.initialExtent = new esri_mods_1.Extent({
-              xmin: this.settings.extent[0],
-              ymin: this.settings.extent[1],
-              xmax: this.settings.extent[2],
-              ymax: this.settings.extent[3],
-              spatialReference: new esri_mods_1.SpatialReference({wkid: 31370})
-            });
-            this.currentMap.setExtent(this.initialExtent);
-          }
           this.currentMap.on('load', function(ev) {
             console.log('map loaded');
           });
         };
         ;
-        MapComponent.prototype.toInitialExtent = function() {
-          this.currentMap.setExtent(this.initialExtent);
-        };
-        MapComponent.prototype.zoomToExtent = function(extent) {
-          this.currentMap.setExtent(extent);
-        };
         __decorate([core_1.Input(), __metadata('design:type', Object)], MapComponent.prototype, "settings", void 0);
         __decorate([core_1.Output(), __metadata('design:type', Object)], MapComponent.prototype, "mapLoaded", void 0);
+        __decorate([core_1.ViewChild(map_navigation_component_1.MapNavigationComponent), __metadata('design:type', map_navigation_component_1.MapNavigationComponent)], MapComponent.prototype, "navigation", void 0);
         __decorate([core_1.ViewChild(map_identify_component_1.MapIdentifyComponent), __metadata('design:type', map_identify_component_1.MapIdentifyComponent)], MapComponent.prototype, "identify", void 0);
         __decorate([core_1.ViewChild(map_draw_component_1.MapDrawComponent), __metadata('design:type', map_draw_component_1.MapDrawComponent)], MapComponent.prototype, "draw", void 0);
         __decorate([core_1.ViewChild(map_edit_component_1.MapEditComponent), __metadata('design:type', map_edit_component_1.MapEditComponent)], MapComponent.prototype, "edit", void 0);
         MapComponent = __decorate([core_1.Component({
           selector: 'esri-map',
-          template: " <div id=\"map\">\n                    <map-identify *ngIf=\"useIdentifyControl\" [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-identify>\n                    <map-draw *ngIf=\"useDrawControl\" [mapInstance]=\"currentMap\"></map-draw>\n                    <map-edit *ngIf=\"useEditControl\" [mapInstance]=\"currentMap\"></map-edit>\n                    <ng-content></ng-content>\n                </div>",
-          directives: [map_identify_component_1.MapIdentifyComponent, map_draw_component_1.MapDrawComponent, map_edit_component_1.MapEditComponent]
+          template: " <div id=\"map\">\n                    <map-navigation [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-navigation>\n                    <map-identify *ngIf=\"useIdentifyControl\" [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-identify>\n                    <map-draw *ngIf=\"useDrawControl\" [mapInstance]=\"currentMap\"></map-draw>\n                    <map-edit *ngIf=\"useEditControl\" [mapInstance]=\"currentMap\"></map-edit> \n                    <map-menu [settings]=\"settings\"\n                        (toInitialExtent)=\"navigation.toInitialExtent($event)\"\n                        (toggleIdentify)=\"identify.toggle($event)\">\n                    </map-menu>                   \n                    <ng-content></ng-content>\n                </div>",
+          directives: [map_identify_component_1.MapIdentifyComponent, map_draw_component_1.MapDrawComponent, map_edit_component_1.MapEditComponent, map_menu_component_1.MapMenuComponent, map_navigation_component_1.MapNavigationComponent]
         }), __metadata('design:paramtypes', [core_1.ElementRef])], MapComponent);
         return MapComponent;
       }());
@@ -418,7 +583,7 @@ System.register("digi-map/src/identify/map.identify.component", ["@angular/core"
             }
           });
         };
-        MapIdentifyComponent.prototype.onClick = function() {
+        MapIdentifyComponent.prototype.toggle = function() {
           this.isActive = !this.isActive;
           this.infoWindow.hide();
         };
@@ -427,7 +592,7 @@ System.register("digi-map/src/identify/map.identify.component", ["@angular/core"
         __decorate([core_1.Output(), __metadata('design:type', Object)], MapIdentifyComponent.prototype, "onIdentify", void 0);
         MapIdentifyComponent = __decorate([core_1.Component({
           selector: 'map-identify',
-          template: "\t<div class='map-identify'>\n\t\t\t\t\t<button (click)='onClick()' [class.active]='isActive'>Detailgegevens</button>\n\t\t\t  \t</div>\n\t\t\t  \t<div id='popup'></div>\n\t\t\t\t<digi-identify-results [results]='results' [settings]=\"settings.identify\"></digi-identify-results>",
+          template: "\t<div class='map-identify'>\t\t\t\t\t\n\t\t\t  \t</div>\n\t\t\t  \t<div id='popup'></div>\n\t\t\t\t<digi-identify-results [results]='results' [settings]=\"settings.identify\"></digi-identify-results>",
           styles: ['.map-identify button { z-index: 99999999999; }', '.active { background-color: green; color: white; }'],
           directives: [dynamic_component_holder_1.DynamicHolder, map_identify_results_component_1.IdentifyResultsComponent]
         }), __metadata('design:paramtypes', [])], MapIdentifyComponent);

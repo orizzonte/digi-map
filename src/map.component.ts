@@ -3,6 +3,8 @@ import { map, Extent, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer, 
 import { MapIdentifyComponent } from './identify/map.identify.component';
 import { MapDrawComponent } from './draw/map.draw.component';
 import { MapEditComponent } from './edit/map.edit.component';
+import { MapMenuComponent } from './menu/map.menu.component';
+import { MapNavigationComponent } from './navigation/map.navigation.component';
 
 export class MapControl {
     name: string;
@@ -17,17 +19,23 @@ export class MapControl {
 @Component({
     selector: 'esri-map',
     template: ` <div id="map">
+                    <map-navigation [mapInstance]="currentMap" [settings]="settings"></map-navigation>
                     <map-identify *ngIf="useIdentifyControl" [mapInstance]="currentMap" [settings]="settings"></map-identify>
                     <map-draw *ngIf="useDrawControl" [mapInstance]="currentMap"></map-draw>
-                    <map-edit *ngIf="useEditControl" [mapInstance]="currentMap"></map-edit>
+                    <map-edit *ngIf="useEditControl" [mapInstance]="currentMap"></map-edit> 
+                    <map-menu [settings]="settings"
+                        (toInitialExtent)="navigation.toInitialExtent($event)"
+                        (toggleIdentify)="identify.toggle($event)">
+                    </map-menu>                   
                     <ng-content></ng-content>
                 </div>`,
-    directives: [MapIdentifyComponent, MapDrawComponent, MapEditComponent]
+    directives: [MapIdentifyComponent, MapDrawComponent, MapEditComponent, MapMenuComponent, MapNavigationComponent]
 })
 export class MapComponent {
     @Input() settings: any;
-    @Output() mapLoaded = new EventEmitter();    
+    @Output() mapLoaded = new EventEmitter();
 
+    @ViewChild(MapNavigationComponent) navigation: MapNavigationComponent;
     @ViewChild(MapIdentifyComponent) identify: MapIdentifyComponent;
     @ViewChild(MapDrawComponent) draw: MapDrawComponent;
     @ViewChild(MapEditComponent) edit: MapEditComponent;
@@ -36,16 +44,17 @@ export class MapComponent {
     themes: Layer[] = [];
     controls: MapControl[] = [];
 
-    private initialExtent: Extent;
     private useIdentifyControl = false;
     private useDrawControl = false;
     private useEditControl = false;
 
-    constructor(private elRef: ElementRef) {}
+    constructor(private elRef: ElementRef) { }
 
     ngAfterViewInit() {
+        this.controls.push(new MapControl('navigation', this.navigation));
+
         if (this.useIdentifyControl) {
-            this.controls.push(new MapControl('identify', this.identify));          
+            this.controls.push(new MapControl('identify', this.identify));
         }
         if (this.useDrawControl) {
             this.controls.push(new MapControl('draw', this.draw));
@@ -71,7 +80,7 @@ export class MapComponent {
             this.useEditControl = true;
         }
 
-        this.currentMap.on('layers-add-result', function(evt) {
+        this.currentMap.on('layers-add-result', function (evt) {
 
             let allLayerInfos = [];
 
@@ -85,7 +94,7 @@ export class MapComponent {
 
             var legendDijit = new Legend({
                 map: self.currentMap,
-                respectCurrentMapScale: false,
+                respectCurrentMapScale: true,
                 layerInfos: allLayerInfos
             }, 'legend');
 
@@ -96,37 +105,16 @@ export class MapComponent {
         // Check if themes is defined
         if (this.settings.themes !== undefined) {
             this.settings.themes.forEach((theme) => {
-              if(theme.type === 'dynamic') {
-                this.themes.push(new ArcGISDynamicMapServiceLayer(theme.url));
-              } else {
-                this.themes.push(new ArcGISTiledMapServiceLayer(theme.url)); 
-              }
+                if (theme.type === 'dynamic') {
+                    this.themes.push(new ArcGISDynamicMapServiceLayer(theme.url));
+                } else {
+                    this.themes.push(new ArcGISTiledMapServiceLayer(theme.url));
+                }
             });
 
             this.currentMap.addLayers(this.themes);
         }
 
-        // Check if extent is defined
-        if (this.settings.extent !== undefined) {
-            this.initialExtent = new Extent({
-                xmin: this.settings.extent[0],
-                ymin: this.settings.extent[1],
-                xmax: this.settings.extent[2],
-                ymax: this.settings.extent[3],
-                spatialReference: new SpatialReference({ wkid: 31370 })
-            });
-
-            this.currentMap.setExtent(this.initialExtent);
-        }
-
-        this.currentMap.on('load', function(ev) { console.log('map loaded'); });
+        this.currentMap.on('load', function (ev) { console.log('map loaded'); });
     };
-
-    toInitialExtent() {
-        this.currentMap.setExtent(this.initialExtent);
-    }
-
-    zoomToExtent(extent: Extent) {
-        this.currentMap.setExtent(extent);
-    }
 }

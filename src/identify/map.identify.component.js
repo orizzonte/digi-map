@@ -74,7 +74,7 @@ System.register(['@angular/core', 'esri-mods', '../componentbuilder/dynamic.comp
                         }
                     });
                 };
-                MapIdentifyComponent.prototype.onClick = function () {
+                MapIdentifyComponent.prototype.toggle = function () {
                     this.isActive = !this.isActive;
                     this.infoWindow.hide();
                 };
@@ -93,7 +93,7 @@ System.register(['@angular/core', 'esri-mods', '../componentbuilder/dynamic.comp
                 MapIdentifyComponent = __decorate([
                     core_1.Component({
                         selector: 'map-identify',
-                        template: "\t<div class='map-identify'>\n\t\t\t\t\t<button (click)='onClick()' [class.active]='isActive'>Detailgegevens</button>\n\t\t\t  \t</div>\n\t\t\t  \t<div id='popup'></div>\n\t\t\t\t<digi-identify-results [results]='results' [settings]=\"settings.identify\"></digi-identify-results>",
+                        template: "\t<div class='map-identify'>\t\t\t\t\t\n\t\t\t  \t</div>\n\t\t\t  \t<div id='popup'></div>\n\t\t\t\t<digi-identify-results [results]='results' [settings]=\"settings.identify\"></digi-identify-results>",
                         styles: ['.map-identify button { z-index: 99999999999; }',
                             '.active { background-color: green; color: white; }'],
                         directives: [dynamic_component_holder_1.DynamicHolder, map_identify_results_component_1.IdentifyResultsComponent]

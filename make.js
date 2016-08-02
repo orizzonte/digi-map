@@ -44,7 +44,8 @@ function getSystemJsBundleConfig(cb) {
       '@angular': path.resolve('node_modules/@angular'),
       rxjs: path.resolve('node_modules/rxjs'),
       lodash: path.resolve('node_modules/lodash/lodash.min.js'),
-      "esri-mods": 'empty'
+      "esri-mods": 'empty',
+      "ng2-bootstrap/ng2-bootstrap": 'empty'
     },
     paths: {
       '*': '*.js'

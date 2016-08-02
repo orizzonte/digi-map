@@ -1,4 +1,4 @@
-System.register(['@angular/core', 'esri-mods', './identify/map.identify.component', './draw/map.draw.component', './edit/map.edit.component'], function(exports_1, context_1) {
+System.register(['@angular/core', 'esri-mods', './identify/map.identify.component', './draw/map.draw.component', './edit/map.edit.component', './menu/map.menu.component', './navigation/map.navigation.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, esri_mods_1, map_identify_component_1, map_draw_component_1, map_edit_component_1;
+    var core_1, esri_mods_1, map_identify_component_1, map_draw_component_1, map_edit_component_1, map_menu_component_1, map_navigation_component_1;
     var MapControl, MapComponent;
     return {
         setters:[
@@ -28,6 +28,12 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
             },
             function (map_edit_component_1_1) {
                 map_edit_component_1 = map_edit_component_1_1;
+            },
+            function (map_menu_component_1_1) {
+                map_menu_component_1 = map_menu_component_1_1;
+            },
+            function (map_navigation_component_1_1) {
+                map_navigation_component_1 = map_navigation_component_1_1;
             }],
         execute: function() {
             MapControl = (function () {
@@ -49,6 +55,7 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                     this.useEditControl = false;
                 }
                 MapComponent.prototype.ngAfterViewInit = function () {
+                    this.controls.push(new MapControl('navigation', this.navigation));
                     if (this.useIdentifyControl) {
                         this.controls.push(new MapControl('identify', this.identify));
                     }
@@ -84,7 +91,7 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                         });
                         var legendDijit = new esri_mods_1.Legend({
                             map: self.currentMap,
-                            respectCurrentMapScale: false,
+                            respectCurrentMapScale: true,
                             layerInfos: allLayerInfos
                         }, 'legend');
                         legendDijit.startup();
@@ -101,26 +108,9 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                         });
                         this.currentMap.addLayers(this.themes);
                     }
-                    // Check if extent is defined
-                    if (this.settings.extent !== undefined) {
-                        this.initialExtent = new esri_mods_1.Extent({
-                            xmin: this.settings.extent[0],
-                            ymin: this.settings.extent[1],
-                            xmax: this.settings.extent[2],
-                            ymax: this.settings.extent[3],
-                            spatialReference: new esri_mods_1.SpatialReference({ wkid: 31370 })
-                        });
-                        this.currentMap.setExtent(this.initialExtent);
-                    }
                     this.currentMap.on('load', function (ev) { console.log('map loaded'); });
                 };
                 ;
-                MapComponent.prototype.toInitialExtent = function () {
-                    this.currentMap.setExtent(this.initialExtent);
-                };
-                MapComponent.prototype.zoomToExtent = function (extent) {
-                    this.currentMap.setExtent(extent);
-                };
                 __decorate([
                     core_1.Input(), 
                     __metadata('design:type', Object)
@@ -129,6 +119,10 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                     core_1.Output(), 
                     __metadata('design:type', Object)
                 ], MapComponent.prototype, "mapLoaded", void 0);
+                __decorate([
+                    core_1.ViewChild(map_navigation_component_1.MapNavigationComponent), 
+                    __metadata('design:type', map_navigation_component_1.MapNavigationComponent)
+                ], MapComponent.prototype, "navigation", void 0);
                 __decorate([
                     core_1.ViewChild(map_identify_component_1.MapIdentifyComponent), 
                     __metadata('design:type', map_identify_component_1.MapIdentifyComponent)
@@ -144,8 +138,8 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                 MapComponent = __decorate([
                     core_1.Component({
                         selector: 'esri-map',
-                        template: " <div id=\"map\">\n                    <map-identify *ngIf=\"useIdentifyControl\" [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-identify>\n                    <map-draw *ngIf=\"useDrawControl\" [mapInstance]=\"currentMap\"></map-draw>\n                    <map-edit *ngIf=\"useEditControl\" [mapInstance]=\"currentMap\"></map-edit>\n                    <ng-content></ng-content>\n                </div>",
-                        directives: [map_identify_component_1.MapIdentifyComponent, map_draw_component_1.MapDrawComponent, map_edit_component_1.MapEditComponent]
+                        template: " <div id=\"map\">\n                    <map-navigation [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-navigation>\n                    <map-identify *ngIf=\"useIdentifyControl\" [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-identify>\n                    <map-draw *ngIf=\"useDrawControl\" [mapInstance]=\"currentMap\"></map-draw>\n                    <map-edit *ngIf=\"useEditControl\" [mapInstance]=\"currentMap\"></map-edit> \n                    <map-menu [settings]=\"settings\"\n                        (toInitialExtent)=\"navigation.toInitialExtent($event)\"\n                        (toggleIdentify)=\"identify.toggle($event)\">\n                    </map-menu>                   \n                    <ng-content></ng-content>\n                </div>",
+                        directives: [map_identify_component_1.MapIdentifyComponent, map_draw_component_1.MapDrawComponent, map_edit_component_1.MapEditComponent, map_menu_component_1.MapMenuComponent, map_navigation_component_1.MapNavigationComponent]
                     }), 
                     __metadata('design:paramtypes', [core_1.ElementRef])
                 ], MapComponent);

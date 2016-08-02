@@ -6,8 +6,7 @@ import {MapComponent} from '../map.component';
 
 @Component({
 	selector: 'map-identify',
-	template: `	<div class='map-identify'>
-					<button (click)='onClick()' [class.active]='isActive'>Detailgegevens</button>
+	template: `	<div class='map-identify'>					
 			  	</div>
 			  	<div id='popup'></div>
 				<digi-identify-results [results]='results' [settings]="settings.identify"></digi-identify-results>`,
@@ -83,7 +82,7 @@ export class MapIdentifyComponent implements OnInit {
 		});
 	}
 
-	onClick() {
+	toggle() {
 		this.isActive = !this.isActive;
 		this.infoWindow.hide();
 	}
