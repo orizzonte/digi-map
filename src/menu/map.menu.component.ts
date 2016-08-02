@@ -22,7 +22,7 @@ import {Extent} from 'esri-mods';
                                             <li><button class="btn-kaart" tooltipPlacement="bottom" tooltip="Begin positie kaart" (click)="toInitialExtent.emit($event)"><i class="material-icons">pin_drop</i></button></li>
                                             <!--<li><button class="btn-kaart" tooltipPlacement="bottom" tooltip="Vorige positie kaart"><i class="material-icons">settings_backup_restore</i></button></li>
                                             <li><button class="btn-kaart" tooltipPlacement="bottom" tooltip="Handleiding"><i class="material-icons">description</i></button></li>-->
-                                            <li><button class="btn-kaart" [class]="identifyActive ? 'btn-kaart active' : 'btn-kaart'" tooltipPlacement="bottom" tooltip="Detailgegevens" (click)="toggleIdentify.emit($event)"><i class="material-icons">info</i></button></li>
+                                            <li *ngIf="canShowButton('identify')"><button [class]="identifyActive ? 'btn-kaart active' : 'btn-kaart'" tooltipPlacement="bottom" tooltip="Detailgegevens" (click)="toggleIdentify.emit($event)"><i class="material-icons">info</i></button></li>
                                             <!--<li><button class="btn-kaart" tooltipPlacement="bottom" tooltip="Afdrukken"><i class="material-icons">print</i></button></li>-->
                                         </ul>
                                     </accordion-group>
@@ -56,10 +56,10 @@ import {Extent} from 'esri-mods';
 })
 export class MapMenuComponent {
     @Input() settings: any;
-    @Output() toInitialExtent = new EventEmitter();  
-    @Output() toggleIdentify = new EventEmitter();     
+    @Output() toInitialExtent = new EventEmitter();
+    @Output() toggleIdentify = new EventEmitter();
 
-    public oneAtATime: boolean = true;    
+    public oneAtATime: boolean = true;
     public identifyActive: boolean = false;
 
     constructor() {
@@ -70,4 +70,13 @@ export class MapMenuComponent {
         isFirstOpen: true,
         isFirstDisabled: false
     };
+
+    public canShowButton(controlName: string) {
+
+        if (!this.settings || !this.settings.controls) {
+            return false;
+        }
+
+        return this.settings.controls.indexOf(controlName) !== -1;
+    }
 }

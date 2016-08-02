@@ -7,4 +7,5 @@ export declare class MapMenuComponent {
     identifyActive: boolean;
     constructor();
     status: Object;
+    canShowButton(controlName: string): boolean;
 }
