@@ -16,7 +16,7 @@ import { IHaveDynamicData, CustomComponentBuilder } from './custom.component.bui
 export class DynamicHolder implements OnInit, OnChanges {
     @Input() entity: any;
     @Input() title: string;
-    @Input() template: string;
+    @Input() template: string;    
     private component: IHaveDynamicData;
 
     ngOnChanges() {

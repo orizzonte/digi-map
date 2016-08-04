@@ -34,9 +34,25 @@ System.register(['@angular/core', 'esri-mods', '../componentbuilder/dynamic.comp
                 }
                 MapIdentifyComponent.prototype.ngOnInit = function () {
                     var _this = this;
-                    this.onIdentify
-                        .subscribe(function (x) {
-                        _this.results = x;
+                    // Making sure we always change the array ref to trigger angulars change detection
+                    this.onIdentify.subscribe(function (res) {
+                        var newResults = [];
+                        var themesettings = _this.settings;
+                        if (_this.results) {
+                            _this.results.forEach(function (element) {
+                                newResults.push(element);
+                            });
+                        }
+                        newResults.push(res);
+                        //  Caclulate templates
+                        newResults.forEach(function (element) {
+                            var currentTheme = themesettings.themes.find(function (t) { return t.url === element.url; });
+                            element.layerResults.forEach(function (layer) {
+                                var templateMapping = currentTheme.identifyTemplateMappings.find(function (m) { return m.layerId === layer.layerId; });
+                                layer.templateId = templateMapping ? templateMapping.templateId : 'DefaultDigiMapTemplate';
+                            });
+                        });
+                        _this.results = newResults;
                     });
                     if (!this.settings || !this.settings.identify) {
                         this.isActive = false;
@@ -50,29 +66,40 @@ System.register(['@angular/core', 'esri-mods', '../componentbuilder/dynamic.comp
                     this.infoWindow.setContent(document.getElementById('popup-content'));
                     this.mapInstance.on('click', function (ev) {
                         if (_this.isActive) {
-                            var res_1 = [];
                             var self_1 = _this;
-                            _this.settings.identify.urls.forEach(function (url) {
+                            _this.results = undefined;
+                            _this.settings.themes.filter(function (f) { return f.identifyable; }).forEach(function (theme) {
+                                var identifyResult = { url: theme.url, layerResults: [] };
                                 // create identify tasks and setup parameters
-                                var identifyTask = new esri_mods_1.IdentifyTask(url);
+                                var identifyTask = new esri_mods_1.IdentifyTask(theme.url);
                                 var identifyParams = new esri_mods_1.IdentifyParameters();
                                 identifyParams.tolerance = 3;
                                 identifyParams.returnGeometry = true;
                                 identifyParams.layerOption = esri_mods_1.IdentifyParameters.LAYER_OPTION_VISIBLE;
                                 identifyParams.geometry = ev.mapPoint;
                                 identifyParams.mapExtent = self_1.mapInstance.extent;
+                                // callback proxy to pass along the identifyResult
+                                var callbackProxy = function (response) {
+                                    callbackFunc(response, identifyResult);
+                                    self_1.onIdentify.emit(identifyResult);
+                                };
                                 identifyTask
                                     .execute(identifyParams)
-                                    .addCallback(function (response) {
-                                    response.forEach(function (element) {
-                                        res_1.push(element);
-                                    });
-                                    self_1.onIdentify.emit(res_1);
-                                });
+                                    .addCallback(callbackProxy);
                             });
                             _this.infoWindow.show(ev.mapPoint);
                         }
                     });
+                    function callbackFunc(response, identifyResult) {
+                        response.forEach(function (element) {
+                            var layerResult = identifyResult.layerResults.find(function (x) { return x.layerId === element.layerId; });
+                            if (!layerResult) {
+                                layerResult = { layerId: element.layerId, data: [] };
+                                identifyResult.layerResults.push(layerResult);
+                            }
+                            layerResult.data.push(element);
+                        });
+                    }
                 };
                 MapIdentifyComponent.prototype.toggle = function () {
                     this.isActive = !this.isActive;
@@ -93,9 +120,7 @@ System.register(['@angular/core', 'esri-mods', '../componentbuilder/dynamic.comp
                 MapIdentifyComponent = __decorate([
                     core_1.Component({
                         selector: 'map-identify',
-                        template: "\t<div class='map-identify'>\t\t\t\t\t\n\t\t\t  \t</div>\n\t\t\t  \t<div id='popup'></div>\n\t\t\t\t<digi-identify-results [results]='results' [settings]=\"settings.identify\"></digi-identify-results>",
-                        styles: ['.map-identify button { z-index: 99999999999; }',
-                            '.active { background-color: green; color: white; }'],
+                        template: "\t<div class='map-identify'>\t\t\t\t\t\n\t\t\t  \t</div>\n\t\t\t  \t<div id='popup'></div>\n\t\t\t\t<digi-identify-results [results]='results' [settings]=\"settings\"></digi-identify-results>",
                         directives: [dynamic_component_holder_1.DynamicHolder, map_identify_results_component_1.IdentifyResultsComponent]
                     }), 
                     __metadata('design:paramtypes', [])

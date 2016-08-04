@@ -34,6 +34,14 @@ System.register(['@angular/core'], function(exports_1, context_1) {
                             }
                             return values;
                         };
+                        CustomDynamicComponent.prototype.outputEntity = function () {
+                            if (this.entity) {
+                                return JSON.stringify(this.entity);
+                            }
+                            else {
+                                return 'entity undefined';
+                            }
+                        };
                         CustomDynamicComponent = __decorate([
                             core_1.Component({
                                 selector: 'dynamic-component',

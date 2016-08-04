@@ -35,6 +35,15 @@ export class CustomComponentBuilder {
 
                 return values;
             }
+
+            outputEntity() {
+                if (this.entity) {
+                    return JSON.stringify(this.entity);
+                } else {
+                    return 'entity undefined';
+                }
+            }
+
         };
 
         return CustomDynamicComponent;

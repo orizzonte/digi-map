@@ -99,11 +99,13 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                     // Check if themes is defined
                     if (this.settings.themes !== undefined) {
                         this.settings.themes.forEach(function (theme) {
-                            if (theme.type === 'dynamic') {
-                                _this.themes.push(new esri_mods_1.ArcGISDynamicMapServiceLayer(theme.url));
-                            }
-                            else {
-                                _this.themes.push(new esri_mods_1.ArcGISTiledMapServiceLayer(theme.url));
+                            switch (theme.type) {
+                                case 'dynamic':
+                                    _this.themes.push(new esri_mods_1.ArcGISDynamicMapServiceLayer(theme.url));
+                                    break;
+                                case 'tiled':
+                                    _this.themes.push(new esri_mods_1.ArcGISTiledMapServiceLayer(theme.url));
+                                    break;
                             }
                         });
                         this.currentMap.addLayers(this.themes);
@@ -138,7 +140,7 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                 MapComponent = __decorate([
                     core_1.Component({
                         selector: 'esri-map',
-                        template: " <div id=\"map\">\n                    <map-navigation [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-navigation>\n                    <map-identify *ngIf=\"useIdentifyControl\" [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-identify>\n                    <map-draw *ngIf=\"useDrawControl\" [mapInstance]=\"currentMap\"></map-draw>\n                    <map-edit *ngIf=\"useEditControl\" [mapInstance]=\"currentMap\"></map-edit> \n                    <map-menu [settings]=\"settings\"\n                        (toInitialExtent)=\"navigation.toInitialExtent($event)\"\n                        (toggleIdentify)=\"identify.toggle($event)\">\n                    </map-menu>                   \n                    <ng-content></ng-content>\n                </div>",
+                        template: " <div id=\"map\">\n                    <map-navigation [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-navigation>\n                    <map-identify *ngIf=\"useIdentifyControl\" [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-identify>\n                    <map-draw *ngIf=\"useDrawControl\" [mapInstance]=\"currentMap\"></map-draw>\n                    <map-edit *ngIf=\"useEditControl\" [mapInstance]=\"currentMap\"></map-edit> \n                    <ng-content></ng-content>\n                    <map-menu [settings]=\"settings\"\n                        (toInitialExtent)=\"navigation.toInitialExtent($event)\"\n                        (toggleIdentify)=\"identify.toggle($event)\">\n                    </map-menu>\n                </div>",
                         directives: [map_identify_component_1.MapIdentifyComponent, map_draw_component_1.MapDrawComponent, map_edit_component_1.MapEditComponent, map_menu_component_1.MapMenuComponent, map_navigation_component_1.MapNavigationComponent]
                     }), 
                     __metadata('design:paramtypes', [core_1.ElementRef])

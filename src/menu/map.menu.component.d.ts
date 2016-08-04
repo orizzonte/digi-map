@@ -1,6 +1,7 @@
 import { EventEmitter } from '@angular/core';
+import { MapSettings } from '../map.settings';
 export declare class MapMenuComponent {
-    settings: any;
+    settings: MapSettings;
     toInitialExtent: EventEmitter<{}>;
     toggleIdentify: EventEmitter<{}>;
     oneAtATime: boolean;

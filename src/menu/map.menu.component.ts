@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {TOOLTIP_DIRECTIVES, TAB_DIRECTIVES, ACCORDION_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 import {TogglerComponent} from '../ui/toggler/toggler';
 import {Extent} from 'esri-mods';
+import {MapSettings} from '../map.settings';
 
 @Component({
     selector: 'map-menu',
@@ -55,7 +56,7 @@ import {Extent} from 'esri-mods';
     directives: [TOOLTIP_DIRECTIVES, TAB_DIRECTIVES, TogglerComponent, ACCORDION_DIRECTIVES]
 })
 export class MapMenuComponent {
-    @Input() settings: any;
+    @Input() settings: MapSettings;
     @Output() toInitialExtent = new EventEmitter();
     @Output() toggleIdentify = new EventEmitter();
 

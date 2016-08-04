@@ -34,10 +34,10 @@ System.register(['@angular/core', 'esri-mods'], function(exports_1, context_1) {
                     // Check if extent is defined
                     if (this.settings.extent !== undefined) {
                         this.initialExtent = new esri_mods_1.Extent({
-                            xmin: this.settings.extent[0],
-                            ymin: this.settings.extent[1],
-                            xmax: this.settings.extent[2],
-                            ymax: this.settings.extent[3],
+                            xmin: this.settings.extent.xmin,
+                            ymin: this.settings.extent.ymin,
+                            xmax: this.settings.extent.xmax,
+                            ymax: this.settings.extent.ymax,
                             spatialReference: new esri_mods_1.SpatialReference({ wkid: 31370 })
                         });
                         this.zoomToExtent(this.initialExtent);

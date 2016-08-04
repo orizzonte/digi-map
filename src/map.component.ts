@@ -5,6 +5,8 @@ import { MapDrawComponent } from './draw/map.draw.component';
 import { MapEditComponent } from './edit/map.edit.component';
 import { MapMenuComponent } from './menu/map.menu.component';
 import { MapNavigationComponent } from './navigation/map.navigation.component';
+import { MapSettings } from './map.settings';
+
 
 export class MapControl {
     name: string;
@@ -23,16 +25,16 @@ export class MapControl {
                     <map-identify *ngIf="useIdentifyControl" [mapInstance]="currentMap" [settings]="settings"></map-identify>
                     <map-draw *ngIf="useDrawControl" [mapInstance]="currentMap"></map-draw>
                     <map-edit *ngIf="useEditControl" [mapInstance]="currentMap"></map-edit> 
+                    <ng-content></ng-content>
                     <map-menu [settings]="settings"
                         (toInitialExtent)="navigation.toInitialExtent($event)"
                         (toggleIdentify)="identify.toggle($event)">
-                    </map-menu>                   
-                    <ng-content></ng-content>
+                    </map-menu>
                 </div>`,
     directives: [MapIdentifyComponent, MapDrawComponent, MapEditComponent, MapMenuComponent, MapNavigationComponent]
 })
 export class MapComponent {
-    @Input() settings: any;
+    @Input() settings: MapSettings;
     @Output() mapLoaded = new EventEmitter();
 
     @ViewChild(MapNavigationComponent) navigation: MapNavigationComponent;
@@ -105,10 +107,14 @@ export class MapComponent {
         // Check if themes is defined
         if (this.settings.themes !== undefined) {
             this.settings.themes.forEach((theme) => {
-                if (theme.type === 'dynamic') {
-                    this.themes.push(new ArcGISDynamicMapServiceLayer(theme.url));
-                } else {
-                    this.themes.push(new ArcGISTiledMapServiceLayer(theme.url));
+
+                switch (theme.type) {
+                    case 'dynamic':
+                        this.themes.push(new ArcGISDynamicMapServiceLayer(theme.url));
+                        break;
+                    case 'tiled':
+                        this.themes.push(new ArcGISTiledMapServiceLayer(theme.url));
+                        break;
                 }
             });
 

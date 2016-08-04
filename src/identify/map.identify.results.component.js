@@ -23,25 +23,66 @@ System.register(['@angular/core', '../componentbuilder/dynamic.component.holder'
         execute: function() {
             IdentifyResultsComponent = (function () {
                 function IdentifyResultsComponent() {
+                    this.changeTemplate = new core_1.EventEmitter();
+                    this.dropDownResults = [];
                 }
+                IdentifyResultsComponent.prototype.calculateDropDownResults = function () {
+                    var _this = this;
+                    if (!this.results) {
+                        return undefined;
+                    }
+                    var values = [];
+                    this.results.forEach(function (element) {
+                        element.layerResults.forEach(function (layer) {
+                            layer.data.forEach(function (d) {
+                                values.push({ layerName: d.layerName, value: d.value, data: d, template: _this.findTemplate(layer.templateId) });
+                            });
+                        });
+                    });
+                    return values;
+                };
+                // output() {
+                //     if (!this.currentResult) {
+                //         return "currentResult undefined";
+                //     } else {
+                //         return 'currentResult defined';
+                //     }
+                // }
+                // outputTemplate() {
+                //     if (!this.currentTemplate) {
+                //         return "currentTemplate undefined";
+                //     } else {
+                //         return 'currentTemplate : ' + JSON.stringify(this.currentTemplate);
+                //     }
+                // }
+                IdentifyResultsComponent.prototype.findTemplate = function (templateId) {
+                    return this.settings.identify.templates.find(function (x) { return x.id === templateId; }).html;
+                };
                 IdentifyResultsComponent.prototype.ngOnInit = function () {
-                    if (this.settings && this.settings.template && this.settings.template !== '') {
-                        this.detailTemplate = this.settings.template;
-                    }
-                    else {
-                        this.detailTemplate = "\n                <ul>\n                    <li *ngFor=\"let attribute of toArray(entity.feature.attributes)\">\n                        {{attribute?.key}} : {{attribute?.value}}\n                    </li>\n                </ul>";
-                    }
+                    var _this = this;
+                    var defaultDigimapTemplate = "        \n                <ul *ngIf=\"entity\">                \n                    <li *ngFor=\"let attribute of toArray(entity.feature.attributes)\">\n                        {{attribute?.key}} : {{attribute?.value}}\n                    </li>\n                </ul>";
+                    this.settings.identify.templates.push({ id: 'DefaultDigiMapTemplate', html: defaultDigimapTemplate });
+                    this.changeTemplate.subscribe(function (t) { return _this.currentTemplate = t; });
                 };
                 IdentifyResultsComponent.prototype.ngOnChanges = function () {
-                    if (this.results && this.results.length > 0) {
-                        this.currentResult = this.results[0];
+                    this.dropDownResults = this.calculateDropDownResults();
+                    if (this.dropDownResults && this.dropDownResults.length > 0) {
+                        this.currentResult = this.dropDownResults[0].data;
+                        this.currentTemplate = undefined;
+                        this.changeTemplate.emit(this.dropDownResults[0].template);
+                    }
+                    else {
+                        this.currentResult = undefined;
+                        this.currentTemplate = undefined;
                     }
                 };
                 IdentifyResultsComponent.prototype.resultName = function (result) {
                     return result.layerName + ': ' + result.value;
                 };
                 IdentifyResultsComponent.prototype.selectResult = function (index) {
-                    this.currentResult = this.results[index];
+                    this.currentResult = this.dropDownResults[index].data;
+                    this.currentTemplate = undefined;
+                    this.changeTemplate.emit(this.dropDownResults[index].template);
                 };
                 __decorate([
                     core_1.Input(), 
@@ -49,16 +90,16 @@ System.register(['@angular/core', '../componentbuilder/dynamic.component.holder'
                 ], IdentifyResultsComponent.prototype, "settings", void 0);
                 __decorate([
                     core_1.Input(), 
-                    __metadata('design:type', Object)
+                    __metadata('design:type', Array)
                 ], IdentifyResultsComponent.prototype, "results", void 0);
                 __decorate([
-                    core_1.Input(), 
-                    __metadata('design:type', String)
-                ], IdentifyResultsComponent.prototype, "detailTemplate", void 0);
+                    core_1.Output(), 
+                    __metadata('design:type', Object)
+                ], IdentifyResultsComponent.prototype, "changeTemplate", void 0);
                 IdentifyResultsComponent = __decorate([
                     core_1.Component({
                         selector: 'digi-identify-results',
-                        template: " <div style=\"display:none\">\n                    <div id=\"popup-content\">  \n                        <div *ngIf=\"results && results.length>0\">\n                            <select (change)=\"selectResult($event.target.value)\" *ngIf=\"results.length>1\">\n                                <option *ngFor=\"let result of results; let i=index\" [value]=\"i\">{{resultName(result)}}</option>                           \n                            </select>                     \n\n                            <div>\n                                <dynamic-holder [entity]=\"currentResult\" [title]=\"'Details'\" [template]=\"detailTemplate\" *ngIf=\"currentResult\"></dynamic-holder>                            \n                            </div> \n                        </div> \n                          <div *ngIf=\"!results || results.length==0\">Geen resultaten gevonden</div>                                      \n                    </div>\n                </div>",
+                        template: " <div style=\"display:none\">\n                    <div id=\"popup-content\">                     \n                        <div *ngIf=\"dropDownResults && dropDownResults.length > 0\">\n                            <select (change)=\"selectResult($event.target.value)\">\n                                <option *ngFor=\"let result of dropDownResults; let i=index\" [value]=\"i\">{{resultName(result)}}</option>                           \n                            </select>  \n\n                            <dynamic-holder [entity]=\"currentResult\" [title]=\"'Details'\" [template]=\"currentTemplate\" *ngIf=\"currentResult && currentTemplate\"></dynamic-holder>                           \n                        </div>                      \n                       \n                        <div *ngIf=\"!dropDownResults || dropDownResults.length==0\">Geen resultaten gevonden</div>  \n\n                    </div>\n                </div>",
                         directives: [dynamic_component_holder_1.DynamicHolder]
                     }), 
                     __metadata('design:paramtypes', [])

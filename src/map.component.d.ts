@@ -4,6 +4,7 @@ import { MapIdentifyComponent } from './identify/map.identify.component';
 import { MapDrawComponent } from './draw/map.draw.component';
 import { MapEditComponent } from './edit/map.edit.component';
 import { MapNavigationComponent } from './navigation/map.navigation.component';
+import { MapSettings } from './map.settings';
 export declare class MapControl {
     name: string;
     control: any;
@@ -11,7 +12,7 @@ export declare class MapControl {
 }
 export declare class MapComponent {
     private elRef;
-    settings: any;
+    settings: MapSettings;
     mapLoaded: EventEmitter<{}>;
     navigation: MapNavigationComponent;
     identify: MapIdentifyComponent;

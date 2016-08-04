@@ -1,8 +1,9 @@
 import { OnInit } from '@angular/core';
 import { map, Extent } from 'esri-mods';
+import { MapSettings } from '../map.settings';
 export declare class MapNavigationComponent implements OnInit {
     mapInstance: map;
-    settings: any;
+    settings: MapSettings;
     private initialExtent;
     toInitialExtent(): void;
     zoomToExtent(extent: Extent): void;

@@ -1,11 +1,13 @@
 import { OnInit, EventEmitter } from '@angular/core';
 import { map } from 'esri-mods';
+import { MapSettings } from '../map.settings';
+import { IdentifyMapServerResult } from './identify.result';
 export declare class MapIdentifyComponent implements OnInit {
     mapInstance: map;
-    settings: any;
-    onIdentify: EventEmitter<{}>;
+    settings: MapSettings;
+    onIdentify: EventEmitter<IdentifyMapServerResult>;
     isActive: boolean;
-    results: any;
+    results: IdentifyMapServerResult[];
     private infoWindow;
     private clickedPoint;
     ngOnInit(): void;

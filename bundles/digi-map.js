@@ -155,10 +155,10 @@ System.register("digi-map/src/navigation/map.navigation.component", ["@angular/c
         MapNavigationComponent.prototype.ngOnInit = function() {
           if (this.settings.extent !== undefined) {
             this.initialExtent = new esri_mods_1.Extent({
-              xmin: this.settings.extent[0],
-              ymin: this.settings.extent[1],
-              xmax: this.settings.extent[2],
-              ymax: this.settings.extent[3],
+              xmin: this.settings.extent.xmin,
+              ymin: this.settings.extent.ymin,
+              xmax: this.settings.extent.xmax,
+              ymax: this.settings.extent.ymax,
               spatialReference: new esri_mods_1.SpatialReference({wkid: 31370})
             });
             this.zoomToExtent(this.initialExtent);
@@ -286,10 +286,13 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
           });
           if (this.settings.themes !== undefined) {
             this.settings.themes.forEach(function(theme) {
-              if (theme.type === 'dynamic') {
-                _this.themes.push(new esri_mods_1.ArcGISDynamicMapServiceLayer(theme.url));
-              } else {
-                _this.themes.push(new esri_mods_1.ArcGISTiledMapServiceLayer(theme.url));
+              switch (theme.type) {
+                case 'dynamic':
+                  _this.themes.push(new esri_mods_1.ArcGISDynamicMapServiceLayer(theme.url));
+                  break;
+                case 'tiled':
+                  _this.themes.push(new esri_mods_1.ArcGISTiledMapServiceLayer(theme.url));
+                  break;
               }
             });
             this.currentMap.addLayers(this.themes);
@@ -307,7 +310,7 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
         __decorate([core_1.ViewChild(map_edit_component_1.MapEditComponent), __metadata('design:type', map_edit_component_1.MapEditComponent)], MapComponent.prototype, "edit", void 0);
         MapComponent = __decorate([core_1.Component({
           selector: 'esri-map',
-          template: " <div id=\"map\">\n                    <map-navigation [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-navigation>\n                    <map-identify *ngIf=\"useIdentifyControl\" [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-identify>\n                    <map-draw *ngIf=\"useDrawControl\" [mapInstance]=\"currentMap\"></map-draw>\n                    <map-edit *ngIf=\"useEditControl\" [mapInstance]=\"currentMap\"></map-edit> \n                    <map-menu [settings]=\"settings\"\n                        (toInitialExtent)=\"navigation.toInitialExtent($event)\"\n                        (toggleIdentify)=\"identify.toggle($event)\">\n                    </map-menu>                   \n                    <ng-content></ng-content>\n                </div>",
+          template: " <div id=\"map\">\n                    <map-navigation [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-navigation>\n                    <map-identify *ngIf=\"useIdentifyControl\" [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-identify>\n                    <map-draw *ngIf=\"useDrawControl\" [mapInstance]=\"currentMap\"></map-draw>\n                    <map-edit *ngIf=\"useEditControl\" [mapInstance]=\"currentMap\"></map-edit> \n                    <ng-content></ng-content>\n                    <map-menu [settings]=\"settings\"\n                        (toInitialExtent)=\"navigation.toInitialExtent($event)\"\n                        (toggleIdentify)=\"identify.toggle($event)\">\n                    </map-menu>\n                </div>",
           directives: [map_identify_component_1.MapIdentifyComponent, map_draw_component_1.MapDrawComponent, map_edit_component_1.MapEditComponent, map_menu_component_1.MapMenuComponent, map_navigation_component_1.MapNavigationComponent]
         }), __metadata('design:paramtypes', [core_1.ElementRef])], MapComponent);
         return MapComponent;
@@ -359,6 +362,13 @@ System.register("digi-map/src/componentbuilder/custom.component.builder", ["@ang
                 }
               }
               return values;
+            };
+            CustomDynamicComponent.prototype.outputEntity = function() {
+              if (this.entity) {
+                return JSON.stringify(this.entity);
+              } else {
+                return 'entity undefined';
+              }
             };
             CustomDynamicComponent = __decorate([core_1.Component({
               selector: 'dynamic-component',
@@ -478,31 +488,71 @@ System.register("digi-map/src/identify/map.identify.results.component", ["@angul
     }],
     execute: function() {
       IdentifyResultsComponent = (function() {
-        function IdentifyResultsComponent() {}
-        IdentifyResultsComponent.prototype.ngOnInit = function() {
-          if (this.settings && this.settings.template && this.settings.template !== '') {
-            this.detailTemplate = this.settings.template;
-          } else {
-            this.detailTemplate = "\n                <ul>\n                    <li *ngFor=\"let attribute of toArray(entity.feature.attributes)\">\n                        {{attribute?.key}} : {{attribute?.value}}\n                    </li>\n                </ul>";
+        function IdentifyResultsComponent() {
+          this.changeTemplate = new core_1.EventEmitter();
+          this.dropDownResults = [];
+        }
+        IdentifyResultsComponent.prototype.calculateDropDownResults = function() {
+          var _this = this;
+          if (!this.results) {
+            return undefined;
           }
+          var values = [];
+          this.results.forEach(function(element) {
+            element.layerResults.forEach(function(layer) {
+              layer.data.forEach(function(d) {
+                values.push({
+                  layerName: d.layerName,
+                  value: d.value,
+                  data: d,
+                  template: _this.findTemplate(layer.templateId)
+                });
+              });
+            });
+          });
+          return values;
+        };
+        IdentifyResultsComponent.prototype.findTemplate = function(templateId) {
+          return this.settings.identify.templates.find(function(x) {
+            return x.id === templateId;
+          }).html;
+        };
+        IdentifyResultsComponent.prototype.ngOnInit = function() {
+          var _this = this;
+          var defaultDigimapTemplate = "        \n                <ul *ngIf=\"entity\">                \n                    <li *ngFor=\"let attribute of toArray(entity.feature.attributes)\">\n                        {{attribute?.key}} : {{attribute?.value}}\n                    </li>\n                </ul>";
+          this.settings.identify.templates.push({
+            id: 'DefaultDigiMapTemplate',
+            html: defaultDigimapTemplate
+          });
+          this.changeTemplate.subscribe(function(t) {
+            return _this.currentTemplate = t;
+          });
         };
         IdentifyResultsComponent.prototype.ngOnChanges = function() {
-          if (this.results && this.results.length > 0) {
-            this.currentResult = this.results[0];
+          this.dropDownResults = this.calculateDropDownResults();
+          if (this.dropDownResults && this.dropDownResults.length > 0) {
+            this.currentResult = this.dropDownResults[0].data;
+            this.currentTemplate = undefined;
+            this.changeTemplate.emit(this.dropDownResults[0].template);
+          } else {
+            this.currentResult = undefined;
+            this.currentTemplate = undefined;
           }
         };
         IdentifyResultsComponent.prototype.resultName = function(result) {
           return result.layerName + ': ' + result.value;
         };
         IdentifyResultsComponent.prototype.selectResult = function(index) {
-          this.currentResult = this.results[index];
+          this.currentResult = this.dropDownResults[index].data;
+          this.currentTemplate = undefined;
+          this.changeTemplate.emit(this.dropDownResults[index].template);
         };
         __decorate([core_1.Input(), __metadata('design:type', Object)], IdentifyResultsComponent.prototype, "settings", void 0);
-        __decorate([core_1.Input(), __metadata('design:type', Object)], IdentifyResultsComponent.prototype, "results", void 0);
-        __decorate([core_1.Input(), __metadata('design:type', String)], IdentifyResultsComponent.prototype, "detailTemplate", void 0);
+        __decorate([core_1.Input(), __metadata('design:type', Array)], IdentifyResultsComponent.prototype, "results", void 0);
+        __decorate([core_1.Output(), __metadata('design:type', Object)], IdentifyResultsComponent.prototype, "changeTemplate", void 0);
         IdentifyResultsComponent = __decorate([core_1.Component({
           selector: 'digi-identify-results',
-          template: " <div style=\"display:none\">\n                    <div id=\"popup-content\">  \n                        <div *ngIf=\"results && results.length>0\">\n                            <select (change)=\"selectResult($event.target.value)\" *ngIf=\"results.length>1\">\n                                <option *ngFor=\"let result of results; let i=index\" [value]=\"i\">{{resultName(result)}}</option>                           \n                            </select>                     \n\n                            <div>\n                                <dynamic-holder [entity]=\"currentResult\" [title]=\"'Details'\" [template]=\"detailTemplate\" *ngIf=\"currentResult\"></dynamic-holder>                            \n                            </div> \n                        </div> \n                          <div *ngIf=\"!results || results.length==0\">Geen resultaten gevonden</div>                                      \n                    </div>\n                </div>",
+          template: " <div style=\"display:none\">\n                    <div id=\"popup-content\">                     \n                        <div *ngIf=\"dropDownResults && dropDownResults.length > 0\">\n                            <select (change)=\"selectResult($event.target.value)\">\n                                <option *ngFor=\"let result of dropDownResults; let i=index\" [value]=\"i\">{{resultName(result)}}</option>                           \n                            </select>  \n\n                            <dynamic-holder [entity]=\"currentResult\" [title]=\"'Details'\" [template]=\"currentTemplate\" *ngIf=\"currentResult && currentTemplate\"></dynamic-holder>                           \n                        </div>                      \n                       \n                        <div *ngIf=\"!dropDownResults || dropDownResults.length==0\">Geen resultaten gevonden</div>  \n\n                    </div>\n                </div>",
           directives: [dynamic_component_holder_1.DynamicHolder]
         }), __metadata('design:paramtypes', [])], IdentifyResultsComponent);
         return IdentifyResultsComponent;
@@ -554,8 +604,27 @@ System.register("digi-map/src/identify/map.identify.component", ["@angular/core"
         }
         MapIdentifyComponent.prototype.ngOnInit = function() {
           var _this = this;
-          this.onIdentify.subscribe(function(x) {
-            _this.results = x;
+          this.onIdentify.subscribe(function(res) {
+            var newResults = [];
+            var themesettings = _this.settings;
+            if (_this.results) {
+              _this.results.forEach(function(element) {
+                newResults.push(element);
+              });
+            }
+            newResults.push(res);
+            newResults.forEach(function(element) {
+              var currentTheme = themesettings.themes.find(function(t) {
+                return t.url === element.url;
+              });
+              element.layerResults.forEach(function(layer) {
+                var templateMapping = currentTheme.identifyTemplateMappings.find(function(m) {
+                  return m.layerId === layer.layerId;
+                });
+                layer.templateId = templateMapping ? templateMapping.templateId : 'DefaultDigiMapTemplate';
+              });
+            });
+            _this.results = newResults;
           });
           if (!this.settings || !this.settings.identify) {
             this.isActive = false;
@@ -568,26 +637,46 @@ System.register("digi-map/src/identify/map.identify.component", ["@angular/core"
           this.infoWindow.setContent(document.getElementById('popup-content'));
           this.mapInstance.on('click', function(ev) {
             if (_this.isActive) {
-              var res_1 = [];
               var self_1 = _this;
-              _this.settings.identify.urls.forEach(function(url) {
-                var identifyTask = new esri_mods_1.IdentifyTask(url);
+              _this.results = undefined;
+              _this.settings.themes.filter(function(f) {
+                return f.identifyable;
+              }).forEach(function(theme) {
+                var identifyResult = {
+                  url: theme.url,
+                  layerResults: []
+                };
+                var identifyTask = new esri_mods_1.IdentifyTask(theme.url);
                 var identifyParams = new esri_mods_1.IdentifyParameters();
                 identifyParams.tolerance = 3;
                 identifyParams.returnGeometry = true;
                 identifyParams.layerOption = esri_mods_1.IdentifyParameters.LAYER_OPTION_VISIBLE;
                 identifyParams.geometry = ev.mapPoint;
                 identifyParams.mapExtent = self_1.mapInstance.extent;
-                identifyTask.execute(identifyParams).addCallback(function(response) {
-                  response.forEach(function(element) {
-                    res_1.push(element);
-                  });
-                  self_1.onIdentify.emit(res_1);
-                });
+                var callbackProxy = function(response) {
+                  callbackFunc(response, identifyResult);
+                  self_1.onIdentify.emit(identifyResult);
+                };
+                identifyTask.execute(identifyParams).addCallback(callbackProxy);
               });
               _this.infoWindow.show(ev.mapPoint);
             }
           });
+          function callbackFunc(response, identifyResult) {
+            response.forEach(function(element) {
+              var layerResult = identifyResult.layerResults.find(function(x) {
+                return x.layerId === element.layerId;
+              });
+              if (!layerResult) {
+                layerResult = {
+                  layerId: element.layerId,
+                  data: []
+                };
+                identifyResult.layerResults.push(layerResult);
+              }
+              layerResult.data.push(element);
+            });
+          }
         };
         MapIdentifyComponent.prototype.toggle = function() {
           this.isActive = !this.isActive;
@@ -598,8 +687,7 @@ System.register("digi-map/src/identify/map.identify.component", ["@angular/core"
         __decorate([core_1.Output(), __metadata('design:type', Object)], MapIdentifyComponent.prototype, "onIdentify", void 0);
         MapIdentifyComponent = __decorate([core_1.Component({
           selector: 'map-identify',
-          template: "\t<div class='map-identify'>\t\t\t\t\t\n\t\t\t  \t</div>\n\t\t\t  \t<div id='popup'></div>\n\t\t\t\t<digi-identify-results [results]='results' [settings]=\"settings.identify\"></digi-identify-results>",
-          styles: ['.map-identify button { z-index: 99999999999; }', '.active { background-color: green; color: white; }'],
+          template: "\t<div class='map-identify'>\t\t\t\t\t\n\t\t\t  \t</div>\n\t\t\t  \t<div id='popup'></div>\n\t\t\t\t<digi-identify-results [results]='results' [settings]=\"settings\"></digi-identify-results>",
           directives: [dynamic_component_holder_1.DynamicHolder, map_identify_results_component_1.IdentifyResultsComponent]
         }), __metadata('design:paramtypes', [])], MapIdentifyComponent);
         return MapIdentifyComponent;
