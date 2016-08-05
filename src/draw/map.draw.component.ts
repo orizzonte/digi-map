@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { map, draw, graphic, SimpleLineSymbol, SimpleFillSymbol } from 'esri-mods';
+import { map, draw, graphic, SimpleLineSymbol, SimpleFillSymbol, Color } from 'esri-mods';
 import { Subject, Observable } from 'rxjs/Rx';
 
 export enum GeometryType {
@@ -37,26 +37,31 @@ export class MapDrawComponent implements OnInit {
 
 		// Add shape to map
         this.drawToolbar.on('draw-complete', (ev) => {
-    	    let symbol;
+			let symbol;
             switch (ev.geometry.type) {
                 case 'polyline':
-                    symbol = new SimpleLineSymbol();
+					let line = new SimpleLineSymbol();
+					line.setColor(new Color('#ff2800'));
+					line.setWidth(2);
+                    symbol = line;
                     break;
                 default:
-                    symbol = new SimpleFillSymbol();
+					let fill = new SimpleFillSymbol();
+					fill.setColor(new Color('#ff2800'));			
+                    symbol = fill;
                     break;
             }
 
             let shape = new graphic(ev.geometry, symbol);
             this.mapInstance.graphics.add(shape);
-        	
-        	this.deactivate();
-        	this.drawCompleteSubject.next(ev);
+
+			this.deactivate();
+			this.drawCompleteSubject.next(ev);
         });
 	}
 
 	activate(geometryType: GeometryType) {
-		switch(geometryType) {
+		switch (geometryType) {
 			case GeometryType.Multiline:
 				this.drawToolbar.activate(draw.POLYLINE);
 				break;

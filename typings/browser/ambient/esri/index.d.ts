@@ -25,6 +25,7 @@
     export import jsonUtils = require('esri/geometry/jsonUtils');
     export import IdentifyTask = require('esri/tasks/IdentifyTask');
     export import IdentifyParameters = require('esri/tasks/IdentifyParameters');
+    export import Geometry = require("esri/geometry/Geometry");
   }
   
   declare module "esri" {

@@ -7,5 +7,6 @@ export declare class MapNavigationComponent implements OnInit {
     private initialExtent;
     toInitialExtent(): void;
     zoomToExtent(extent: Extent): void;
+    zoomToGeometry(geometry: any): void;
     ngOnInit(): void;
 }

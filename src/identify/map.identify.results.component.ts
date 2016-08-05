@@ -47,23 +47,7 @@ export class IdentifyResultsComponent implements OnInit, OnChanges {
         });
 
         return values;
-    }
-
-    // output() {
-    //     if (!this.currentResult) {
-    //         return "currentResult undefined";
-    //     } else {
-    //         return 'currentResult defined';
-    //     }
-    // }
-
-    // outputTemplate() {
-    //     if (!this.currentTemplate) {
-    //         return "currentTemplate undefined";
-    //     } else {
-    //         return 'currentTemplate : ' + JSON.stringify(this.currentTemplate);
-    //     }
-    // }
+    }   
 
     findTemplate(templateId: string) {
         return this.settings.identify.templates.find(x => x.id === templateId).html;

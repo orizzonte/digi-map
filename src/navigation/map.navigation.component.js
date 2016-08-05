@@ -28,7 +28,11 @@ System.register(['@angular/core', 'esri-mods'], function(exports_1, context_1) {
                     this.zoomToExtent(this.initialExtent);
                 };
                 MapNavigationComponent.prototype.zoomToExtent = function (extent) {
-                    this.mapInstance.setExtent(extent);
+                    this.mapInstance.setExtent(extent, true);
+                };
+                MapNavigationComponent.prototype.zoomToGeometry = function (geometry) {
+                    geometry.setSpatialReference(new esri_mods_1.SpatialReference({ wkid: 31370 }));
+                    this.zoomToExtent(geometry.getExtent());
                 };
                 MapNavigationComponent.prototype.ngOnInit = function () {
                     // Check if extent is defined

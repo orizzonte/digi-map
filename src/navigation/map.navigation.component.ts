@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { map, Extent, SpatialReference } from 'esri-mods';
+import { map, Extent, SpatialReference, Geometry, Polygon } from 'esri-mods';
 import { Subject, Observable } from 'rxjs/Rx';
 import { MapSettings } from '../map.settings';
 
@@ -17,7 +17,12 @@ export class MapNavigationComponent implements OnInit {
     }
 
     zoomToExtent(extent: Extent) {
-        this.mapInstance.setExtent(extent);
+        this.mapInstance.setExtent(extent, true);
+    }
+
+    zoomToGeometry(geometry: any) {
+        geometry.setSpatialReference(new SpatialReference({ wkid: 31370 }));
+        this.zoomToExtent(geometry.getExtent());
     }
 
     ngOnInit() {

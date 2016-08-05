@@ -38,7 +38,10 @@ System.register(['@angular/core', 'esri-mods', 'rxjs/Rx'], function(exports_1, c
                 };
                 MapEditComponent.prototype.activate = function () {
                     var graphicToEdit = this.mapInstance.graphics.graphics[0];
-                    this.editToolbar.activate(esri_mods_1.edit.EDIT_VERTICES, graphicToEdit);
+                    this.editToolbar.activate(esri_mods_1.edit.EDIT_VERTICES, graphicToEdit, {
+                        boxLineSymbol: new esri_mods_1.SimpleLineSymbol(esri_mods_1.SimpleLineSymbol.STYLE_DASH, new esri_mods_1.Color('ff2800'), 2),
+                        ghostLineSymbol: new esri_mods_1.SimpleLineSymbol(esri_mods_1.SimpleLineSymbol.STYLE_DASH, new esri_mods_1.Color('ff2800'), 2)
+                    });
                     this.activateSubject.next(null);
                 };
                 MapEditComponent.prototype.deactivate = function () {

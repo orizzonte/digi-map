@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { map, edit, graphic } from 'esri-mods';
+import { map, edit, graphic, SimpleLineSymbol, Color } from 'esri-mods';
 import { Subject, Observable } from 'rxjs/Rx';
 
 @Component({
@@ -30,7 +30,12 @@ export class MapEditComponent implements OnInit {
 
 	activate() {
 		let graphicToEdit = this.mapInstance.graphics.graphics[0];
-		this.editToolbar.activate(edit.EDIT_VERTICES, graphicToEdit);
+		this.editToolbar.activate(edit.EDIT_VERTICES, graphicToEdit,
+			{
+				boxLineSymbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASH, new Color('ff2800'), 2),
+				ghostLineSymbol: new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASH, new Color('ff2800'), 2)
+			});
+
 		this.activateSubject.next(null);
 	}
 

@@ -48,10 +48,15 @@ System.register(['@angular/core', 'esri-mods', 'rxjs/Rx'], function(exports_1, c
                         var symbol;
                         switch (ev.geometry.type) {
                             case 'polyline':
-                                symbol = new esri_mods_1.SimpleLineSymbol();
+                                var line = new esri_mods_1.SimpleLineSymbol();
+                                line.setColor(new esri_mods_1.Color('#ff2800'));
+                                line.setWidth(2);
+                                symbol = line;
                                 break;
                             default:
-                                symbol = new esri_mods_1.SimpleFillSymbol();
+                                var fill = new esri_mods_1.SimpleFillSymbol();
+                                fill.setColor(new esri_mods_1.Color('#ff2800'));
+                                symbol = fill;
                                 break;
                         }
                         var shape = new esri_mods_1.graphic(ev.geometry, symbol);

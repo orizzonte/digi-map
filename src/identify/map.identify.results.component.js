@@ -41,27 +41,14 @@ System.register(['@angular/core', '../componentbuilder/dynamic.component.holder'
                     });
                     return values;
                 };
-                // output() {
-                //     if (!this.currentResult) {
-                //         return "currentResult undefined";
-                //     } else {
-                //         return 'currentResult defined';
-                //     }
-                // }
-                // outputTemplate() {
-                //     if (!this.currentTemplate) {
-                //         return "currentTemplate undefined";
-                //     } else {
-                //         return 'currentTemplate : ' + JSON.stringify(this.currentTemplate);
-                //     }
-                // }
                 IdentifyResultsComponent.prototype.findTemplate = function (templateId) {
                     return this.settings.identify.templates.find(function (x) { return x.id === templateId; }).html;
                 };
                 IdentifyResultsComponent.prototype.ngOnInit = function () {
                     var _this = this;
-                    var defaultDigimapTemplate = "        \n                <ul *ngIf=\"entity\">                \n                    <li *ngFor=\"let attribute of toArray(entity.feature.attributes)\">\n                        {{attribute?.key}} : {{attribute?.value}}\n                    </li>\n                </ul>";
+                    var defaultDigimapTemplate = "        \n                <ul *ngIf=\"entity\">                \n                    <li *ngFor=\"let attribute of toArray(entity.feature.attributes)\">\n                        <label>{{attribute?.key}} :</label> {{attribute?.value}}\n                    </li>\n                </ul>";
                     this.settings.identify.templates.push({ id: 'DefaultDigiMapTemplate', html: defaultDigimapTemplate });
+                    // Needed to trigger the recreation of the dynamic template
                     this.changeTemplate.subscribe(function (t) { return _this.currentTemplate = t; });
                 };
                 IdentifyResultsComponent.prototype.ngOnChanges = function () {

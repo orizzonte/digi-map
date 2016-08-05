@@ -150,7 +150,11 @@ System.register("digi-map/src/navigation/map.navigation.component", ["@angular/c
           this.zoomToExtent(this.initialExtent);
         };
         MapNavigationComponent.prototype.zoomToExtent = function(extent) {
-          this.mapInstance.setExtent(extent);
+          this.mapInstance.setExtent(extent, true);
+        };
+        MapNavigationComponent.prototype.zoomToGeometry = function(geometry) {
+          geometry.setSpatialReference(new esri_mods_1.SpatialReference({wkid: 31370}));
+          this.zoomToExtent(geometry.getExtent());
         };
         MapNavigationComponent.prototype.ngOnInit = function() {
           if (this.settings.extent !== undefined) {
@@ -519,7 +523,7 @@ System.register("digi-map/src/identify/map.identify.results.component", ["@angul
         };
         IdentifyResultsComponent.prototype.ngOnInit = function() {
           var _this = this;
-          var defaultDigimapTemplate = "        \n                <ul *ngIf=\"entity\">                \n                    <li *ngFor=\"let attribute of toArray(entity.feature.attributes)\">\n                        {{attribute?.key}} : {{attribute?.value}}\n                    </li>\n                </ul>";
+          var defaultDigimapTemplate = "        \n                <ul *ngIf=\"entity\">                \n                    <li *ngFor=\"let attribute of toArray(entity.feature.attributes)\">\n                        <label>{{attribute?.key}} :</label> {{attribute?.value}}\n                    </li>\n                </ul>";
           this.settings.identify.templates.push({
             id: 'DefaultDigiMapTemplate',
             html: defaultDigimapTemplate
@@ -751,10 +755,15 @@ System.register("digi-map/src/draw/map.draw.component", ["@angular/core", "esri-
             var symbol;
             switch (ev.geometry.type) {
               case 'polyline':
-                symbol = new esri_mods_1.SimpleLineSymbol();
+                var line = new esri_mods_1.SimpleLineSymbol();
+                line.setColor(new esri_mods_1.Color('#ff2800'));
+                line.setWidth(2);
+                symbol = line;
                 break;
               default:
-                symbol = new esri_mods_1.SimpleFillSymbol();
+                var fill = new esri_mods_1.SimpleFillSymbol();
+                fill.setColor(new esri_mods_1.Color('#ff2800'));
+                symbol = fill;
                 break;
             }
             var shape = new esri_mods_1.graphic(ev.geometry, symbol);
@@ -836,7 +845,10 @@ System.register("digi-map/src/edit/map.edit.component", ["@angular/core", "esri-
         };
         MapEditComponent.prototype.activate = function() {
           var graphicToEdit = this.mapInstance.graphics.graphics[0];
-          this.editToolbar.activate(esri_mods_1.edit.EDIT_VERTICES, graphicToEdit);
+          this.editToolbar.activate(esri_mods_1.edit.EDIT_VERTICES, graphicToEdit, {
+            boxLineSymbol: new esri_mods_1.SimpleLineSymbol(esri_mods_1.SimpleLineSymbol.STYLE_DASH, new esri_mods_1.Color('ff2800'), 2),
+            ghostLineSymbol: new esri_mods_1.SimpleLineSymbol(esri_mods_1.SimpleLineSymbol.STYLE_DASH, new esri_mods_1.Color('ff2800'), 2)
+          });
           this.activateSubject.next(null);
         };
         MapEditComponent.prototype.deactivate = function() {
