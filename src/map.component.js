@@ -47,13 +47,13 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
             MapComponent = (function () {
                 function MapComponent(elRef) {
                     this.elRef = elRef;
+                    this.divId = 'map';
                     this.mapLoaded = new core_1.EventEmitter();
                     this.themes = [];
                     this.controls = [];
                     this.useIdentifyControl = false;
                     this.useDrawControl = false;
                     this.useEditControl = false;
-                    this.mapId = 'map1';
                     this.domElement = elRef.nativeElement;
                 }
                 MapComponent.prototype.ngAfterViewInit = function () {
@@ -71,7 +71,7 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                 MapComponent.prototype.ngOnInit = function () {
                     var _this = this;
                     var self = this;
-                    this.currentMap = new esri_mods_1.map(this.domElement);
+                    this.currentMap = new esri_mods_1.map(this.divId === 'map' ? 'map' : this.domElement);
                     // Apply map controls
                     if (this.settings.controls.indexOf('identify') !== -1) {
                         this.useIdentifyControl = true;
@@ -146,7 +146,7 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                 MapComponent = __decorate([
                     core_1.Component({
                         selector: 'esri-map',
-                        template: " <div [id]=\"divId\">\n                    <map-navigation [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-navigation>\n                    <map-identify *ngIf=\"useIdentifyControl\" [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-identify>\n                    <map-draw *ngIf=\"useDrawControl\" [mapInstance]=\"currentMap\"></map-draw>\n                    <map-edit *ngIf=\"useEditControl\" [mapInstance]=\"currentMap\"></map-edit> \n                    <ng-content></ng-content>\n                    <map-menu [settings]=\"settings\"\n                        (toInitialExtent)=\"navigation.toInitialExtent($event)\"\n                        (toggleIdentify)=\"identify.toggle($event)\">\n                    </map-menu>\n                </div>",
+                        template: " <div id='map' [id]=\"divId\">\n                    <map-navigation [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-navigation>\n                    <map-identify *ngIf=\"useIdentifyControl\" [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-identify>\n                    <map-draw *ngIf=\"useDrawControl\" [mapInstance]=\"currentMap\"></map-draw>\n                    <map-edit *ngIf=\"useEditControl\" [mapInstance]=\"currentMap\"></map-edit> \n                    <ng-content></ng-content>\n                    <map-menu [settings]=\"settings\"\n                        (toInitialExtent)=\"navigation.toInitialExtent($event)\"\n                        (toggleIdentify)=\"identify.toggle($event)\">\n                    </map-menu>\n                </div>",
                         directives: [map_identify_component_1.MapIdentifyComponent, map_draw_component_1.MapDrawComponent, map_edit_component_1.MapEditComponent, map_menu_component_1.MapMenuComponent, map_navigation_component_1.MapNavigationComponent]
                     }), 
                     __metadata('design:paramtypes', [core_1.ElementRef])

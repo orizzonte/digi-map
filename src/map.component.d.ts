@@ -19,7 +19,6 @@ export declare class MapComponent {
     identify: MapIdentifyComponent;
     draw: MapDrawComponent;
     edit: MapEditComponent;
-    private mapId;
     currentMap: map;
     themes: Layer[];
     controls: MapControl[];

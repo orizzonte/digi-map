@@ -20,7 +20,7 @@ export class MapControl {
 
 @Component({
     selector: 'esri-map',
-    template: ` <div [id]="divId">
+    template: ` <div id='map' [id]="divId">
                     <map-navigation [mapInstance]="currentMap" [settings]="settings"></map-navigation>
                     <map-identify *ngIf="useIdentifyControl" [mapInstance]="currentMap" [settings]="settings"></map-identify>
                     <map-draw *ngIf="useDrawControl" [mapInstance]="currentMap"></map-draw>
@@ -35,15 +35,13 @@ export class MapControl {
 })
 export class MapComponent {
     @Input() settings: MapSettings;
-    @Input() divId: string;
+    @Input() divId: string = 'map';
     @Output() mapLoaded = new EventEmitter();
 
     @ViewChild(MapNavigationComponent) navigation: MapNavigationComponent;
     @ViewChild(MapIdentifyComponent) identify: MapIdentifyComponent;
     @ViewChild(MapDrawComponent) draw: MapDrawComponent;
-    @ViewChild(MapEditComponent) edit: MapEditComponent;
-
-    private mapId: string;
+    @ViewChild(MapEditComponent) edit: MapEditComponent;  
 
     currentMap: map;
     themes: Layer[] = [];
@@ -75,7 +73,7 @@ export class MapComponent {
     ngOnInit() {
         let self = this;
 
-        this.currentMap = new map(this.domElement);
+        this.currentMap = new map(this.divId === 'map' ? 'map' : this.domElement);
 
         // Apply map controls
         if (this.settings.controls.indexOf('identify') !== -1) {
