@@ -243,6 +243,8 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
           this.useIdentifyControl = false;
           this.useDrawControl = false;
           this.useEditControl = false;
+          this.mapId = 'map1';
+          this.domElement = elRef.nativeElement;
         }
         MapComponent.prototype.ngAfterViewInit = function() {
           this.controls.push(new MapControl('navigation', this.navigation));
@@ -259,7 +261,7 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
         MapComponent.prototype.ngOnInit = function() {
           var _this = this;
           var self = this;
-          this.currentMap = new esri_mods_1.map('map');
+          this.currentMap = new esri_mods_1.map(this.domElement);
           if (this.settings.controls.indexOf('identify') !== -1) {
             this.useIdentifyControl = true;
           }
@@ -307,6 +309,7 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
         };
         ;
         __decorate([core_1.Input(), __metadata('design:type', Object)], MapComponent.prototype, "settings", void 0);
+        __decorate([core_1.Input(), __metadata('design:type', String)], MapComponent.prototype, "divId", void 0);
         __decorate([core_1.Output(), __metadata('design:type', Object)], MapComponent.prototype, "mapLoaded", void 0);
         __decorate([core_1.ViewChild(map_navigation_component_1.MapNavigationComponent), __metadata('design:type', map_navigation_component_1.MapNavigationComponent)], MapComponent.prototype, "navigation", void 0);
         __decorate([core_1.ViewChild(map_identify_component_1.MapIdentifyComponent), __metadata('design:type', map_identify_component_1.MapIdentifyComponent)], MapComponent.prototype, "identify", void 0);
@@ -314,7 +317,7 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
         __decorate([core_1.ViewChild(map_edit_component_1.MapEditComponent), __metadata('design:type', map_edit_component_1.MapEditComponent)], MapComponent.prototype, "edit", void 0);
         MapComponent = __decorate([core_1.Component({
           selector: 'esri-map',
-          template: " <div id=\"map\">\n                    <map-navigation [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-navigation>\n                    <map-identify *ngIf=\"useIdentifyControl\" [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-identify>\n                    <map-draw *ngIf=\"useDrawControl\" [mapInstance]=\"currentMap\"></map-draw>\n                    <map-edit *ngIf=\"useEditControl\" [mapInstance]=\"currentMap\"></map-edit> \n                    <ng-content></ng-content>\n                    <map-menu [settings]=\"settings\"\n                        (toInitialExtent)=\"navigation.toInitialExtent($event)\"\n                        (toggleIdentify)=\"identify.toggle($event)\">\n                    </map-menu>\n                </div>",
+          template: " <div [id]=\"divId\">\n                    <map-navigation [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-navigation>\n                    <map-identify *ngIf=\"useIdentifyControl\" [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-identify>\n                    <map-draw *ngIf=\"useDrawControl\" [mapInstance]=\"currentMap\"></map-draw>\n                    <map-edit *ngIf=\"useEditControl\" [mapInstance]=\"currentMap\"></map-edit> \n                    <ng-content></ng-content>\n                    <map-menu [settings]=\"settings\"\n                        (toInitialExtent)=\"navigation.toInitialExtent($event)\"\n                        (toggleIdentify)=\"identify.toggle($event)\">\n                    </map-menu>\n                </div>",
           directives: [map_identify_component_1.MapIdentifyComponent, map_draw_component_1.MapDrawComponent, map_edit_component_1.MapEditComponent, map_menu_component_1.MapMenuComponent, map_navigation_component_1.MapNavigationComponent]
         }), __metadata('design:paramtypes', [core_1.ElementRef])], MapComponent);
         return MapComponent;

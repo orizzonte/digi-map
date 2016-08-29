@@ -13,14 +13,17 @@ export declare class MapControl {
 export declare class MapComponent {
     private elRef;
     settings: MapSettings;
+    divId: string;
     mapLoaded: EventEmitter<{}>;
     navigation: MapNavigationComponent;
     identify: MapIdentifyComponent;
     draw: MapDrawComponent;
     edit: MapEditComponent;
+    private mapId;
     currentMap: map;
     themes: Layer[];
     controls: MapControl[];
+    domElement: any;
     private useIdentifyControl;
     private useDrawControl;
     private useEditControl;
