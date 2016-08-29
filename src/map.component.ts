@@ -54,8 +54,7 @@ export class MapComponent {
     private useDrawControl = false;
     private useEditControl = false;
 
-    constructor(private elRef: ElementRef) {
-        this.mapId = 'map1';
+    constructor(private elRef: ElementRef) {     
          this.domElement = elRef.nativeElement;
      }
 
