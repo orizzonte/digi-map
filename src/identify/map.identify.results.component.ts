@@ -41,19 +41,23 @@ export class IdentifyResultsComponent implements OnInit, OnChanges {
         this.results.forEach(element => {
             element.layerResults.forEach(layer => {
                 layer.data.forEach(d => {
-                    values.push({ layerName: d.layerName, value: d.value, data: d, template: this.findTemplate(layer.templateId) });
+                    let val = { layerName: d.layerName, value: d.value, data: d, template: this.findTemplate(layer.templateId) };
+                    values.push(val);
+                    console.log(d.layerName + ' val ' + d.value + ' templ ' + val.template);
+                    console.log('data ' + JSON.stringify(d));
                 });
             });
         });
 
         return values;
-    }   
+    }
 
     findTemplate(templateId: string) {
         return this.settings.identify.templates.find(x => x.id === templateId).html;
     }
 
     ngOnInit() {
+
         let defaultDigimapTemplate = `        
                 <ul *ngIf="entity">                
                     <li *ngFor="let attribute of toArray(entity.feature.attributes)">
@@ -72,7 +76,7 @@ export class IdentifyResultsComponent implements OnInit, OnChanges {
         if (this.dropDownResults && this.dropDownResults.length > 0) {
             this.currentResult = this.dropDownResults[0].data;
             this.currentTemplate = undefined;
-            this.changeTemplate.emit(this.dropDownResults[0].template);           
+            this.changeTemplate.emit(this.dropDownResults[0].template);
         } else {
             this.currentResult = undefined;
             this.currentTemplate = undefined;
@@ -83,7 +87,7 @@ export class IdentifyResultsComponent implements OnInit, OnChanges {
         return result.layerName + ': ' + result.value;
     }
 
-    selectResult(index: number) {        
+    selectResult(index: number) {
         this.currentResult = this.dropDownResults[index].data;
         this.currentTemplate = undefined;
         this.changeTemplate.emit(this.dropDownResults[index].template);

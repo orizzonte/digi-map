@@ -18,11 +18,20 @@ export class DynamicHolder implements OnInit, OnChanges {
     @Input() title: string;
     @Input() template: string;    
     private component: IHaveDynamicData;
+    private  previousTemplate: string; 
 
     ngOnChanges() {
         if (this.component) {
             this.component.title = this.title;
             this.component.entity = this.entity;
+            
+            if(this.template !== this.previousTemplate) {
+                console.log('recreating component');
+                this.dynamicComponentTarget.clear();
+                this.ngOnInit();
+            }
+
+
         }
     }
 
@@ -48,12 +57,15 @@ export class DynamicHolder implements OnInit, OnChanges {
             .resolveComponent(dynamicComponent)
             .then((factory: ComponentFactory<IHaveDynamicData>) => {
 
+                console.log('creating compoent with template: ' + this.template);
+
                 // Instantiates a single {@link Component} and inserts its Host View 
                 //   into this container at the specified `index`
                 let comp = this.dynamicComponentTarget.createComponent(factory, 0);
 
                 // and here we have access to our dynamic component
                 this.component = comp.instance;
+                this.previousTemplate = this.template;
 
                 this.component.title = this.title;
                 this.component.entity = this.entity;
