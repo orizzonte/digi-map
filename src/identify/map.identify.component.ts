@@ -47,7 +47,7 @@ export class MapIdentifyComponent implements OnInit {
 				element.layerResults.forEach(layer => {
 					let templateMapping = currentTheme.identifyTemplateMappings.find(m => m.layerId === layer.layerId);
 					layer.templateId = templateMapping ? templateMapping.templateId : 'DefaultDigiMapTemplate';
-					console.log('lyer template mapping: ' + layer.templateId);
+					// console.log('lyer template mapping: ' + layer.templateId);
 				});
 			});
 
@@ -104,7 +104,7 @@ export class MapIdentifyComponent implements OnInit {
 
 		function callbackFunc(response, identifyResult: IdentifyMapServerResult) {
 
-			console.log('callbackFunc result ' + JSON.stringify(response));
+			// console.log('callbackFunc result ' + JSON.stringify(response));
 
 			response.forEach(element => {
 				var layerResult = identifyResult.layerResults.find(x => x.layerId === element.layerId);

@@ -50,7 +50,7 @@ System.register(['@angular/core', 'esri-mods', '../componentbuilder/dynamic.comp
                             element.layerResults.forEach(function (layer) {
                                 var templateMapping = currentTheme.identifyTemplateMappings.find(function (m) { return m.layerId === layer.layerId; });
                                 layer.templateId = templateMapping ? templateMapping.templateId : 'DefaultDigiMapTemplate';
-                                console.log('lyer template mapping: ' + layer.templateId);
+                                // console.log('lyer template mapping: ' + layer.templateId);
                             });
                         });
                         _this.results = newResults;
@@ -92,7 +92,7 @@ System.register(['@angular/core', 'esri-mods', '../componentbuilder/dynamic.comp
                         }
                     });
                     function callbackFunc(response, identifyResult) {
-                        console.log('callbackFunc result ' + JSON.stringify(response));
+                        // console.log('callbackFunc result ' + JSON.stringify(response));
                         response.forEach(function (element) {
                             var layerResult = identifyResult.layerResults.find(function (x) { return x.layerId === element.layerId; });
                             if (!layerResult) {

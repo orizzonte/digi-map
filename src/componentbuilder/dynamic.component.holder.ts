@@ -25,13 +25,11 @@ export class DynamicHolder implements OnInit, OnChanges {
             this.component.title = this.title;
             this.component.entity = this.entity;
             
-            if(this.template !== this.previousTemplate) {
-                console.log('recreating component');
+            if (this.template !== this.previousTemplate) {
+               // console.log('recreating component');
                 this.dynamicComponentTarget.clear();
-                this.ngOnInit();
+                this.ngOnInit(); //Recreate this component when template changes
             }
-
-
         }
     }
 
@@ -57,7 +55,7 @@ export class DynamicHolder implements OnInit, OnChanges {
             .resolveComponent(dynamicComponent)
             .then((factory: ComponentFactory<IHaveDynamicData>) => {
 
-                console.log('creating compoent with template: ' + this.template);
+                //console.log('creating compoent with template: ' + this.template);
 
                 // Instantiates a single {@link Component} and inserts its Host View 
                 //   into this container at the specified `index`

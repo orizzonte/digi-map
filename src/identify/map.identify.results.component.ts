@@ -25,7 +25,6 @@ export class IdentifyResultsComponent implements OnInit, OnChanges {
     @Input() settings: MapSettings;
     @Input() results: IdentifyMapServerResult[];
 
-    @Output() changeTemplate = new EventEmitter<string>();
     currentResult: any;
     currentTemplate: string;
     dropDownResults = [];
@@ -43,8 +42,8 @@ export class IdentifyResultsComponent implements OnInit, OnChanges {
                 layer.data.forEach(d => {
                     let val = { layerName: d.layerName, value: d.value, data: d, template: this.findTemplate(layer.templateId) };
                     values.push(val);
-                    console.log(d.layerName + ' val ' + d.value + ' templ ' + val.template);
-                    console.log('data ' + JSON.stringify(d));
+                    // console.log(d.layerName + ' val ' + d.value + ' templ ' + val.template);
+                    // console.log('data ' + JSON.stringify(d));
                 });
             });
         });
@@ -65,9 +64,7 @@ export class IdentifyResultsComponent implements OnInit, OnChanges {
                     </li>
                 </ul>`;
 
-        this.settings.identify.templates.push(<IdentifyTemplate>{ id: 'DefaultDigiMapTemplate', html: defaultDigimapTemplate });
-        // Needed to trigger the recreation of the dynamic template
-        this.changeTemplate.subscribe(t => this.currentTemplate = t);
+        this.settings.identify.templates.push(<IdentifyTemplate>{ id: 'DefaultDigiMapTemplate', html: defaultDigimapTemplate });     
     }
 
     ngOnChanges() {
@@ -75,8 +72,7 @@ export class IdentifyResultsComponent implements OnInit, OnChanges {
 
         if (this.dropDownResults && this.dropDownResults.length > 0) {
             this.currentResult = this.dropDownResults[0].data;
-            this.currentTemplate = undefined;
-            this.changeTemplate.emit(this.dropDownResults[0].template);
+            this.currentTemplate = this.dropDownResults[0].template;           
         } else {
             this.currentResult = undefined;
             this.currentTemplate = undefined;
@@ -89,8 +85,7 @@ export class IdentifyResultsComponent implements OnInit, OnChanges {
 
     selectResult(index: number) {
         this.currentResult = this.dropDownResults[index].data;
-        this.currentTemplate = undefined;
-        this.changeTemplate.emit(this.dropDownResults[index].template);
+        this.currentTemplate = this.dropDownResults[index].template;       
     }
 
 }

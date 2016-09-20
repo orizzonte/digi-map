@@ -36,9 +36,9 @@ System.register(['@angular/core', '@angular/common', './custom.component.builder
                         this.component.title = this.title;
                         this.component.entity = this.entity;
                         if (this.template !== this.previousTemplate) {
-                            console.log('recreating component');
+                            // console.log('recreating component');
                             this.dynamicComponentTarget.clear();
-                            this.ngOnInit();
+                            this.ngOnInit(); //Recreate this component when template changes
                         }
                     }
                 };
@@ -52,7 +52,7 @@ System.register(['@angular/core', '@angular/common', './custom.component.builder
                     this.componentResolver
                         .resolveComponent(dynamicComponent)
                         .then(function (factory) {
-                        console.log('creating compoent with template: ' + _this.template);
+                        //console.log('creating compoent with template: ' + this.template);
                         // Instantiates a single {@link Component} and inserts its Host View 
                         //   into this container at the specified `index`
                         var comp = _this.dynamicComponentTarget.createComponent(factory, 0);
