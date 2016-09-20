@@ -447,6 +447,10 @@ System.register("digi-map/src/componentbuilder/dynamic.component.holder", ["@ang
           if (this.component) {
             this.component.title = this.title;
             this.component.entity = this.entity;
+            if (this.template !== this.previousTemplate) {
+              this.dynamicComponentTarget.clear();
+              this.ngOnInit();
+            }
           }
         };
         DynamicHolder.prototype.ngOnInit = function() {
@@ -455,6 +459,7 @@ System.register("digi-map/src/componentbuilder/dynamic.component.holder", ["@ang
           this.componentResolver.resolveComponent(dynamicComponent).then(function(factory) {
             var comp = _this.dynamicComponentTarget.createComponent(factory, 0);
             _this.component = comp.instance;
+            _this.previousTemplate = _this.template;
             _this.component.title = _this.title;
             _this.component.entity = _this.entity;
           });
@@ -506,7 +511,6 @@ System.register("digi-map/src/identify/map.identify.results.component", ["@angul
     execute: function() {
       IdentifyResultsComponent = (function() {
         function IdentifyResultsComponent() {
-          this.changeTemplate = new core_1.EventEmitter();
           this.dropDownResults = [];
         }
         IdentifyResultsComponent.prototype.calculateDropDownResults = function() {
@@ -518,12 +522,13 @@ System.register("digi-map/src/identify/map.identify.results.component", ["@angul
           this.results.forEach(function(element) {
             element.layerResults.forEach(function(layer) {
               layer.data.forEach(function(d) {
-                values.push({
+                var val = {
                   layerName: d.layerName,
                   value: d.value,
                   data: d,
                   template: _this.findTemplate(layer.templateId)
-                });
+                };
+                values.push(val);
               });
             });
           });
@@ -535,22 +540,17 @@ System.register("digi-map/src/identify/map.identify.results.component", ["@angul
           }).html;
         };
         IdentifyResultsComponent.prototype.ngOnInit = function() {
-          var _this = this;
           var defaultDigimapTemplate = "        \n                <ul *ngIf=\"entity\">                \n                    <li *ngFor=\"let attribute of toArray(entity.feature.attributes)\">\n                        <label>{{attribute?.key}} :</label> {{attribute?.value}}\n                    </li>\n                </ul>";
           this.settings.identify.templates.push({
             id: 'DefaultDigiMapTemplate',
             html: defaultDigimapTemplate
-          });
-          this.changeTemplate.subscribe(function(t) {
-            return _this.currentTemplate = t;
           });
         };
         IdentifyResultsComponent.prototype.ngOnChanges = function() {
           this.dropDownResults = this.calculateDropDownResults();
           if (this.dropDownResults && this.dropDownResults.length > 0) {
             this.currentResult = this.dropDownResults[0].data;
-            this.currentTemplate = undefined;
-            this.changeTemplate.emit(this.dropDownResults[0].template);
+            this.currentTemplate = this.dropDownResults[0].template;
           } else {
             this.currentResult = undefined;
             this.currentTemplate = undefined;
@@ -561,12 +561,10 @@ System.register("digi-map/src/identify/map.identify.results.component", ["@angul
         };
         IdentifyResultsComponent.prototype.selectResult = function(index) {
           this.currentResult = this.dropDownResults[index].data;
-          this.currentTemplate = undefined;
-          this.changeTemplate.emit(this.dropDownResults[index].template);
+          this.currentTemplate = this.dropDownResults[index].template;
         };
         __decorate([core_1.Input(), __metadata('design:type', Object)], IdentifyResultsComponent.prototype, "settings", void 0);
         __decorate([core_1.Input(), __metadata('design:type', Array)], IdentifyResultsComponent.prototype, "results", void 0);
-        __decorate([core_1.Output(), __metadata('design:type', Object)], IdentifyResultsComponent.prototype, "changeTemplate", void 0);
         IdentifyResultsComponent = __decorate([core_1.Component({
           selector: 'digi-identify-results',
           template: " <div style=\"display:none\">\n                    <div id=\"popup-content\">                     \n                        <div *ngIf=\"dropDownResults && dropDownResults.length > 0\">\n                            <select (change)=\"selectResult($event.target.value)\">\n                                <option *ngFor=\"let result of dropDownResults; let i=index\" [value]=\"i\">{{resultName(result)}}</option>                           \n                            </select>  \n\n                            <dynamic-holder [entity]=\"currentResult\" [title]=\"'Details'\" [template]=\"currentTemplate\" *ngIf=\"currentResult && currentTemplate\"></dynamic-holder>                           \n                        </div>                      \n                       \n                        <div *ngIf=\"!dropDownResults || dropDownResults.length==0\">Geen resultaten gevonden</div>  \n\n                    </div>\n                </div>",
@@ -650,7 +648,7 @@ System.register("digi-map/src/identify/map.identify.component", ["@angular/core"
           this.infoWindow.startup();
           this.mapInstance.infoWindow = this.infoWindow;
           this.infoWindow.resize(this.settings.identify.width || 310, this.settings.identify.height || 350);
-          this.infoWindow.setTitle(this.settings.identify.title || 'Details 2');
+          this.infoWindow.setTitle(this.settings.identify.title || 'Details');
           this.infoWindow.setContent(document.getElementById('popup-content'));
           this.mapInstance.on('click', function(ev) {
             if (_this.isActive) {

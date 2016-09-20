@@ -50,6 +50,7 @@ System.register(['@angular/core', 'esri-mods', '../componentbuilder/dynamic.comp
                             element.layerResults.forEach(function (layer) {
                                 var templateMapping = currentTheme.identifyTemplateMappings.find(function (m) { return m.layerId === layer.layerId; });
                                 layer.templateId = templateMapping ? templateMapping.templateId : 'DefaultDigiMapTemplate';
+                                // console.log('lyer template mapping: ' + layer.templateId);
                             });
                         });
                         _this.results = newResults;
@@ -62,7 +63,7 @@ System.register(['@angular/core', 'esri-mods', '../componentbuilder/dynamic.comp
                     this.mapInstance.infoWindow = this.infoWindow;
                     this.infoWindow.resize(this.settings.identify.width || 310, this.settings.identify.height || 350);
                     // Set content of InfoWindowLite
-                    this.infoWindow.setTitle(this.settings.identify.title || 'Details 2');
+                    this.infoWindow.setTitle(this.settings.identify.title || 'Details');
                     this.infoWindow.setContent(document.getElementById('popup-content'));
                     this.mapInstance.on('click', function (ev) {
                         if (_this.isActive) {
@@ -91,6 +92,7 @@ System.register(['@angular/core', 'esri-mods', '../componentbuilder/dynamic.comp
                         }
                     });
                     function callbackFunc(response, identifyResult) {
+                        // console.log('callbackFunc result ' + JSON.stringify(response));
                         response.forEach(function (element) {
                             var layerResult = identifyResult.layerResults.find(function (x) { return x.layerId === element.layerId; });
                             if (!layerResult) {

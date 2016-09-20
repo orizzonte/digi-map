@@ -8,6 +8,7 @@ export declare class DynamicHolder implements OnInit, OnChanges {
     title: string;
     template: string;
     private component;
+    private previousTemplate;
     ngOnChanges(): void;
     protected dynamicComponentTarget: ViewContainerRef;
     constructor(componentResolver: ComponentResolver, customComponentBuilder: CustomComponentBuilder);
