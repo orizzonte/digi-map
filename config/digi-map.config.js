@@ -21,7 +21,10 @@ var digiMapConfig = (function () {
             'esri/geometry/Polygon',
             'esri/geometry/jsonUtils',
             'esri/tasks/IdentifyTask',
-            'esri/tasks/IdentifyParameters'
+            'esri/tasks/IdentifyParameters',
+            'esri/dijit/LayerList',
+            'esri',
+            'esri/arcgis/utils'
         ],          
 			outModuleName: 'esri-mods'
         };

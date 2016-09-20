@@ -1,5 +1,5 @@
 import { Component, ElementRef, Output, EventEmitter, Input, ViewChild } from '@angular/core';
-import { map, Extent, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer, FeatureLayer, Layer, Legend, SpatialReference } from 'esri-mods';
+import { map, Extent, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer, FeatureLayer, Layer, Legend, SpatialReference, LayerList, LayerListOptions, utils } from 'esri-mods';
 import { MapIdentifyComponent } from './identify/map.identify.component';
 import { MapDrawComponent } from './draw/map.draw.component';
 import { MapEditComponent } from './edit/map.edit.component';
@@ -20,7 +20,8 @@ export class MapControl {
 
 @Component({
     selector: 'esri-map',
-    template: ` <div id='map' [id]="divId">
+    template: ` <div id="layerlist"></div>
+                <div id='map' [id]="divId">
                     <map-navigation [mapInstance]="currentMap" [settings]="settings"></map-navigation>
                     <map-identify *ngIf="useIdentifyControl" [mapInstance]="currentMap" [settings]="settings"></map-identify>
                     <map-draw *ngIf="useDrawControl" [mapInstance]="currentMap"></map-draw>
@@ -94,6 +95,7 @@ export class MapComponent {
                 let layerInfos = layer.layer.layerInfos;
 
                 if (layerInfos && layerInfos.length > 0) {
+                    console.log(layer.layer);
                     allLayerInfos.push({ layer: layer.layer, title: layer.layer.name });
                 };
             });
@@ -106,6 +108,17 @@ export class MapComponent {
 
             legendDijit.startup();
 
+            var layers = utils.getLayerList(this.currentMap);
+            console.log(allLayerInfos);
+            console.log(layers);
+
+            var layerListOptions: LayerListOptions = {
+                map: self.currentMap,
+                layers: layers
+            } ;
+            var layerList = new LayerList(layerListOptions, 'layerlist');
+
+            layerList.startup();
         });
 
         // Check if themes is defined

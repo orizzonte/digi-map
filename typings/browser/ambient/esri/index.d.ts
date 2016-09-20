@@ -26,6 +26,10 @@
     export import IdentifyTask = require('esri/tasks/IdentifyTask');
     export import IdentifyParameters = require('esri/tasks/IdentifyParameters');
     export import Geometry = require("esri/geometry/Geometry");
+    export import LayerList = require("esri/dijit/LayerList");
+    export import esri = require("esri");
+    export import LayerListOptions = esri.LayerListOptions;
+    export import utils = require("esri/arcgis/utils");
   }
   
   declare module "esri" {
