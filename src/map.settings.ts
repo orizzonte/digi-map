@@ -10,6 +10,7 @@ export interface MapSettings {
 export interface Theme {
     type: string;
     url: string;
+    title: string;
     identifyable: boolean;
     identifyTemplateMappings : IdentifyTemplateMapping[];
 }

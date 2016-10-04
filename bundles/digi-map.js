@@ -272,30 +272,11 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
             this.useEditControl = true;
           }
           this.currentMap.on('layers-add-result', function(evt) {
-            var allLayerInfos = [];
-            evt.layers.forEach(function(layer, index) {
-              var layerInfos = layer.layer.layerInfos;
-              if (layerInfos && layerInfos.length > 0) {
-                console.log(layer.layer.name);
-                allLayerInfos.push({
-                  layer: layer.layer,
-                  title: layer.layer.name
-                });
-              }
-              ;
-            });
-            var legendDijit = new esri_mods_1.Legend({
-              map: self.currentMap,
-              respectCurrentMapScale: true,
-              layerInfos: allLayerInfos
-            }, 'legend');
-            legendDijit.startup();
-            var layers = esri_mods_1.utils.getLayerList(this.currentMap);
-            console.log(allLayerInfos);
-            console.log(layers);
             var layerListOptions = {
               map: self.currentMap,
-              layers: layers
+              layers: esri_mods_1.utils.getLayerList(this.currentMap),
+              removeUnderscores: true,
+              showLegend: true
             };
             var layerList = new esri_mods_1.LayerList(layerListOptions, 'layerlist');
             layerList.startup();
@@ -304,10 +285,14 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
             this.settings.themes.forEach(function(theme) {
               switch (theme.type) {
                 case 'dynamic':
-                  _this.themes.push(new esri_mods_1.ArcGISDynamicMapServiceLayer(theme.url));
+                  var dynamicLayer = new esri_mods_1.ArcGISDynamicMapServiceLayer(theme.url);
+                  dynamicLayer.id = theme.title;
+                  _this.themes.push(dynamicLayer);
                   break;
                 case 'tiled':
-                  _this.themes.push(new esri_mods_1.ArcGISTiledMapServiceLayer(theme.url));
+                  var tiledLayer = new esri_mods_1.ArcGISTiledMapServiceLayer(theme.url);
+                  tiledLayer.id = theme.title;
+                  _this.themes.push(tiledLayer);
                   break;
               }
             });

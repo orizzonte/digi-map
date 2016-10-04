@@ -86,36 +86,14 @@ export class MapComponent {
         if (this.settings.controls.indexOf('edit') !== -1) {
             this.useEditControl = true;
         }
-
+        
         this.currentMap.on('layers-add-result', function (evt) {
-
-            let allLayerInfos = [];
-
-            evt.layers.forEach((layer, index) => {
-                let layerInfos = layer.layer.layerInfos;
-
-                if (layerInfos && layerInfos.length > 0) {
-                    console.log(layer.layer);
-                    allLayerInfos.push({ layer: layer.layer, title: layer.layer.name });
-                };
-            });
-
-            var legendDijit = new Legend({
-                map: self.currentMap,
-                respectCurrentMapScale: true,
-                layerInfos: allLayerInfos
-            }, 'legend');
-
-            legendDijit.startup();
-
-            var layers = utils.getLayerList(this.currentMap);
-            console.log(allLayerInfos);
-            console.log(layers);
-
             var layerListOptions: LayerListOptions = {
                 map: self.currentMap,
-                layers: layers
-            } ;
+                layers: utils.getLayerList(this.currentMap),
+                removeUnderscores: true,
+                showLegend: true
+            };
             var layerList = new LayerList(layerListOptions, 'layerlist');
 
             layerList.startup();
@@ -127,10 +105,14 @@ export class MapComponent {
 
                 switch (theme.type) {
                     case 'dynamic':
-                        this.themes.push(new ArcGISDynamicMapServiceLayer(theme.url));
+                        let dynamicLayer = new ArcGISDynamicMapServiceLayer(theme.url);
+                        dynamicLayer.id = theme.title;
+                        this.themes.push(dynamicLayer);
                         break;
                     case 'tiled':
-                        this.themes.push(new ArcGISTiledMapServiceLayer(theme.url));
+                        let tiledLayer = new ArcGISTiledMapServiceLayer(theme.url);
+                        tiledLayer.id = theme.title;
+                        this.themes.push(tiledLayer);
                         break;
                 }
             });
@@ -138,6 +120,8 @@ export class MapComponent {
             this.currentMap.addLayers(this.themes);
         }
 
-        this.currentMap.on('load', function (ev) { console.log('map loaded'); });
+        this.currentMap.on('load', function (ev) { 
+            console.log('map loaded'); 
+        });
     };
 }
