@@ -20,8 +20,7 @@ export class MapControl {
 
 @Component({
     selector: 'esri-map',
-    template: ` <div id="layerlist"></div>
-                <div id='map' [id]="divId">
+    template: ` <div id='map' [id]="divId">
                     <map-navigation [mapInstance]="currentMap" [settings]="settings"></map-navigation>
                     <map-identify *ngIf="useIdentifyControl" [mapInstance]="currentMap" [settings]="settings"></map-identify>
                     <map-draw *ngIf="useDrawControl" [mapInstance]="currentMap"></map-draw>
@@ -86,7 +85,7 @@ export class MapComponent {
         if (this.settings.controls.indexOf('edit') !== -1) {
             this.useEditControl = true;
         }
-        
+
         this.currentMap.on('layers-add-result', function (evt) {
             var layerListOptions: LayerListOptions = {
                 map: self.currentMap,

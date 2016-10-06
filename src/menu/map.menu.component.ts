@@ -48,7 +48,7 @@ import {MapSettings} from '../map.settings';
                                 </accordion>
                             </tab>
                             <tab heading="Kaartlagen">
-                                <div id="legend"></div>
+                                <div id="layerlist"></div>
                             </tab>
                         </tabset>		
                     </div>
