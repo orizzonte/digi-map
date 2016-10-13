@@ -23,6 +23,7 @@ export declare class MapComponent {
     themes: Layer[];
     controls: MapControl[];
     domElement: any;
+    isLoading: boolean;
     private useIdentifyControl;
     private useDrawControl;
     private useEditControl;

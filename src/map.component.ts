@@ -21,6 +21,7 @@ export class MapControl {
 @Component({
     selector: 'esri-map',
     template: ` <div id='map' [id]="divId">
+                    <div class="map-loading" *ngIf="isLoading" style="position: absolute; z-index: 99999999999;">Bezig met laden...</div>
                     <map-navigation [mapInstance]="currentMap" [settings]="settings"></map-navigation>
                     <map-identify *ngIf="useIdentifyControl" [mapInstance]="currentMap" [settings]="settings"></map-identify>
                     <map-draw *ngIf="useDrawControl" [mapInstance]="currentMap"></map-draw>
@@ -47,6 +48,7 @@ export class MapComponent {
     themes: Layer[] = [];
     controls: MapControl[] = [];
     domElement: any;
+    isLoading: boolean = false;
 
     private useIdentifyControl = false;
     private useDrawControl = false;
@@ -54,7 +56,7 @@ export class MapComponent {
 
     constructor(private elRef: ElementRef) {     
          this.domElement = elRef.nativeElement;
-     }
+    }
 
     ngAfterViewInit() {
         this.controls.push(new MapControl('navigation', this.navigation));
@@ -118,7 +120,15 @@ export class MapComponent {
 
             this.currentMap.addLayers(this.themes);
         }
+        
+        this.currentMap.on('update-start', function (ev) {
+            self.isLoading = true;
+        });
 
+        this.currentMap.on('update-end', function (ev) {
+            self.isLoading = false;
+        });
+        
         this.currentMap.on('load', function (ev) { 
             console.log('map loaded'); 
         });

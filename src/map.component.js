@@ -51,6 +51,7 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                     this.mapLoaded = new core_1.EventEmitter();
                     this.themes = [];
                     this.controls = [];
+                    this.isLoading = false;
                     this.useIdentifyControl = false;
                     this.useDrawControl = false;
                     this.useEditControl = false;
@@ -110,6 +111,12 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                         });
                         this.currentMap.addLayers(this.themes);
                     }
+                    this.currentMap.on('update-start', function (ev) {
+                        self.isLoading = true;
+                    });
+                    this.currentMap.on('update-end', function (ev) {
+                        self.isLoading = false;
+                    });
                     this.currentMap.on('load', function (ev) {
                         console.log('map loaded');
                     });
@@ -146,7 +153,7 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                 MapComponent = __decorate([
                     core_1.Component({
                         selector: 'esri-map',
-                        template: " <div id='map' [id]=\"divId\">\n                    <map-navigation [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-navigation>\n                    <map-identify *ngIf=\"useIdentifyControl\" [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-identify>\n                    <map-draw *ngIf=\"useDrawControl\" [mapInstance]=\"currentMap\"></map-draw>\n                    <map-edit *ngIf=\"useEditControl\" [mapInstance]=\"currentMap\"></map-edit> \n                    <ng-content></ng-content>\n                    <map-menu [settings]=\"settings\"\n                        (toInitialExtent)=\"navigation.toInitialExtent($event)\"\n                        (toggleIdentify)=\"identify.toggle($event)\">\n                    </map-menu>\n                </div>",
+                        template: " <div id='map' [id]=\"divId\">\n                    <div class=\"map-loading\" *ngIf=\"isLoading\" style=\"position: absolute; z-index: 99999999999;\">Bezig met laden...</div>\n                    <map-navigation [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-navigation>\n                    <map-identify *ngIf=\"useIdentifyControl\" [mapInstance]=\"currentMap\" [settings]=\"settings\"></map-identify>\n                    <map-draw *ngIf=\"useDrawControl\" [mapInstance]=\"currentMap\"></map-draw>\n                    <map-edit *ngIf=\"useEditControl\" [mapInstance]=\"currentMap\"></map-edit> \n                    <ng-content></ng-content>\n                    <map-menu [settings]=\"settings\"\n                        (toInitialExtent)=\"navigation.toInitialExtent($event)\"\n                        (toggleIdentify)=\"identify.toggle($event)\">\n                    </map-menu>\n                </div>",
                         directives: [map_identify_component_1.MapIdentifyComponent, map_draw_component_1.MapDrawComponent, map_edit_component_1.MapEditComponent, map_menu_component_1.MapMenuComponent, map_navigation_component_1.MapNavigationComponent]
                     }), 
                     __metadata('design:paramtypes', [core_1.ElementRef])
