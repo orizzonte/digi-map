@@ -73,7 +73,7 @@ export class MapIdentifyComponent implements OnInit {
 				let self = this;
 				this.results = undefined;
 
-				this.settings.themes.filter(f => f.identifyable).forEach(theme => {
+				this.settings.themes.filter(f => f.identifyable || false).forEach(theme => {
 					var identifyResult = <IdentifyMapServerResult>{ url: theme.url, layerResults: [] };
 
 					// create identify tasks and setup parameters

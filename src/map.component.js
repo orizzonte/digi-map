@@ -96,14 +96,15 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                     // Check if themes is defined
                     if (this.settings.themes !== undefined) {
                         this.settings.themes.forEach(function (theme) {
+                            var options = { visible: !(theme.hideOnStartup || false) };
                             switch (theme.type) {
                                 case 'dynamic':
-                                    var dynamicLayer = new esri_mods_1.ArcGISDynamicMapServiceLayer(theme.url);
+                                    var dynamicLayer = new esri_mods_1.ArcGISDynamicMapServiceLayer(theme.url, options);
                                     dynamicLayer.id = theme.title;
                                     _this.themes.push(dynamicLayer);
                                     break;
                                 case 'tiled':
-                                    var tiledLayer = new esri_mods_1.ArcGISTiledMapServiceLayer(theme.url);
+                                    var tiledLayer = new esri_mods_1.ArcGISTiledMapServiceLayer(theme.url, options);
                                     tiledLayer.id = theme.title;
                                     _this.themes.push(tiledLayer);
                                     break;
@@ -113,14 +114,15 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                                     }
                                     var layerInfo = new esri_mods_1.WMTSLayerInfo({
                                         identifier: theme.identifier,
-                                        //tileMatrixSet: 'Belgian Lambert 72 - SG',
+                                        // tileMatrixSet: 'Belgian Lambert 72 - SG',
                                         format: 'png'
                                     });
-                                    var options = {
+                                    var wmtsOptions = {
                                         serviceMode: 'KVP',
-                                        layerInfo: layerInfo
+                                        layerInfo: layerInfo,
+                                        visible: options.visible
                                     };
-                                    var wmtsLayer = new esri_mods_1.WMTSLayer(theme.url, options);
+                                    var wmtsLayer = new esri_mods_1.WMTSLayer(theme.url, wmtsOptions);
                                     wmtsLayer.id = theme.title;
                                     _this.themes.push(wmtsLayer);
                                     break;

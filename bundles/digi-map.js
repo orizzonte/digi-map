@@ -284,14 +284,15 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
           });
           if (this.settings.themes !== undefined) {
             this.settings.themes.forEach(function(theme) {
+              var options = {visible: !(theme.hideOnStartup || false)};
               switch (theme.type) {
                 case 'dynamic':
-                  var dynamicLayer = new esri_mods_1.ArcGISDynamicMapServiceLayer(theme.url);
+                  var dynamicLayer = new esri_mods_1.ArcGISDynamicMapServiceLayer(theme.url, options);
                   dynamicLayer.id = theme.title;
                   _this.themes.push(dynamicLayer);
                   break;
                 case 'tiled':
-                  var tiledLayer = new esri_mods_1.ArcGISTiledMapServiceLayer(theme.url);
+                  var tiledLayer = new esri_mods_1.ArcGISTiledMapServiceLayer(theme.url, options);
                   tiledLayer.id = theme.title;
                   _this.themes.push(tiledLayer);
                   break;
@@ -303,11 +304,12 @@ System.register("digi-map/src/map.component", ["@angular/core", "esri-mods", "./
                     identifier: theme.identifier,
                     format: 'png'
                   });
-                  var options = {
+                  var wmtsOptions = {
                     serviceMode: 'KVP',
-                    layerInfo: layerInfo
+                    layerInfo: layerInfo,
+                    visible: options.visible
                   };
-                  var wmtsLayer = new esri_mods_1.WMTSLayer(theme.url, options);
+                  var wmtsLayer = new esri_mods_1.WMTSLayer(theme.url, wmtsOptions);
                   wmtsLayer.id = theme.title;
                   _this.themes.push(wmtsLayer);
                   break;
@@ -575,7 +577,7 @@ System.register("digi-map/src/identify/map.identify.results.component", ["@angul
         __decorate([core_1.Input(), __metadata('design:type', Array)], IdentifyResultsComponent.prototype, "results", void 0);
         IdentifyResultsComponent = __decorate([core_1.Component({
           selector: 'digi-identify-results',
-          template: " <div style=\"display:none\">\n                    <div id=\"popup-content\">                     \n                        <div *ngIf=\"dropDownResults && dropDownResults.length > 0\">\n                            <select (change)=\"selectResult($event.target.value)\">\n                                <option *ngFor=\"let result of dropDownResults; let i=index\" [value]=\"i\">{{resultName(result)}}</option>                           \n                            </select>  \n\n                            <dynamic-holder [entity]=\"currentResult\" [title]=\"'Details'\" [template]=\"currentTemplate\" *ngIf=\"currentResult && currentTemplate\"></dynamic-holder>                           \n                        </div>                      \n                       \n                        <div *ngIf=\"!dropDownResults || dropDownResults.length==0\">Geen resultaten gevonden</div>  \n\n                    </div>\n                </div>",
+          template: " <div style=\"display:none\">\n                    <div id=\"popup-content\">                     \n                        <div *ngIf=\"dropDownResults && dropDownResults.length > 0\">\n                            <select (change)=\"selectResult($event.target.value)\">\n                                <option *ngFor=\"let result of dropDownResults; let i=index\" [value]=\"i\">{{resultName(result)}}</option>                           \n                            </select>  \n\n                            <dynamic-holder [entity]=\"currentResult\" [title]=\"'Details'\" [template]=\"currentTemplate\" *ngIf=\"currentResult && currentTemplate\"></dynamic-holder>                           \n                        </div>                      \n                        <div *ngIf=\"!dropDownResults\">Bezig met ophalen van gegevens...</div>  \n                        <div *ngIf=\"dropDownResults && dropDownResults.length==0\">Geen resultaten gevonden</div>  \n\n                    </div>\n                </div>",
           directives: [dynamic_component_holder_1.DynamicHolder]
         }), __metadata('design:paramtypes', [])], IdentifyResultsComponent);
         return IdentifyResultsComponent;
@@ -663,7 +665,7 @@ System.register("digi-map/src/identify/map.identify.component", ["@angular/core"
               var self_1 = _this;
               _this.results = undefined;
               _this.settings.themes.filter(function(f) {
-                return f.identifyable;
+                return f.identifyable || false;
               }).forEach(function(theme) {
                 var identifyResult = {
                   url: theme.url,

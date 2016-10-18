@@ -13,6 +13,7 @@ export interface Theme {
     identifier: string;
     identifyable: boolean;
     identifyTemplateMappings: IdentifyTemplateMapping[];
+    hideOnStartup: boolean;
 }
 export interface Identify {
     templates: IdentifyTemplate[];

@@ -14,8 +14,8 @@ import {IdentifyMapServerResult, IdentifyLayerResult} from './identify.result';
 
                             <dynamic-holder [entity]="currentResult" [title]="'Details'" [template]="currentTemplate" *ngIf="currentResult && currentTemplate"></dynamic-holder>                           
                         </div>                      
-                       
-                        <div *ngIf="!dropDownResults || dropDownResults.length==0">Geen resultaten gevonden</div>  
+                        <div *ngIf="!dropDownResults">Bezig met ophalen van gegevens...</div>  
+                        <div *ngIf="dropDownResults && dropDownResults.length==0">Geen resultaten gevonden</div>  
 
                     </div>
                 </div>`,

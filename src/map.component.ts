@@ -104,14 +104,16 @@ export class MapComponent {
         if (this.settings.themes !== undefined) {
             this.settings.themes.forEach((theme) => {
 
+                let options = { visible: !(theme.hideOnStartup || false) };
+
                 switch (theme.type) {
                     case 'dynamic':
-                        let dynamicLayer = new ArcGISDynamicMapServiceLayer(theme.url);
+                        let dynamicLayer = new ArcGISDynamicMapServiceLayer(theme.url, options);
                         dynamicLayer.id = theme.title;
                         this.themes.push(dynamicLayer);
                         break;
                     case 'tiled':
-                        let tiledLayer = new ArcGISTiledMapServiceLayer(theme.url);
+                        let tiledLayer = new ArcGISTiledMapServiceLayer(theme.url, options);
                         tiledLayer.id = theme.title;
                         this.themes.push(tiledLayer);
                         break;
@@ -125,12 +127,14 @@ export class MapComponent {
                             // tileMatrixSet: 'Belgian Lambert 72 - SG',
                             format: 'png'
                         });
-                        let options = {
+
+                        let wmtsOptions = {
                             serviceMode: 'KVP',
-                            layerInfo: layerInfo
+                            layerInfo: layerInfo,
+                            visible: options.visible
                         };
 
-                        let wmtsLayer = new WMTSLayer(theme.url, options);
+                        let wmtsLayer = new WMTSLayer(theme.url, wmtsOptions);
                         wmtsLayer.id = theme.title;
                         this.themes.push(wmtsLayer);
                         break;
