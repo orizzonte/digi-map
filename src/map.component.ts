@@ -1,5 +1,5 @@
 import { Component, ElementRef, Output, EventEmitter, Input, ViewChild } from '@angular/core';
-import { map, Extent, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer, FeatureLayer, Layer, Legend, SpatialReference, LayerList, LayerListOptions, utils } from 'esri-mods';
+import { map, Extent, config, ArcGISDynamicMapServiceLayer, ArcGISTiledMapServiceLayer, WMTSLayer, WMTSLayerInfo, FeatureLayer, Layer, Legend, SpatialReference, LayerList, LayerListOptions, utils } from 'esri-mods';
 import { MapIdentifyComponent } from './identify/map.identify.component';
 import { MapDrawComponent } from './draw/map.draw.component';
 import { MapEditComponent } from './edit/map.edit.component';
@@ -42,7 +42,7 @@ export class MapComponent {
     @ViewChild(MapNavigationComponent) navigation: MapNavigationComponent;
     @ViewChild(MapIdentifyComponent) identify: MapIdentifyComponent;
     @ViewChild(MapDrawComponent) draw: MapDrawComponent;
-    @ViewChild(MapEditComponent) edit: MapEditComponent;  
+    @ViewChild(MapEditComponent) edit: MapEditComponent;
 
     currentMap: map;
     themes: Layer[] = [];
@@ -54,8 +54,8 @@ export class MapComponent {
     private useDrawControl = false;
     private useEditControl = false;
 
-    constructor(private elRef: ElementRef) {     
-         this.domElement = elRef.nativeElement;
+    constructor(private elRef: ElementRef) {
+        this.domElement = elRef.nativeElement;
     }
 
     ngAfterViewInit() {
@@ -115,12 +115,31 @@ export class MapComponent {
                         tiledLayer.id = theme.title;
                         this.themes.push(tiledLayer);
                         break;
+                    case 'wmts':
+                        if (this.settings.proxy) {
+                            config.defaults.io.proxyUrl = this.settings.proxy;
+                        }
+
+                        let layerInfo = new WMTSLayerInfo({
+                            identifier: theme.identifier,
+                            // tileMatrixSet: 'Belgian Lambert 72 - SG',
+                            format: 'png'
+                        });
+                        let options = {
+                            serviceMode: 'KVP',
+                            layerInfo: layerInfo
+                        };
+
+                        let wmtsLayer = new WMTSLayer(theme.url, options);
+                        wmtsLayer.id = theme.title;
+                        this.themes.push(wmtsLayer);
+                        break;
                 }
             });
 
             this.currentMap.addLayers(this.themes);
         }
-        
+
         this.currentMap.on('update-start', function (ev) {
             self.isLoading = true;
         });
@@ -128,9 +147,9 @@ export class MapComponent {
         this.currentMap.on('update-end', function (ev) {
             self.isLoading = false;
         });
-        
-        this.currentMap.on('load', function (ev) { 
-            console.log('map loaded'); 
+
+        this.currentMap.on('load', function (ev) {
+            console.log('map loaded');
         });
     };
 }

@@ -24,7 +24,10 @@ var digiMapConfig = (function () {
             'esri/tasks/IdentifyParameters',
             'esri/dijit/LayerList',
             'esri',
-            'esri/arcgis/utils'
+            'esri/arcgis/utils',
+            'esri/config',
+            'esri/layers/WMTSLayer',
+            'esri/layers/WMTSLayerInfo'
         ],          
 			outModuleName: 'esri-mods'
         };

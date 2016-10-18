@@ -107,6 +107,23 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                                     tiledLayer.id = theme.title;
                                     _this.themes.push(tiledLayer);
                                     break;
+                                case 'wmts':
+                                    if (_this.settings.proxy) {
+                                        esri_mods_1.config.defaults.io.proxyUrl = _this.settings.proxy;
+                                    }
+                                    var layerInfo = new esri_mods_1.WMTSLayerInfo({
+                                        identifier: theme.identifier,
+                                        //tileMatrixSet: 'Belgian Lambert 72 - SG',
+                                        format: 'png'
+                                    });
+                                    var options = {
+                                        serviceMode: 'KVP',
+                                        layerInfo: layerInfo
+                                    };
+                                    var wmtsLayer = new esri_mods_1.WMTSLayer(theme.url, options);
+                                    wmtsLayer.id = theme.title;
+                                    _this.themes.push(wmtsLayer);
+                                    break;
                             }
                         });
                         this.currentMap.addLayers(this.themes);
