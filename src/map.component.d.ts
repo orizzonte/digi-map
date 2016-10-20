@@ -24,6 +24,7 @@ export declare class MapComponent {
     controls: MapControl[];
     domElement: any;
     isLoading: boolean;
+    layerListDomElement: any;
     private useIdentifyControl;
     private useDrawControl;
     private useEditControl;

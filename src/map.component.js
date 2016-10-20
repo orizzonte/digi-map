@@ -73,6 +73,7 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                     var _this = this;
                     var self = this;
                     this.currentMap = new esri_mods_1.map(this.divId === 'map' ? 'map' : this.domElement);
+                    this.layerListDomElement = $(this.domElement).find('.layerlist')[0];
                     // Apply map controls
                     if (this.settings.controls.indexOf('identify') !== -1) {
                         this.useIdentifyControl = true;
@@ -90,7 +91,7 @@ System.register(['@angular/core', 'esri-mods', './identify/map.identify.componen
                             removeUnderscores: true,
                             showLegend: true
                         };
-                        var layerList = new esri_mods_1.LayerList(layerListOptions, 'layerlist');
+                        var layerList = new esri_mods_1.LayerList(layerListOptions, self.layerListDomElement);
                         layerList.startup();
                     });
                     // Check if themes is defined
