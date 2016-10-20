@@ -4,13 +4,16 @@ export interface MapSettings {
     controls: string[];
     themes: Theme[];
     identify: Identify;
+    proxy: string;
 }
 export interface Theme {
     type: string;
     url: string;
     title: string;
+    identifier: string;
     identifyable: boolean;
     identifyTemplateMappings: IdentifyTemplateMapping[];
+    hideOnStartup: boolean;
 }
 export interface Identify {
     templates: IdentifyTemplate[];

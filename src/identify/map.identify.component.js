@@ -69,7 +69,7 @@ System.register(['@angular/core', 'esri-mods', '../componentbuilder/dynamic.comp
                         if (_this.isActive) {
                             var self_1 = _this;
                             _this.results = undefined;
-                            _this.settings.themes.filter(function (f) { return f.identifyable; }).forEach(function (theme) {
+                            _this.settings.themes.filter(function (f) { return f.identifyable || false; }).forEach(function (theme) {
                                 var identifyResult = { url: theme.url, layerResults: [] };
                                 // create identify tasks and setup parameters
                                 var identifyTask = new esri_mods_1.IdentifyTask(theme.url);
