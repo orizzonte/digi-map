@@ -7,7 +7,7 @@ import { MapMenuComponent } from './menu/map.menu.component';
 import { MapFilterComponent } from './filter/map.filter.component';
 import { MapNavigationComponent } from './navigation/map.navigation.component';
 import { MapSettings } from './map.settings';
-
+declare var $: any;
 
 export class MapControl {
     name: string;
@@ -53,6 +53,7 @@ export class MapComponent {
     dynamicLayers : ArcGISDynamicMapServiceLayer[] = [];
     domElement: any;
     isLoading: boolean = false;
+    layerListDomElement: any;
 
     private useIdentifyControl = false;
     private useDrawControl = false;
@@ -61,7 +62,7 @@ export class MapComponent {
     constructor(private elRef: ElementRef) {
         this.domElement = elRef.nativeElement;
     }
-
+    
     ngAfterViewInit() {
         this.controls.push(new MapControl('navigation', this.navigation));
         this.controls.push(new MapControl('filter', this.filter));
@@ -81,6 +82,7 @@ export class MapComponent {
         let self = this;
 
         this.currentMap = new map(this.divId === 'map' ? 'map' : this.domElement);
+        this.layerListDomElement = $(this.domElement).find('.layerlist')[0];
 
         // Apply map controls
         if (this.settings.controls.indexOf('identify') !== -1) {
@@ -100,8 +102,9 @@ export class MapComponent {
                 removeUnderscores: true,
                 showLegend: true
             };
-            var layerList = new LayerList(layerListOptions, 'layerlist');         
-
+            
+            
+            var layerList = new LayerList(layerListOptions, self.layerListDomElement);
             layerList.startup();
         });
 
@@ -158,8 +161,8 @@ export class MapComponent {
             self.isLoading = false;
         });
 
-        this.currentMap.on('load', function (ev) {
-            console.log('map loaded');
+        this.currentMap.on('load', function (ev) { 
+            console.log('map loaded'); 
         });
     };
 }

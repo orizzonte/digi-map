@@ -27,6 +27,7 @@ export declare class MapComponent {
     dynamicLayers: ArcGISDynamicMapServiceLayer[];
     domElement: any;
     isLoading: boolean;
+    layerListDomElement: any;
     private useIdentifyControl;
     private useDrawControl;
     private useEditControl;
