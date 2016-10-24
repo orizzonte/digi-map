@@ -1,8 +1,9 @@
 import { ElementRef, EventEmitter } from '@angular/core';
-import { map, Layer } from 'esri-mods';
+import { map, ArcGISDynamicMapServiceLayer, Layer } from 'esri-mods';
 import { MapIdentifyComponent } from './identify/map.identify.component';
 import { MapDrawComponent } from './draw/map.draw.component';
 import { MapEditComponent } from './edit/map.edit.component';
+import { MapFilterComponent } from './filter/map.filter.component';
 import { MapNavigationComponent } from './navigation/map.navigation.component';
 import { MapSettings } from './map.settings';
 export declare class MapControl {
@@ -19,9 +20,11 @@ export declare class MapComponent {
     identify: MapIdentifyComponent;
     draw: MapDrawComponent;
     edit: MapEditComponent;
+    filter: MapFilterComponent;
     currentMap: map;
     themes: Layer[];
     controls: MapControl[];
+    dynamicLayers: ArcGISDynamicMapServiceLayer[];
     domElement: any;
     isLoading: boolean;
     private useIdentifyControl;

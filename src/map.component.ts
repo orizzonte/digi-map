@@ -4,6 +4,7 @@ import { MapIdentifyComponent } from './identify/map.identify.component';
 import { MapDrawComponent } from './draw/map.draw.component';
 import { MapEditComponent } from './edit/map.edit.component';
 import { MapMenuComponent } from './menu/map.menu.component';
+import { MapFilterComponent } from './filter/map.filter.component';
 import { MapNavigationComponent } from './navigation/map.navigation.component';
 import { MapSettings } from './map.settings';
 
@@ -23,6 +24,7 @@ export class MapControl {
     template: ` <div id='map' [id]="divId">
                     <div class="map-loading" *ngIf="isLoading" style="position: absolute; z-index: 99999999999;">Bezig met laden...</div>
                     <map-navigation [mapInstance]="currentMap" [settings]="settings"></map-navigation>
+                    <map-filter [mapInstance]="currentMap" [settings]="settings" [dynamicLayers]="dynamicLayers"></map-filter>
                     <map-identify *ngIf="useIdentifyControl" [mapInstance]="currentMap" [settings]="settings"></map-identify>
                     <map-draw *ngIf="useDrawControl" [mapInstance]="currentMap"></map-draw>
                     <map-edit *ngIf="useEditControl" [mapInstance]="currentMap"></map-edit> 
@@ -32,7 +34,7 @@ export class MapControl {
                         (toggleIdentify)="identify.toggle($event)">
                     </map-menu>
                 </div>`,
-    directives: [MapIdentifyComponent, MapDrawComponent, MapEditComponent, MapMenuComponent, MapNavigationComponent]
+    directives: [MapIdentifyComponent, MapDrawComponent, MapEditComponent, MapMenuComponent, MapNavigationComponent, MapFilterComponent]
 })
 export class MapComponent {
     @Input() settings: MapSettings;
@@ -43,10 +45,12 @@ export class MapComponent {
     @ViewChild(MapIdentifyComponent) identify: MapIdentifyComponent;
     @ViewChild(MapDrawComponent) draw: MapDrawComponent;
     @ViewChild(MapEditComponent) edit: MapEditComponent;
+    @ViewChild(MapFilterComponent) filter: MapFilterComponent;
 
     currentMap: map;
     themes: Layer[] = [];
     controls: MapControl[] = [];
+    dynamicLayers : ArcGISDynamicMapServiceLayer[] = [];
     domElement: any;
     isLoading: boolean = false;
 
@@ -60,6 +64,7 @@ export class MapComponent {
 
     ngAfterViewInit() {
         this.controls.push(new MapControl('navigation', this.navigation));
+        this.controls.push(new MapControl('filter', this.filter));
 
         if (this.useIdentifyControl) {
             this.controls.push(new MapControl('identify', this.identify));
@@ -95,7 +100,7 @@ export class MapComponent {
                 removeUnderscores: true,
                 showLegend: true
             };
-            var layerList = new LayerList(layerListOptions, 'layerlist');
+            var layerList = new LayerList(layerListOptions, 'layerlist');         
 
             layerList.startup();
         });
@@ -104,13 +109,14 @@ export class MapComponent {
         if (this.settings.themes !== undefined) {
             this.settings.themes.forEach((theme) => {
 
-                let options = { visible: !(theme.hideOnStartup || false) };
+                let options = { visible: !(theme.hideOnStartup || false), maxImageHeight: 265, maxImageWidth: 265 };
 
                 switch (theme.type) {
                     case 'dynamic':
                         let dynamicLayer = new ArcGISDynamicMapServiceLayer(theme.url, options);
-                        dynamicLayer.id = theme.title;
+                        dynamicLayer.id = theme.title;                        
                         this.themes.push(dynamicLayer);
+                        this.dynamicLayers.push(dynamicLayer);
                         break;
                     case 'tiled':
                         let tiledLayer = new ArcGISTiledMapServiceLayer(theme.url, options);

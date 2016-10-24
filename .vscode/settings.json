@@ -1,0 +1,20 @@
+// Place your settings in this file to overwrite the default settings
+{
+    // Controls after how many characters the editor will wrap to the next line. Setting this to 0 turns on viewport width wrapping
+    "editor.wrappingColumn": 0,
+    // Maximum amount of characters per line (0 = disable).
+    "html.format.wrapLineLength": 0,
+    "files.exclude": {
+        "node_modules/": true,
+        "typings/": true,
+        "build/": true
+    },
+    "search.excludeFolders": [
+        ".git",
+        "node_modules",
+        "typings",
+        "build"
+    ]
+,
+"typescript.tsdk": "./node_modules/typescript/lib"
+}
