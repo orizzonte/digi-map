@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/common', './custom.component.builder'], function(exports_1, context_1) {
+System.register(['@angular/core', './custom.component.builder'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,16 +10,13 @@ System.register(['@angular/core', '@angular/common', './custom.component.builder
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, core_2, common_1, custom_component_builder_1;
+    var core_1, core_2, custom_component_builder_1;
     var DynamicHolder;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
                 core_2 = core_1_1;
-            },
-            function (common_1_1) {
-                common_1 = common_1_1;
             },
             function (custom_component_builder_1_1) {
                 custom_component_builder_1 = custom_component_builder_1_1;
@@ -38,30 +35,27 @@ System.register(['@angular/core', '@angular/common', './custom.component.builder
                         if (this.template !== this.previousTemplate) {
                             // console.log('recreating component');
                             this.dynamicComponentTarget.clear();
-                            this.ngOnInit(); //Recreate this component when template changes
+                            this.ngOnInit(); // Recreate this component when template changes
                         }
                     }
                 };
                 DynamicHolder.prototype.ngOnInit = function () {
                     // dynamic template built (TODO driven by some incoming settings)        
-                    var _this = this;
                     // now we get built component, just to load it
                     var dynamicComponent = this.customComponentBuilder
-                        .CreateComponent(this.template, common_1.FORM_DIRECTIVES);
+                        .CreateComponent(this.template);
                     // we have a component and its target
-                    this.componentResolver
-                        .resolveComponent(dynamicComponent)
-                        .then(function (factory) {
-                        //console.log('creating compoent with template: ' + this.template);
-                        // Instantiates a single {@link Component} and inserts its Host View 
-                        //   into this container at the specified `index`
-                        var comp = _this.dynamicComponentTarget.createComponent(factory, 0);
-                        // and here we have access to our dynamic component
-                        _this.component = comp.instance;
-                        _this.previousTemplate = _this.template;
-                        _this.component.title = _this.title;
-                        _this.component.entity = _this.entity;
-                    });
+                    var factory = this.componentResolver
+                        .resolveComponentFactory(dynamicComponent);
+                    // console.log('creating compoent with template: ' + this.template);
+                    // Instantiates a single {@link Component} and inserts its Host View 
+                    //   into this container at the specified `index`
+                    var comp = this.dynamicComponentTarget.createComponent(factory, 0);
+                    // and here we have access to our dynamic component
+                    this.component = comp.instance;
+                    this.previousTemplate = this.template;
+                    this.component.title = this.title;
+                    this.component.entity = this.entity;
                 };
                 __decorate([
                     core_1.Input(), 
@@ -85,7 +79,7 @@ System.register(['@angular/core', '@angular/common', './custom.component.builder
                         template: "\n<div>  \n  <div #dynamicContentPlaceHolder></div>  \n</div>\n",
                         providers: [custom_component_builder_1.CustomComponentBuilder]
                     }), 
-                    __metadata('design:paramtypes', [core_2.ComponentResolver, custom_component_builder_1.CustomComponentBuilder])
+                    __metadata('design:paramtypes', [core_2.ComponentFactoryResolver, custom_component_builder_1.CustomComponentBuilder])
                 ], DynamicHolder);
                 return DynamicHolder;
             }());

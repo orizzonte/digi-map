@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { TOOLTIP_DIRECTIVES } from 'ng2-bootstrap/ng2-bootstrap';
 
 @Component({
     selector: 'digi-toggler',
@@ -11,7 +10,7 @@ import { TOOLTIP_DIRECTIVES } from 'ng2-bootstrap/ng2-bootstrap';
                 <div [style.display]="isHidden ? 'none' : 'block'">
                     <ng-content></ng-content>
                 </div>`,
-    directives: [TOOLTIP_DIRECTIVES]
+    // directives: [TOOLTIP_DIRECTIVES]
 })
 
 export class TogglerComponent {

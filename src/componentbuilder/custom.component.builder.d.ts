@@ -3,5 +3,5 @@ export interface IHaveDynamicData {
     entity: any;
 }
 export declare class CustomComponentBuilder {
-    CreateComponent(tmpl: string, injectDirectives: any[]): any;
+    CreateComponent(tmpl: string): any;
 }

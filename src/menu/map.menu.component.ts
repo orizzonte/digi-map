@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {TOOLTIP_DIRECTIVES, TAB_DIRECTIVES, ACCORDION_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 import {TogglerComponent} from '../ui/toggler/toggler';
 import {Extent} from 'esri-mods';
 import {MapSettings} from '../map.settings';
@@ -53,7 +52,7 @@ import {MapSettings} from '../map.settings';
                         </tabset>		
                     </div>
                 </digi-toggler>`,
-    directives: [TOOLTIP_DIRECTIVES, TAB_DIRECTIVES, TogglerComponent, ACCORDION_DIRECTIVES]
+    // directives: [TOOLTIP_DIRECTIVES, TAB_DIRECTIVES, TogglerComponent, ACCORDION_DIRECTIVES]
 })
 export class MapMenuComponent {
     @Input() settings: MapSettings;

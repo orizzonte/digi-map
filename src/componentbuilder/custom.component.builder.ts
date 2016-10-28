@@ -12,12 +12,11 @@ interface KeyValuePair {
 
 export class CustomComponentBuilder {
 
-    public CreateComponent(tmpl: string, injectDirectives: any[]): any {
+    public CreateComponent(tmpl: string): any {
 
         @Component({
             selector: 'dynamic-component',
-            template: tmpl,
-            directives: injectDirectives,
+            template: tmpl,           
         })
         class CustomDynamicComponent implements IHaveDynamicData {
 

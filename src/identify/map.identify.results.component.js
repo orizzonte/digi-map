@@ -1,4 +1,4 @@
-System.register(['@angular/core', '../componentbuilder/dynamic.component.holder'], function(exports_1, context_1) {
+System.register(['@angular/core'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,15 +10,12 @@ System.register(['@angular/core', '../componentbuilder/dynamic.component.holder'
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, dynamic_component_holder_1;
+    var core_1;
     var IdentifyResultsComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
-            },
-            function (dynamic_component_holder_1_1) {
-                dynamic_component_holder_1 = dynamic_component_holder_1_1;
             }],
         execute: function() {
             IdentifyResultsComponent = (function () {
@@ -79,8 +76,7 @@ System.register(['@angular/core', '../componentbuilder/dynamic.component.holder'
                 IdentifyResultsComponent = __decorate([
                     core_1.Component({
                         selector: 'digi-identify-results',
-                        template: " <div style=\"display:none\">\n                    <div id=\"popup-content\">                     \n                        <div *ngIf=\"dropDownResults && dropDownResults.length > 0\">\n                            <select (change)=\"selectResult($event.target.value)\">\n                                <option *ngFor=\"let result of dropDownResults; let i=index\" [value]=\"i\">{{resultName(result)}}</option>                           \n                            </select>  \n\n                            <dynamic-holder [entity]=\"currentResult\" [title]=\"'Details'\" [template]=\"currentTemplate\" *ngIf=\"currentResult && currentTemplate\"></dynamic-holder>                           \n                        </div>                      \n                        <div *ngIf=\"!dropDownResults\">Bezig met ophalen van gegevens...</div>  \n                        <div *ngIf=\"dropDownResults && dropDownResults.length==0\">Geen resultaten gevonden</div>  \n\n                    </div>\n                </div>",
-                        directives: [dynamic_component_holder_1.DynamicHolder]
+                        template: " <div style=\"display:none\">\n                    <div id=\"popup-content\">                     \n                        <div *ngIf=\"dropDownResults && dropDownResults.length > 0\">\n                            <select (change)=\"selectResult($event.target.value)\">\n                                <option *ngFor=\"let result of dropDownResults; let i=index\" [value]=\"i\">{{resultName(result)}}</option>                           \n                            </select>  \n\n                            <dynamic-holder [entity]=\"currentResult\" [title]=\"'Details'\" [template]=\"currentTemplate\" *ngIf=\"currentResult && currentTemplate\"></dynamic-holder>                           \n                        </div>                      \n                        <div *ngIf=\"!dropDownResults\">Bezig met ophalen van gegevens...</div>  \n                        <div *ngIf=\"dropDownResults && dropDownResults.length==0\">Geen resultaten gevonden</div>  \n\n                    </div>\n                </div>"
                     }), 
                     __metadata('design:paramtypes', [])
                 ], IdentifyResultsComponent);

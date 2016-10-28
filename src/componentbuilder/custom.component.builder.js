@@ -21,7 +21,7 @@ System.register(['@angular/core'], function(exports_1, context_1) {
             CustomComponentBuilder = (function () {
                 function CustomComponentBuilder() {
                 }
-                CustomComponentBuilder.prototype.CreateComponent = function (tmpl, injectDirectives) {
+                CustomComponentBuilder.prototype.CreateComponent = function (tmpl) {
                     var CustomDynamicComponent = (function () {
                         function CustomDynamicComponent() {
                         }
@@ -46,7 +46,6 @@ System.register(['@angular/core'], function(exports_1, context_1) {
                             core_1.Component({
                                 selector: 'dynamic-component',
                                 template: tmpl,
-                                directives: injectDirectives,
                             }), 
                             __metadata('design:paramtypes', [])
                         ], CustomDynamicComponent);

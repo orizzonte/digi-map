@@ -1,4 +1,4 @@
-System.register(['@angular/core', 'esri-mods', '../componentbuilder/dynamic.component.holder', './map.identify.results.component'], function(exports_1, context_1) {
+System.register(['@angular/core', 'esri-mods'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', 'esri-mods', '../componentbuilder/dynamic.comp
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, esri_mods_1, dynamic_component_holder_1, map_identify_results_component_1;
+    var core_1, esri_mods_1;
     var MapIdentifyComponent;
     return {
         setters:[
@@ -19,12 +19,6 @@ System.register(['@angular/core', 'esri-mods', '../componentbuilder/dynamic.comp
             },
             function (esri_mods_1_1) {
                 esri_mods_1 = esri_mods_1_1;
-            },
-            function (dynamic_component_holder_1_1) {
-                dynamic_component_holder_1 = dynamic_component_holder_1_1;
-            },
-            function (map_identify_results_component_1_1) {
-                map_identify_results_component_1 = map_identify_results_component_1_1;
             }],
         execute: function() {
             MapIdentifyComponent = (function () {
@@ -122,8 +116,7 @@ System.register(['@angular/core', 'esri-mods', '../componentbuilder/dynamic.comp
                 MapIdentifyComponent = __decorate([
                     core_1.Component({
                         selector: 'map-identify',
-                        template: "\t<div class='map-identify'>\t\t\t\t\t\n\t\t\t  \t</div>\n\t\t\t  \t<div id='popup'></div>\n\t\t\t\t<digi-identify-results [results]='results' [settings]=\"settings\"></digi-identify-results>",
-                        directives: [dynamic_component_holder_1.DynamicHolder, map_identify_results_component_1.IdentifyResultsComponent]
+                        template: "\t<div class='map-identify'>\t\t\t\t\t\n\t\t\t  \t</div>\n\t\t\t  \t<div id='popup'></div>\n\t\t\t\t<digi-identify-results [results]='results' [settings]=\"settings\"></digi-identify-results>"
                     }), 
                     __metadata('design:paramtypes', [])
                 ], MapIdentifyComponent);

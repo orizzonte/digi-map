@@ -33,8 +33,8 @@ export class MapControl {
                         (toInitialExtent)="navigation.toInitialExtent($event)"
                         (toggleIdentify)="identify.toggle($event)">
                     </map-menu>
-                </div>`,
-    directives: [MapIdentifyComponent, MapDrawComponent, MapEditComponent, MapMenuComponent, MapNavigationComponent, MapFilterComponent]
+                </div>`
+   // directives: [MapIdentifyComponent, MapDrawComponent, MapEditComponent, MapMenuComponent, MapNavigationComponent, MapFilterComponent]
 })
 export class MapComponent {
     @Input() settings: MapSettings;

@@ -11,8 +11,7 @@ import {IdentifyMapServerResult, IdentifyLayerResult} from './identify.result';
 	template: `	<div class='map-identify'>					
 			  	</div>
 			  	<div id='popup'></div>
-				<digi-identify-results [results]='results' [settings]="settings"></digi-identify-results>`,
-			 directives: [DynamicHolder, IdentifyResultsComponent]
+				<digi-identify-results [results]='results' [settings]="settings"></digi-identify-results>`			
 })
 
 export class MapIdentifyComponent implements OnInit {

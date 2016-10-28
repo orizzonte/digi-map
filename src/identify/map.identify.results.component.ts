@@ -18,8 +18,7 @@ import {IdentifyMapServerResult, IdentifyLayerResult} from './identify.result';
                         <div *ngIf="dropDownResults && dropDownResults.length==0">Geen resultaten gevonden</div>  
 
                     </div>
-                </div>`,
-    directives: [DynamicHolder]
+                </div>`    
 })
 export class IdentifyResultsComponent implements OnInit, OnChanges {
     @Input() settings: MapSettings;

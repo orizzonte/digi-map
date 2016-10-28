@@ -1,8 +1,8 @@
 import { OnInit, OnChanges } from '@angular/core';
-import { ComponentResolver, ViewContainerRef } from '@angular/core';
+import { ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
 import { CustomComponentBuilder } from './custom.component.builder';
 export declare class DynamicHolder implements OnInit, OnChanges {
-    protected componentResolver: ComponentResolver;
+    protected componentResolver: ComponentFactoryResolver;
     protected customComponentBuilder: CustomComponentBuilder;
     entity: any;
     title: string;
@@ -11,6 +11,6 @@ export declare class DynamicHolder implements OnInit, OnChanges {
     private previousTemplate;
     ngOnChanges(): void;
     protected dynamicComponentTarget: ViewContainerRef;
-    constructor(componentResolver: ComponentResolver, customComponentBuilder: CustomComponentBuilder);
+    constructor(componentResolver: ComponentFactoryResolver, customComponentBuilder: CustomComponentBuilder);
     ngOnInit(): void;
 }
